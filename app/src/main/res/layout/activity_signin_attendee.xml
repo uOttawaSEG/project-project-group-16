@@ -5,14 +5,25 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="75dp"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center_vertical"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please fill all the following fields" />
+        android:text="SIGNING IN AS AN ATTENDEE" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please fill in all the following fields" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -32,6 +43,17 @@
         android:hint="Email address"
         android:id="@+id/emailAddressField"/>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Phone number"
+        android:id="@+id/phoneNumber"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:id="@+id/address"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -42,8 +64,21 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Confirm a password"
+        android:hint="Confirm the password"
         android:id="@+id/confirmPassword"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submitAttendeeButton" />
+
 
 
 </LinearLayout>
