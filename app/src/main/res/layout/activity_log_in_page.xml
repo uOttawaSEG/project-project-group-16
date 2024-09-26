@@ -12,19 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Attendance Management System"
-        android:id="@+id/appName" />
-    
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:id="@+id/signInButton"/>
+        android:text="Please enter your email address and your password" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log in"
-        android:id="@+id/logInButton" />
 
 </LinearLayout>
