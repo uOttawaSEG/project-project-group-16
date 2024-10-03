@@ -8,7 +8,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.HashMap;
+
+
 public class SigninAttendee extends AppCompatActivity {
+
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private Integer phoneNumber;
+    private String address;
+    private String password;
+
+    private HashMap<String, String> attendeeFirstName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

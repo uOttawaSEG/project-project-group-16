@@ -14,5 +14,17 @@
         android:layout_height="wrap_content"
         android:text="Please enter your email address and your password" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Email address"
+        android:id="@+id/emailAddressField"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:id="@+id/confirmPassword"/>
+
 
 </LinearLayout>
