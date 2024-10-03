@@ -29,43 +29,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="First name"
-        android:id="@+id/firstNameField"/>
+        android:id="@+id/firstNameFieldOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Last name"
-        android:id="@+id/lastNameField"/>
+        android:id="@+id/lastNameFieldOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Email address"
-        android:id="@+id/emailAddressField"/>
+        android:id="@+id/emailAddressFieldOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Phone number"
-        android:id="@+id/phoneNumber"/>
+        android:id="@+id/phoneNumberOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Address"
-        android:id="@+id/address"/>
+        android:id="@+id/addressFieldOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Create a password"
-        android:id="@+id/createPassword"/>
+        android:id="@+id/createPasswordOrganizer"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Confirm the password"
-        android:id="@+id/confirmPassword"/>
+        android:id="@+id/confirmPasswordOrganizer"/>
 
 
     <TextView
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        android:id="@+id/submitAttendeeButton" />
+        android:id="@+id/submitOrganizerButton" />
 
 
 
