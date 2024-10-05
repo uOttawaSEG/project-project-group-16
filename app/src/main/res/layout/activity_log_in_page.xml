@@ -33,10 +33,21 @@
         android:id="@+id/confirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginBottom="260dp"
+        android:layout_marginBottom="24dp"
         android:hint="Password"
+        app:layout_constraintBottom_toTopOf="@+id/submitLogInButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/submitLogInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="208dp"
+        android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent" />
 
 

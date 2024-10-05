@@ -60,6 +60,10 @@ public class SigninAttendee extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
               registerAttendee();
+
+              Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
+              startActivity(intent);
+
             }
         });
 
@@ -77,6 +81,5 @@ public class SigninAttendee extends AppCompatActivity {
 
         Toast.makeText(SigninAttendee.this," You are Signed in", Toast.LENGTH_SHORT).show();
 
-        Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
     }
 }
