@@ -2,6 +2,8 @@ package com.example.seg2105_project;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
