@@ -62,6 +62,9 @@ public class SigninAttendee extends AppCompatActivity {
               registerAttendee();
 
               Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
+              intent.putExtra("UserType","attendee");
+              intent.putExtra("Email",emailAddress.getText().toString());
+              intent.putExtra("passWord",password.getText().toString());
               startActivity(intent);
 
             }

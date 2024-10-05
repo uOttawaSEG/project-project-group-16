@@ -73,6 +73,9 @@ public class SignInOrganizer extends AppCompatActivity {
 
         Toast.makeText(SignInOrganizer.this,"You are sign in ",Toast.LENGTH_LONG).show();
         Intent intent=new Intent(SignInOrganizer.this,LogInPage.class);
+        intent.putExtra("UserType","Organizer");
+        intent.putExtra("Email",emailAddress.getText().toString());
+        intent.putExtra("passWord",password.getText().toString());
         startActivity(intent);
     }
 }

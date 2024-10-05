@@ -17,7 +17,7 @@ public class SignInPage extends AppCompatActivity {
     private Button signInAttendeeButton;
     private Button signInOrganizerButton;
 
-    private String userType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,10 @@ public class SignInPage extends AppCompatActivity {
         signInAttendeeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(SignInPage.this, SigninAttendee.class);
+                intent.putExtra("UserType","attendee");
                 startActivity(intent);
 
-                userType = "Attendee";
+
             }
         });
 
@@ -46,9 +47,10 @@ public class SignInPage extends AppCompatActivity {
         signInOrganizerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(SignInPage.this, SignInOrganizer.class);
+                intent.putExtra("UserType","organizer");
                 startActivity(intent);
 
-                userType = "Organizer";
+
             }
         });
 
