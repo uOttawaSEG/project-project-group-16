@@ -27,43 +27,43 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="First name"
         android:id="@+id/firstNameFieldAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Last name"
         android:id="@+id/lastNameFieldAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Email address"
         android:id="@+id/emailAddressFieldAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Phone number"
         android:id="@+id/phoneNumberAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Address"
         android:id="@+id/addressFieldAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Create a password"
         android:id="@+id/createPasswordAttendee"/>
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Confirm the password"
         android:id="@+id/confirmPasswordAttendee"/>
 

@@ -21,6 +21,7 @@ public class SignInOrganizer extends AppCompatActivity {
     private EditText phoneNumber;
     private EditText address;
     private EditText password;
+    private EditText organizerName;
 
     private Button submitButton;
 
@@ -44,6 +45,7 @@ public class SignInOrganizer extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phoneNumberOrganizer);
         address = findViewById(R.id.addressFieldOrganizer);
         password = findViewById(R.id.confirmPasswordOrganizer);
+        organizerName = findViewById(R.id.organizationName);
 
 
         submitButton = findViewById(R.id.submitOrganizerButton);
@@ -57,6 +59,7 @@ public class SignInOrganizer extends AppCompatActivity {
                 userData.add(lastName);
                 userData.add(phoneNumber);
                 userData.add(address);
+                userData.add(organizerName);
             }
         });
 
