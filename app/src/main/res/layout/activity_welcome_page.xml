@@ -8,10 +8,19 @@
     tools:context=".WelcomePage">
 
     <Button
-        android:id="@+id/logOfButton"
+        android:id="@+id/logOffButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log Off"
         tools:layout_editor_absoluteX="144dp"
         tools:layout_editor_absoluteY="391dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="252dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

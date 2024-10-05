@@ -60,6 +60,10 @@ public class SigninAttendee extends AppCompatActivity {
                 userData.add(lastName);
                 userData.add(phoneNumber);
                 userData.add(address);
+                // Pass the user data to the WelcomePage
+                Intent intent = new Intent(SigninAttendee.this, WelcomePage.class);
+                intent.putStringArrayListExtra("userData", userData);
+                startActivity(intent);
             }
         });
 
