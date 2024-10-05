@@ -14,18 +14,19 @@
         android:id="@+id/signInAttendeeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="310dp"
         android:text="Sign in as an Attendee"
         app:layout_constraintBottom_toTopOf="@+id/signInOrganizerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.859" />
+        app:layout_constraintVertical_bias="0.955" />
 
     <Button
         android:id="@+id/signInOrganizerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="310dp"
         android:text="Sign in as an Organizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
