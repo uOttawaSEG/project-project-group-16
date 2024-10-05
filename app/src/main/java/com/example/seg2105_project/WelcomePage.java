@@ -1,6 +1,9 @@
 package com.example.seg2105_project;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import java.util.ArrayList;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +14,11 @@ import android.widget.Button;
 
 
 public class WelcomePage extends AppCompatActivity {
+    private TextView welcomeMessage;
     private Button LogOffButton;
+    private ArrayList<String> userData;
+
+
 
 
     @Override
@@ -24,6 +31,19 @@ public class WelcomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        welcomeMessage=findViewById(R.id.WelcomeMessage);
+        logOffButton=findViewById(R.id.logOffButton);
+        logOffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+
+
+                //Redirect to the LogIn page
+                Intent intent = new Intent(WelcomePage.this, MainActivity.class);
+
+            }
+        }
     }
 }
