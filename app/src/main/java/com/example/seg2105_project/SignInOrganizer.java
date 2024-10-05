@@ -1,9 +1,11 @@
 package com.example.seg2105_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +27,7 @@ public class SignInOrganizer extends AppCompatActivity {
 
     private Button submitButton;
 
-    private ArrayList userData;
+    private ArrayList<String> userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +54,25 @@ public class SignInOrganizer extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                userData = new ArrayList(6);
-                userData.add(emailAddress);
-                userData.add(password);
-                userData.add(firstName);
-                userData.add(lastName);
-                userData.add(phoneNumber);
-                userData.add(address);
-                userData.add(organizerName);
+                registerOrganizer();
             }
         });
 
 
+    }
+    public void registerOrganizer(){
+        userData=new ArrayList<>(7);
+
+        userData.add(firstName.getText().toString());
+        userData.add(lastName.getText().toString());
+        userData.add(emailAddress.getText().toString());
+        userData.add(phoneNumber.getText().toString());
+        userData.add(address.getText().toString());
+        userData.add(password.getText().toString());
+        userData.add(organizerName.getText().toString());
+
+        Toast.makeText(SignInOrganizer.this,"You are sign in ",Toast.LENGTH_LONG).show();
+        Intent intent=new Intent(SignInOrganizer.this,LogInPage.class);
+        startActivity(intent);
     }
 }
