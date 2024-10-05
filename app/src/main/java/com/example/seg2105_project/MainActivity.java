@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SignInOrganizer.class);
+                Intent intent = new Intent(MainActivity.this, SignInPage.class);
                 startActivity(intent);
             }
         });
