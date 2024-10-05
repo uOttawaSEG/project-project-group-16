@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import androidx.core.view.WindowInsetsCompat;
 public class LogInPage extends AppCompatActivity {
 
     private Button submitLogInButton;
+
+    private EditText emailAddress;
+    private EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +38,8 @@ public class LogInPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        emailAddress = findViewById(R.id.emailAddressField);
+        password = findViewById(R.id.logInPassword);
     }
 }
