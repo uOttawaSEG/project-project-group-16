@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,9 @@ public class SigninAttendee extends AppCompatActivity {
 
     private Button submitButton;
 
-    private ArrayList userData;
+    private ArrayList<String> userData;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +56,24 @@ public class SigninAttendee extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                userData = new ArrayList(6);
-                userData.add(emailAddress);
-                userData.add(password);
-                userData.add(firstName);
-                userData.add(lastName);
-                userData.add(phoneNumber);
-                userData.add(address);
+              registerAttendee();
             }
         });
 
+    }
+
+    private void registerAttendee(){
+
+        userData=new ArrayList<>(6);
+        userData.add(firstName.getText().toString());
+        userData.add(lastName.getText().toString());
+        userData.add(emailAddress.getText().toString());
+        userData.add(phoneNumber.getText().toString());
+        userData.add(address.getText().toString());
+        userData.add(password.getText().toString());
+
+        Toast.makeText(SigninAttendee.this," You are Signed in", Toast.LENGTH_SHORT).show();
+
+        Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
     }
 }
