@@ -12,9 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -59,25 +56,21 @@ public class SigninAttendee extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-<<<<<<< HEAD
-                userData = new ArrayList(6);
-                userData.add(emailAddress);
-                userData.add(password);
-                userData.add(firstName);
-                userData.add(lastName);
-                userData.add(phoneNumber);
-                userData.add(address);
+
+
+
+                registerAttendee();
                 // Pass the user data to the WelcomePage
                 Intent intent = new Intent(SigninAttendee.this, WelcomePage.class);
                 intent.putStringArrayListExtra("userData", userData);
                 startActivity(intent);
-=======
-              registerAttendee();
 
-              Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
-              startActivity(intent);
 
->>>>>>> 971de79cb2dbd74abdf8297849296ce8f93eff38
+
+              Intent LogInIntent =new Intent(SigninAttendee.this,LogInPage.class);
+              startActivity(LogInIntent);
+
+
             }
         });
 

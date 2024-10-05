@@ -14,8 +14,10 @@ import android.widget.Button;
 
 
 public class WelcomePage extends AppCompatActivity {
+    private TextView welcomeMessage;
     private Button LogOffButton;
     private ArrayList<String> userData;
+
 
 
 
@@ -29,6 +31,7 @@ public class WelcomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        welcomeMessage=findViewById(R.id.WelcomeMessage);
         logOffButton=findViewById(R.id.logOffButton);
         logOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
