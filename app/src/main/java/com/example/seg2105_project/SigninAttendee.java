@@ -2,6 +2,8 @@ package com.example.seg2105_project;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -27,7 +31,9 @@ public class SigninAttendee extends AppCompatActivity {
 
     private Button submitButton;
 
-    private ArrayList userData;
+    private ArrayList<String> userData;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class SigninAttendee extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+<<<<<<< HEAD
                 userData = new ArrayList(6);
                 userData.add(emailAddress);
                 userData.add(password);
@@ -64,8 +71,29 @@ public class SigninAttendee extends AppCompatActivity {
                 Intent intent = new Intent(SigninAttendee.this, WelcomePage.class);
                 intent.putStringArrayListExtra("userData", userData);
                 startActivity(intent);
+=======
+              registerAttendee();
+
+              Intent intent=new Intent(SigninAttendee.this,LogInPage.class);
+              startActivity(intent);
+
+>>>>>>> 971de79cb2dbd74abdf8297849296ce8f93eff38
             }
         });
+
+    }
+
+    private void registerAttendee(){
+
+        userData=new ArrayList<>(6);
+        userData.add(firstName.getText().toString());
+        userData.add(lastName.getText().toString());
+        userData.add(emailAddress.getText().toString());
+        userData.add(phoneNumber.getText().toString());
+        userData.add(address.getText().toString());
+        userData.add(password.getText().toString());
+
+        Toast.makeText(SigninAttendee.this," You are Signed in", Toast.LENGTH_SHORT).show();
 
     }
 }
