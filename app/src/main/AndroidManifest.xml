@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SEG2105_Project"
         tools:targetApi="31">
-        <activity
-            android:name=".SignInPage"
-            android:exported="false" />
+
         <activity
             android:name=".SigninAttendee"
             android:exported="false" />
@@ -23,6 +21,9 @@
             android:exported="false" />
         <activity
             android:name=".LogInPage"
+            android:exported="false" />
+        <activity
+            android:name=".SignInPage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
