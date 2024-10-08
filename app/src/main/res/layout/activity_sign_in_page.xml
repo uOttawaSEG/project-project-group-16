@@ -11,8 +11,8 @@
     <Button
         android:id="@+id/signInOrganizerButton"
         android:layout_width="199dp"
-        android:layout_height="54dp"
-        android:layout_marginBottom="300dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="296dp"
         android:layout_weight="1"
         android:text="Sign in as an Organizer"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,9 +22,9 @@
     <Button
         android:id="@+id/signInAttendeeButton"
         android:layout_width="199dp"
-        android:layout_height="54dp"
+        android:layout_height="70dp"
         android:layout_marginTop="294dp"
-        android:layout_marginBottom="368dp"
+        android:layout_marginBottom="390dp"
         android:layout_weight="1"
         android:text="Sign in as an Attendee"
         app:layout_constraintBottom_toBottomOf="parent"
