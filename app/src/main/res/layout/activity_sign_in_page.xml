@@ -5,6 +5,33 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInOrganizer">
+    tools:context=".SignInPage">
+
+
+    <Button
+        android:id="@+id/signInOrganizerButton"
+        android:layout_width="199dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="300dp"
+        android:layout_weight="1"
+        android:text="Sign in as an Organizer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signInAttendeeButton"
+        android:layout_width="199dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="294dp"
+        android:layout_marginBottom="368dp"
+        android:layout_weight="1"
+        android:text="Sign in as an Attendee"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
