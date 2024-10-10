@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="208dp"
         android:text="Submit"
+        android:backgroundTint="@color/coloruOttawa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
