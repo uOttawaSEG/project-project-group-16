@@ -19,29 +19,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign in"
-<<<<<<< HEAD
+        android:id="@+id/signInButton"
         android:backgroundTint="@color/coloruOttawa"
         app:layout_constraintBottom_toTopOf="@+id/logInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent" />
-=======
-        android:id="@+id/signInButton"/>
->>>>>>> 34f3f08eb42fdcc168bd3f1d5d44455fc07a09a0
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log in"
-<<<<<<< HEAD
+        android:id="@+id/logInButton"
         android:backgroundTint="@color/coloruOttawa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         />
-=======
-        android:id="@+id/logInButton" />
->>>>>>> 34f3f08eb42fdcc168bd3f1d5d44455fc07a09a0
+
 
 </LinearLayout>
