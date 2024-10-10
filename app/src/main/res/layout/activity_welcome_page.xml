@@ -23,9 +23,9 @@
 
     <TextView
         android:id="@+id/WelcomeMessage"
-        android:layout_width="93dp"
-        android:layout_height="49dp"
-        android:text="Welcome!!"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:text="Welcome to the University of Ottawa"
         app:layout_constraintBottom_toTopOf="@+id/logOffButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"

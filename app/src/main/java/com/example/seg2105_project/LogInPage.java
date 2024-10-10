@@ -39,6 +39,53 @@ public class LogInPage extends AppCompatActivity {
         submitLogInButton = findViewById(R.id.submitLogInButton);
 
         submitLogInButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                // Récupération des champs email et mot de passe
+                emailAddress = findViewById(R.id.emailAddressField);
+                password = findViewById(R.id.logInPassword);
+
+                String emailAddressString = emailAddress.getText().toString();
+                String passwordString = password.getText().toString();
+
+                loggedIn = false;  // Variable pour savoir si l'utilisateur est connecté
+
+                // Boucle jusqu'à la validation de la connexion
+                while (!loggedIn) {
+                    // Vérification des identifiants d'administrateur
+                    if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
+                        Intent intent = new Intent(LogInPage.this, WelcomePage.class);
+                        intent.putExtra("UserType", "Administrator");
+                        loggedIn = true;
+                        startActivity(intent);
+                    } else {
+                        // Récupération des informations utilisateur transmises par l'intent
+                        String userType = getIntent().getStringExtra("UserType");
+                        String emailUser = getIntent().getStringExtra("Email");
+                        String passWordUser = getIntent().getStringExtra("passWord");
+
+                        Intent intent = new Intent(LogInPage.this, WelcomePage.class);
+                        intent.putExtra("UserType", userType);
+
+                        // Vérification des identifiants de l'utilisateur régulier
+                        if (emailAddressString.equals(emailUser) && passWordUser.equals(passwordString)) {
+                            Toast.makeText(LogInPage.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                            loggedIn = true;
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(LogInPage.this, "Failed to log in", Toast.LENGTH_LONG).show();
+                            break;  // Sortie de la boucle si les identifiants sont incorrects
+                        }
+                    }
+                }
+            }
+        });
+
+
+        /* submitLogInButton = findViewById(R.id.submitLogInButton);
+
+
+        submitLogInButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 emailAddress = findViewById(R.id.emailAddressField);
                 password = findViewById(R.id.logInPassword);
@@ -72,6 +119,8 @@ public class LogInPage extends AppCompatActivity {
                 }
             }
         });
+
+         */
 
 
     }
