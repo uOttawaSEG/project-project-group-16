@@ -35,11 +35,14 @@ public class WelcomePage extends AppCompatActivity {  // Removed 'abstract'
 
         // Retrieve the userData passed from another activity
         userData = getIntent().getStringArrayListExtra("userData");
+        String firstName = userData.get(0);
+        String role = userData.get(1);
+
 
         if (userData != null && !userData.isEmpty()) {
             // Assuming the first element is the first name
-            String firstName = userData.get(0);
-            welcomeMessage.setText("Hello, " + firstName + "!");
+
+            welcomeMessage.setText("Hello, " + role + " "+ firstName + " !");
         }
 
         // Set up the log off click listener
