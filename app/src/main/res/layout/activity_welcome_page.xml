@@ -5,8 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="50dp"
-    android:layout_marginVertical="50dp"
     tools:context=".WelcomePage">
 
     <Button
@@ -17,21 +15,21 @@
         android:text="Log Off"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
 
+        />
 
     <TextView
         android:id="@+id/WelcomeMessage"
         android:layout_width="250dp"
         android:layout_height="100dp"
-        android:text="Welcome to the University of Ottawa"
+        android:text="Welcome to the University Of Ottawa "
         app:layout_constraintBottom_toTopOf="@+id/logOffButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.789" />
-
-
+        app:layout_constraintVertical_bias="0.789"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
