@@ -27,6 +27,7 @@ public class SigninAttendee extends AppCompatActivity {
     private EditText password;
 
     @Override
+   
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
