@@ -11,25 +11,22 @@
         android:id="@+id/logOffButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="240dp"
+        android:layout_marginBottom="412dp"
+        android:backgroundTint="@color/coloruOttawa"
         android:text="Log Off"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/WelcomeMessage"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:text="Welcome to the University Of Ottawa "
+        android:layout_width="255dp"
+        android:layout_height="51dp"
+        android:text="Welcome to the University of Ottawa!"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/logOffButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.789"
-        />
+        app:layout_constraintVertical_bias="0.945" />
 </androidx.constraintlayout.widget.ConstraintLayout>
