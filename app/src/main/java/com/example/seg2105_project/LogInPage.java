@@ -23,8 +23,8 @@ public class LogInPage extends AppCompatActivity {
     private EditText emailAddress;
     private EditText password;
 
-    private final String adminEmail="admin@uottawa.ca";
-    private final String adminpassword="12345";
+    private final String adminEmail = "admin@uottawa.ca";
+    private final String adminpassword = "12345";
 
     private boolean loggedIn;
 
@@ -41,8 +41,6 @@ public class LogInPage extends AppCompatActivity {
 
         submitLogInButton = findViewById(R.id.submitLogInButton);
 
-<<<<<<< HEAD
-=======
         submitLogInButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -105,49 +103,10 @@ public class LogInPage extends AppCompatActivity {
                 }
             }
         });
-
-
-        /* submitLogInButton = findViewById(R.id.submitLogInButton);
-
->>>>>>> f32651b5a3892961a413a245ce974e6ab8e28e57
-
-        submitLogInButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-               emailAddress = findViewById(R.id.emailAddressField);
-                password = findViewById(R.id.logInPassword);
-
-                String emailAddressString = emailAddress.getText().toString();
-                String passwordString = password.getText().toString();
-
-                loggedIn=false;
-                while(!loggedIn) {
-                    if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
-                        Intent intent = new Intent(LogInPage.this, WelcomePage.class);
-                        Toast.makeText(LogInPage.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
-                        intent.putExtra("UserType", "Administrator");
-                        loggedIn=true;
-                        startActivity(intent);
-                    } else {
-                        Intent intent2 = new Intent(LogInPage.this, WelcomePage.class);
-                        String userType = getIntent().getStringExtra("UserType");
-                        intent2.putExtra("UserType", userType);
-                        String emailUser = getIntent().getStringExtra("Email");
-                        String passWordUser = getIntent().getStringExtra("passWord");
-                        if (emailAddressString.equals(emailUser) && passWordUser.equals(passwordString)) {
-                            Toast.makeText(LogInPage.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
-                            loggedIn=true;
-                            startActivity(intent2);
-                        } else {
-                            Toast.makeText(LogInPage.this, "failed to Log", Toast.LENGTH_LONG).show();
-                        }
-
-
-                    }
-                }
-            }
-        });
-
-
-
     }
 }
+
+
+
+
+
