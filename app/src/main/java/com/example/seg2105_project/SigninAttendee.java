@@ -14,6 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import android.text.TextUtils;
+import android.util.Patterns;
 
 public class SigninAttendee extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class SigninAttendee extends AppCompatActivity {
     private EditText phoneNumber;
     private EditText address;
     private EditText password;
+    private EditText confirmPassword;
 
     @Override
    
@@ -38,42 +41,94 @@ public class SigninAttendee extends AppCompatActivity {
             return insets;
         });
 
+        //Initialize fields
         submitAttendeeButton = findViewById(R.id.submitAttendeeButton);
-        firstName=findViewById(R.id.firstNameFieldAttendee);
-        lastName=findViewById(R.id.lastNameFieldAttendee);
-        emailAddress=findViewById(R.id.emailAddressFieldAttendee);
-        phoneNumber=findViewById(R.id.phoneNumberAttendee);
-        address=findViewById(R.id.addressFieldAttendee);
-        password=findViewById(R.id.confirmPasswordAttendee);
-
+        firstName = findViewById(R.id.firstNameFieldAttendee);
+        lastName = findViewById(R.id.lastNameFieldAttendee);
+        emailAddress = findViewById(R.id.emailAddressFieldAttendee);
+        phoneNumber = findViewById(R.id.phoneNumberAttendee);
+        address = findViewById(R.id.addressFieldAttendee);
+        password = findViewById(R.id.createPasswordAttendee);
+        confirmPassword = findViewById(R.id.confirmPasswordAttendee);
 
         submitAttendeeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                registerAttendee();
             }
         });
-
-
     }
-    public void registerAttendee(){
 
-        userData=new ArrayList<>(7);
-        userData.add(firstName.getText().toString());
-        userData.add(lastName.getText().toString());
-        userData.add(emailAddress.getText().toString());
-        userData.add(phoneNumber.getText().toString());
-        userData.add(address.getText().toString());
-        userData.add(password.getText().toString());
+    public void registerAttendee(){
+        //Receive input values
+        String firstNameString = firstName.getText().toString().trim();
+        String lastNameString = lastName.getText().toString().trim();
+        String emailAddressString = emailAddress.getText().toString().trim();
+        String phoneNumberString = phoneNumber.getText().toString().trim();
+        String addressString = address.getText().toString().trim();
+        String passwordString = password.getText().toString().trim();
+        String confirmPasswordString = confirmPassword.getText().toString().trim();
+
+        //Field validation
+        if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
+            firstName.setError("Enter a proper First Name");
+            return;
+        }
+
+        if (TextUtils.isEmpty(lastNameString) || lastNameString.length() < 2 || !lastNameString.matches("[a-zA-Z]+")) {
+            lastName.setError("Enter a proper Last Name");
+            return;
+        }
+
+        if (TextUtils.isEmpty(emailAddressString) || !Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
+            emailAddress.setError("Enter a valid Email");
+            return;
+        }
+
+        if (TextUtils.isEmpty(phoneNumberString)) {
+            phoneNumber.setError("Phone Number is required");
+            return;
+        }
+
+        if (!Patterns.PHONE.matcher(phoneNumberString).matches()) {
+            phoneNumber.setError("Enter a valid phone number");
+            return;
+        }
+
+        if (TextUtils.isEmpty(addressString)) {
+            address.setError("Address is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(passwordString)) {
+            password.setError("Password is required");
+            return;
+        }
+
+        if (passwordString.length() < 5) {
+            password.setError("Password must be at least 5 characters");
+            return;
+        }
+
+        if (!passwordString.equals(confirmPasswordString)) {
+            confirmPassword.setError("Passwords do not match");
+            return;
+        }
+
+        // If all validations pass, proceed to register
+        userData = new ArrayList<>(7);
+        userData.add(firstNameString);
+        userData.add(lastNameString);
+        userData.add(emailAddressString);
+        userData.add(phoneNumberString);
+        userData.add(addressString);
+        userData.add(passwordString);
+
         Toast.makeText(SigninAttendee.this,"You are signed in ",Toast.LENGTH_LONG).show();
         Intent intent =new Intent(SigninAttendee.this,LogInPage.class);
         intent.putExtra("UserType","Attendee");
-        intent.putExtra("Email",emailAddress.getText().toString());
-        intent.putExtra("passWord",password.getText().toString());
+        intent.putExtra("Email",emailAddressString);
+        intent.putExtra("passWord",passwordString);
         startActivity(intent);
-
-
-
-
 
     }
 }

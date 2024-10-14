@@ -67,12 +67,7 @@ public class SignInOrganizer extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(emailAddressString)) {
-                    emailAddress.setError("Email is required");
-                    return;
-                }
-
-                if (!Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
+                if (TextUtils.isEmpty(emailAddressString) || !Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
                     emailAddress.setError("Enter a valid email");
                     return;
                 }
