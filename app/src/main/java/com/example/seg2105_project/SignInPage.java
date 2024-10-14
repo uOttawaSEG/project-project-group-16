@@ -11,6 +11,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.text.TextUtils;
+import android.util.Patterns;
+
 public class SignInPage extends AppCompatActivity {
 
     private Button signInAttendeeButton;
