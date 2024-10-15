@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class WelcomePage extends AppCompatActivity {
     private TextView welcomeMessage;
     private Button logOffButton;
-    private ArrayList<String> userData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,26 +36,6 @@ public class WelcomePage extends AppCompatActivity {
         logOffButton = findViewById(R.id.logOffButton);
 
         // Retrieve the userData passed from another activity
-        userData = getIntent().getStringArrayListExtra("userData");
-
-        // Find views
-        welcomeMessage = findViewById(R.id.WelcomeMessage);
-        logOffButton = findViewById(R.id.logOffButton);
-
-
-        if (userData != null && !userData.isEmpty()) {
-            String firstName = userData.get(0);
-                welcomeMessage.setText("Hello, " + firstName + " !");
-            }
-            logOffButton.setOnClickListener(view -> {
-                Intent intent = new Intent(WelcomePage.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            });
-
-
-        }
-    }
 
         // Retrieve user data
        // userData = getIntent().getStringArrayListExtra("userData");

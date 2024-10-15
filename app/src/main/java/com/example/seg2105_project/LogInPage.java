@@ -39,15 +39,14 @@ public class LogInPage extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize fields
+        emailAddress = findViewById(R.id.emailAddressField);
+        password = findViewById(R.id.logInPassword);
         submitLogInButton = findViewById(R.id.submitLogInButton);
 
         submitLogInButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                // Récupération des champs email et mot de passe
-                emailAddress = findViewById(R.id.emailAddressField);
-                password = findViewById(R.id.logInPassword);
-
                 String emailAddressString = emailAddress.getText().toString().trim();
                 String passwordString = password.getText().toString().trim();
 
@@ -72,32 +71,32 @@ public class LogInPage extends AppCompatActivity {
                     return;  // Stops execution if password length is less than 5
                 }
 
-                loggedIn = false;  // Variable pour savoir si l'utilisateur est connecté
+                loggedIn = false;  // Variable to check if the user is connected
 
-                // Boucle jusqu'à la validation de la connexion
+                // Loop until the user logs in
                 while (!loggedIn) {
-                    // Vérification des identifiants d'administrateur
+                    //Check admin crredentials
                     if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
                         Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                         intent.putExtra("UserType", "Administrator");
                         loggedIn = true;
                         startActivity(intent);
                     } else {
-                        // Récupération des informations utilisateur transmises par l'intent
+                        //Get user credentials from intent
                         Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                         String userType = getIntent().getStringExtra("UserType");
                         intent.putExtra("UserType", userType);
                         String emailUser = getIntent().getStringExtra("Email");
                         String passWordUser = getIntent().getStringExtra("passWord");
 
-                        // Vérification des identifiants de l'utilisateur régulier
-                        if (emailAddressString.equals(emailUser) && passWordUser.equals(passwordString)) {
+                        //Check regular user credentials
+                        if (emailAddressString.equals(emailUser) && passWordUser.equals(passWordUser)) {
                             Toast.makeText(LogInPage.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
                             loggedIn = true;
                             startActivity(intent);
                         } else {
-                            Toast.makeText(LogInPage.this, "Failed to log in", Toast.LENGTH_LONG).show();
-                            break;  // Sortie de la boucle si les identifiants sont incorrects
+                            Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
+                            break;  // Gets out of the loop if the credentials are incorrect
                         }
                     }
                 }
