@@ -70,42 +70,46 @@ public class SignInOrganizer extends AppCompatActivity {
         // Field Validation
         if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
             firstName.setError("Enter a proper First Name");
-            return;
+
         }
 
-        if (TextUtils.isEmpty(lastNameString) || lastNameString.length() < 2 || !lastNameString.matches("[a-zA-Z]+")) {
+        if (TextUtils.isEmpty(lastNameString) || lastNameString.length() < 2 || !lastNameString.matches("[a-zA-Z ]+")) {
             lastName.setError("Enter a proper Last Name");
-            return;
+
         }
 
         if (TextUtils.isEmpty(emailAddressString) || !Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
             emailAddress.setError("Enter a valid email");
-            return;
+
         }
 
         if (TextUtils.isEmpty(phoneNumberString)) {
             phoneNumber.setError("Phone Number is required");
-            return;
+
+        }
+        if (phoneNumberString.length() !=10){
+            phoneNumber.setError("Phone number must be 10 digits");
+
         }
 
         if (!Patterns.PHONE.matcher(phoneNumberString).matches()) {
             phoneNumber.setError("Enter a valid phone number");
-            return;
+
         }
 
         if (TextUtils.isEmpty(addressString)) {
             address.setError("Address is required");
-            return;
+
         }
 
         if (TextUtils.isEmpty(passwordString)) {
             password.setError("Password is required");
-            return;
+
         }
 
         if (passwordString.length() < 5) {
             password.setError("Password must be at least 5 characters");
-            return;
+
         }
 
         if (!passwordString.equals(confirmPasswordString)) {
