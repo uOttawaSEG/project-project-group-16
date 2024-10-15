@@ -16,9 +16,12 @@ import androidx.core.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import java.util.ArrayList;
+
 
 public class SignInOrganizer extends AppCompatActivity {
 
+    private ArrayList<String> userData;
     private Button submitOrganizerButton;
     private EditText firstName, lastName, emailAddress, phoneNumber, address, password, confirmPassword, organizationName;
 
@@ -47,72 +50,91 @@ public class SignInOrganizer extends AppCompatActivity {
 
         submitOrganizerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String firstNameString = firstName.getText().toString().trim();
-                String lastNameString = lastName.getText().toString().trim();
-                String emailAddressString = emailAddress.getText().toString().trim();
-                String phoneNumberString = phoneNumber.getText().toString().trim();
-                String addressString = address.getText().toString().trim();
-                String passwordString = password.getText().toString().trim();
-                String confirmPasswordString = confirmPassword.getText().toString().trim();
-                String organizationNameString = organizationName.getText().toString().trim();
-
-                // Field Validation
-                if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
-                    firstName.setError("Enter a proper First Name");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(lastNameString) || lastNameString.length() < 2 || !lastNameString.matches("[a-zA-Z]+")) {
-                    lastName.setError("Enter a proper Last Name");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(emailAddressString) || !Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
-                    emailAddress.setError("Enter a valid email");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(phoneNumberString)) {
-                    phoneNumber.setError("Phone Number is required");
-                    return;
-                }
-
-                if (!Patterns.PHONE.matcher(phoneNumberString).matches()) {
-                    phoneNumber.setError("Enter a valid phone number");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(addressString)) {
-                    address.setError("Address is required");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(passwordString)) {
-                    password.setError("Password is required");
-                    return;
-                }
-
-                if (passwordString.length() < 5) {
-                    password.setError("Password must be at least 5 characters");
-                    return;
-                }
-
-                if (!passwordString.equals(confirmPasswordString)) {
-                    confirmPassword.setError("Passwords do not match");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(organizationNameString)) {
-                    organizationName.setError("Organization Name is required");
-                    return;
-                }
-
-                // Proceed after successful validation
-                Toast.makeText(SignInOrganizer.this, "Organizer Signed In", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignInOrganizer.this, WelcomePage.class);
-                startActivity(intent);
+                registerOrganizer();
             }
         });
+    }
 
+    public void registerOrganizer(){
+
+        //Receive input values
+
+        String firstNameString = firstName.getText().toString().trim();
+        String lastNameString = lastName.getText().toString().trim();
+        String emailAddressString = emailAddress.getText().toString().trim();
+        String phoneNumberString = phoneNumber.getText().toString().trim();String addressString = address.getText().toString().trim();
+        String passwordString = password.getText().toString().trim();
+        String confirmPasswordString = confirmPassword.getText().toString().trim();
+        String organizationNameString = organizationName.getText().toString().trim();
+
+        // Field Validation
+        if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
+            firstName.setError("Enter a proper First Name");
+            return;
+        }
+
+        if (TextUtils.isEmpty(lastNameString) || lastNameString.length() < 2 || !lastNameString.matches("[a-zA-Z]+")) {
+            lastName.setError("Enter a proper Last Name");
+            return;
+        }
+
+        if (TextUtils.isEmpty(emailAddressString) || !Patterns.EMAIL_ADDRESS.matcher(emailAddressString).matches()) {
+            emailAddress.setError("Enter a valid email");
+            return;
+        }
+
+        if (TextUtils.isEmpty(phoneNumberString)) {
+            phoneNumber.setError("Phone Number is required");
+            return;
+        }
+
+        if (!Patterns.PHONE.matcher(phoneNumberString).matches()) {
+            phoneNumber.setError("Enter a valid phone number");
+            return;
+        }
+
+        if (TextUtils.isEmpty(addressString)) {
+            address.setError("Address is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(passwordString)) {
+            password.setError("Password is required");
+            return;
+        }
+
+        if (passwordString.length() < 5) {
+            password.setError("Password must be at least 5 characters");
+            return;
+        }
+
+        if (!passwordString.equals(confirmPasswordString)) {
+            confirmPassword.setError("Passwords do not match");
+            return;
+        }
+
+        if (TextUtils.isEmpty(organizationNameString)) {
+            organizationName.setError("Organization Name is required");
+            return;
+        }
+
+
+        // If all validations pass, proceed to register
+        userData = new ArrayList<>(8);
+        userData.add(firstNameString);
+        userData.add(lastNameString);
+        userData.add(emailAddressString);
+        userData.add(phoneNumberString);
+        userData.add(addressString);
+        userData.add(passwordString);
+        userData.add(organizationNameString);
+
+        // Proceed after successful validation
+        Toast.makeText(SignInOrganizer.this, "You are signed in as an Organizer", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(SignInOrganizer.this, LogInPage.class);
+        intent.putExtra("UserType","Organizer");
+        intent.putExtra("Email",emailAddressString);
+        intent.putExtra("passWord",passwordString);
+        startActivity(intent);
     }
 }

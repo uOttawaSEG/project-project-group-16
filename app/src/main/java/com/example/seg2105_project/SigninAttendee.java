@@ -127,7 +127,7 @@ public class SigninAttendee extends AppCompatActivity {
         userData.add(addressString);
         userData.add(passwordString);
 
-        Toast.makeText(SigninAttendee.this,"You are signed in ",Toast.LENGTH_LONG).show();
+        Toast.makeText(SigninAttendee.this,"You are signed in as an Attendee",Toast.LENGTH_LONG).show();
         Intent intent =new Intent(SigninAttendee.this,LogInPage.class);
         intent.putExtra("UserType","Attendee");
         intent.putExtra("Email",emailAddressString);
