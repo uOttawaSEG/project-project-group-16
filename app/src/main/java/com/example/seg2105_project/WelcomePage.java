@@ -14,10 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
+
 public class WelcomePage extends AppCompatActivity {
     private TextView welcomeMessage;
     private Button logOffButton;
-    private ArrayList<String> userData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,10 @@ public class WelcomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Find views
         welcomeMessage = findViewById(R.id.WelcomeMessage);
         logOffButton = findViewById(R.id.logOffButton);
+
+        // Retrieve the userData passed from another activity
 
         // Retrieve user data
        // userData = getIntent().getStringArrayListExtra("userData");
@@ -55,6 +56,7 @@ public class WelcomePage extends AppCompatActivity {
         });
     }
 }
+
 
 
 
