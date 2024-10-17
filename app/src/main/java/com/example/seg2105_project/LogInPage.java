@@ -18,6 +18,7 @@ import android.util.Patterns;
 
 public class LogInPage extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper;
     private Button submitLogInButton;
 
     private EditText emailAddress;
@@ -43,6 +44,8 @@ public class LogInPage extends AppCompatActivity {
         emailAddress = findViewById(R.id.emailAddressField);
         password = findViewById(R.id.logInPassword);
         submitLogInButton = findViewById(R.id.submitLogInButton);
+
+        dbHelper = new DatabaseHelper(this);
 
         submitLogInButton.setOnClickListener(new View.OnClickListener() {
 
@@ -71,8 +74,7 @@ public class LogInPage extends AppCompatActivity {
                     return;  // Stops execution if password length is less than 5
                 }
 
-                loggedIn = false;  // Variable to check if the user is connected
-
+                // loggedIn = false;  // Variable to check if the user is connected
                 // Loop until the user logs in
                 while (!loggedIn) {
                     //Check admin crredentials
@@ -82,25 +84,23 @@ public class LogInPage extends AppCompatActivity {
                         loggedIn = true;
                         startActivity(intent);
                     } else {
-                        //Get user credentials from intent
-                        Intent intent = new Intent(LogInPage.this, WelcomePage.class);
-                        String userType = getIntent().getStringExtra("UserType");
-                        intent.putExtra("UserType", userType);
-                        String emailUser = getIntent().getStringExtra("Email");
-                        String passWordUser = getIntent().getStringExtra("passWord");
-
-                        //Check regular user credentials
-                        if (emailAddressString.equals(emailUser) && passWordUser.equals(passWordUser)) {
-                            Toast.makeText(LogInPage.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
-                            loggedIn = true;
+                        String userRole = dbHelper.checkUser(emailAddressString, passwordString);
+                        if (userRole !=null) {
+                            // User credentials are valid, proceed to welcome page
+                            Intent intent = new Intent(LogInPage.this, WelcomePage.class);
+                            intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
                             startActivity(intent);
                         } else {
                             Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
-                            break;  // Gets out of the loop if the credentials are incorrect
                         }
                     }
                 }
+
+
+
+
             }
+
         });
     }
 }

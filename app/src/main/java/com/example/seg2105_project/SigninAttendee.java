@@ -19,7 +19,10 @@ import android.util.Patterns;
 
 public class SigninAttendee extends AppCompatActivity {
 
-    private ArrayList<String> userData;
+    private DatabaseHelper dbHelper;
+
+    //private ArrayList<String> userData;
+
     private Button submitAttendeeButton;
     private EditText firstName;
     private EditText lastName;
@@ -50,6 +53,8 @@ public class SigninAttendee extends AppCompatActivity {
         address = findViewById(R.id.addressFieldAttendee);
         password = findViewById(R.id.createPasswordAttendee);
         confirmPassword = findViewById(R.id.confirmPasswordAttendee);
+
+        dbHelper=new DatabaseHelper(this);
 
         submitAttendeeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -128,7 +133,7 @@ public class SigninAttendee extends AppCompatActivity {
         }
 
         // If all validations pass, proceed to register
-        userData = new ArrayList<>(7);
+         /* userData = new ArrayList<>(7);
         userData.add(firstNameString);
         userData.add(lastNameString);
         userData.add(emailAddressString);
@@ -136,12 +141,39 @@ public class SigninAttendee extends AppCompatActivity {
         userData.add(addressString);
         userData.add(passwordString);
 
-        Toast.makeText(SigninAttendee.this,"You are signed in as an Attendee",Toast.LENGTH_LONG).show();
+          */
+
+        boolean insertSuccess = dbHelper.addUser(
+                firstNameString,
+                lastNameString,
+                emailAddressString,
+                passwordString,
+                phoneNumberString,
+                addressString,
+                null,
+                "Attendee"
+        );
+
+        /* Toast.makeText(SigninAttendee.this,"You are signed in as an Attendee",Toast.LENGTH_LONG).show();
         Intent intent =new Intent(SigninAttendee.this,LogInPage.class);
         intent.putExtra("UserType","Attendee");
         intent.putExtra("Email",emailAddressString);
         intent.putExtra("passWord",passwordString);
         startActivity(intent);
+
+         */
+
+        if (insertSuccess) {
+            Toast.makeText(SigninAttendee.this, "Registration Successful", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SigninAttendee.this, LogInPage.class);
+            intent.putExtra("UserType", "Attendee");
+            intent.putExtra("Email", emailAddressString);
+            intent.putExtra("passWord", passwordString);
+            startActivity(intent);
+        } else {
+            // Show error message if there was an issue with registration
+            Toast.makeText(SigninAttendee.this, "Registration Failed. Try Again.", Toast.LENGTH_LONG).show();
+        }
 
     }
 }

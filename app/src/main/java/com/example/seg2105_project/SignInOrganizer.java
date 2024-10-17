@@ -21,7 +21,8 @@ import java.util.ArrayList;
 
 public class SignInOrganizer extends AppCompatActivity {
 
-    private ArrayList<String> userData;
+    private DatabaseHelper dbHelper;
+    // private ArrayList<String> userData;
     private Button submitOrganizerButton;
     private EditText firstName, lastName, emailAddress, phoneNumber, address, password, confirmPassword, organizationName;
 
@@ -48,8 +49,12 @@ public class SignInOrganizer extends AppCompatActivity {
         organizationName = findViewById(R.id.organizationName);
         submitOrganizerButton = findViewById(R.id.submitOrganizerButton);
 
+
+        dbHelper=new DatabaseHelper(this);
+
         submitOrganizerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
                 registerOrganizer();
             }
         });
@@ -135,7 +140,7 @@ public class SignInOrganizer extends AppCompatActivity {
 
 
         // If all validations pass, proceed to register
-        userData = new ArrayList<>(8);
+        /* userData = new ArrayList<>(8);
         userData.add(firstNameString);
         userData.add(lastNameString);
         userData.add(emailAddressString);
@@ -143,13 +148,40 @@ public class SignInOrganizer extends AppCompatActivity {
         userData.add(addressString);
         userData.add(passwordString);
         userData.add(organizationNameString);
+        */
+
+        boolean insertSuccess= dbHelper.addUser(
+                firstNameString,
+                lastNameString,
+                emailAddressString,
+                passwordString,
+                phoneNumberString,
+                addressString,
+                organizationNameString,
+                "Organizer"
+        );
 
         // Proceed after successful validation
+        if (insertSuccess) {
+            Toast.makeText(SignInOrganizer.this, "Registration Successful", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SignInOrganizer.this, LogInPage.class);
+            intent.putExtra("UserType", "Organizer");
+            intent.putExtra("Email", emailAddressString);
+            intent.putExtra("passWord", passwordString);
+            startActivity(intent);
+        } else {
+            // Show error message if there was an issue with registration
+            Toast.makeText(SignInOrganizer.this, "Registration Failed. Try Again.", Toast.LENGTH_LONG).show();
+        }
+
+        /*
         Toast.makeText(SignInOrganizer.this, "You are signed in as an Organizer", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SignInOrganizer.this, LogInPage.class);
         intent.putExtra("UserType","Organizer");
         intent.putExtra("Email",emailAddressString);
         intent.putExtra("passWord",passwordString);
         startActivity(intent);
+        */
+
     }
 }
