@@ -117,5 +117,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
         }
 
+        //update the registration_status of the user  based on the email
+        public boolean approveRegistrationRequest(String email){
+        //open the dataBase to modify it
+        SQLiteDatabase db=this.getWritableDatabase();
+        //create an abject to store the update
+         ContentValues values=new ContentValues();
+         //set the new value
+         values.put("registration_status","approved");
+         //Update the user Table where the email matches
+            int rowAffected= db.update("Users",values,"email=?",new String[]{email});
+            //return true if the row was updated and false if not
+            return(rowAffected>0);
+
+
+        }
+
+        //update the registration_status of the user based on the email
+         public boolean rejectRegistrationRequest(String email){
+
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put("registration_status","rejected");
+        int rowAffected= db.update("Users",values,"email=?",new String[]{email});
+        return(rowAffected>0);
+         }
+
+
+
     }
 

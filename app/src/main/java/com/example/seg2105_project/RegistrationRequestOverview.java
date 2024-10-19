@@ -3,8 +3,10 @@ package com.example.seg2105_project;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,10 @@ public class RegistrationRequestOverview extends AppCompatActivity {
 
     private TextView registrationRequestsList;
     private Button returnToWelcomePageButton;
+    private Button approveButton;
+    private Button rejectButton;
     private DatabaseHelper dbHelper;
+    private String currentEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,10 @@ public class RegistrationRequestOverview extends AppCompatActivity {
 
         registrationRequestsList = findViewById(R.id.registrationRequestsList);
         returnToWelcomePageButton = findViewById(R.id.returnToWelcomePageButton);
+        approveButton=findViewById(R.id.approvebutton);
+        rejectButton=findViewById(R.id.rejectbutton);
+
+
 
         // Set a loading message while requests are being loaded
         registrationRequestsList.setText("Loading registration requests...");
@@ -43,6 +52,31 @@ public class RegistrationRequestOverview extends AppCompatActivity {
         // Load and display pending registration requests
         loadPendingRequests();
 
+        approveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dbHelper.approveRegistrationRequest(currentEmail)){
+                    Toast.makeText(RegistrationRequestOverview.this,"Request approved",Toast.LENGTH_SHORT).show();
+                    loadPendingRequests();
+                }
+                else{
+                    Toast.makeText(RegistrationRequestOverview.this,"Failed to approve",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dbHelper.rejectRegistrationRequest(currentEmail)){
+                    Toast.makeText(RegistrationRequestOverview.this,"Request rejected",Toast.LENGTH_SHORT).show();
+                    loadPendingRequests();
+                }
+                else{
+                    Toast.makeText(RegistrationRequestOverview.this,"Failed to reject",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         String userTypeString=getIntent().getStringExtra("UserType");
 
@@ -70,6 +104,8 @@ public class RegistrationRequestOverview extends AppCompatActivity {
                 requests.append("Name: ").append(fullName).append("\n");
                 requests.append("Email: ").append(email).append("\n");
                 requests.append("Role: ").append(role).append("\n\n");
+                approveButton.setEnabled(true);
+                rejectButton.setEnabled(true);
             } while (cursor.moveToNext());
         } else {
             // No pending requests

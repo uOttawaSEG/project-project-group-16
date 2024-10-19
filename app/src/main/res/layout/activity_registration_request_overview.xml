@@ -35,6 +35,7 @@
         android:id="@+id/returnToWelcomePageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        and
         android:layout_marginBottom="224dp"
         android:backgroundTint="@color/coloruOttawa"
         android:text="Return to Main Page"
@@ -42,6 +43,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/approvebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="approve"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="278dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/registrationRequestsList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false" />
+
+    <Button
+        android:id="@+id/rejectbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reject"
+        tools:layout_editor_absoluteX="193dp"
+        tools:layout_editor_absoluteY="278dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/approveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
