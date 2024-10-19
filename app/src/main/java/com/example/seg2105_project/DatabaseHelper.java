@@ -3,9 +3,19 @@ package com.example.seg2105_project;// Step 1: Import necessary classes
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -89,4 +99,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return null; // Return null if no user found
     }
-}
+
+        // Method to fetch all users with 'pending' registration status
+        public Cursor getPendingRegistrationRequests() {
+            // Get a readable version of the database
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            // Perform the query to fetch users where registration_status = 'pending'
+            return db.query(
+                    "Users",                 // Table name
+                    null,                         // Columns to return (null means all columns)
+                    "registration_status=?",     // WHERE clause to filter by pending status
+                    new String[]{"pending"},    // Argument for the WHERE clause (pending status)
+                    null,                      // GROUP BY clause (not needed)
+                    null,                     // HAVING clause (not needed)
+                    null                     // ORDER BY clause (null means no specific order)
+            );
+        }
+
+    }
+
