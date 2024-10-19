@@ -25,6 +25,7 @@ public class SignInOrganizer extends AppCompatActivity {
     // private ArrayList<String> userData;
     private Button submitOrganizerButton;
     private EditText firstName, lastName, emailAddress, phoneNumber, address, password, confirmPassword, organizationName;
+    private String registrationStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class SignInOrganizer extends AppCompatActivity {
         String passwordString = password.getText().toString().trim();
         String confirmPasswordString = confirmPassword.getText().toString().trim();
         String organizationNameString = organizationName.getText().toString().trim();
+        registrationStatus = "pending";
 
         // Field Validation
         if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
@@ -157,6 +159,7 @@ public class SignInOrganizer extends AppCompatActivity {
                 passwordString,
                 phoneNumberString,
                 addressString,
+                registrationStatus,
                 organizationNameString,
                 "Organizer"
         );
@@ -168,6 +171,7 @@ public class SignInOrganizer extends AppCompatActivity {
             intent.putExtra("UserType", "Organizer");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
+            intent.putExtra("registrationStatus", registrationStatus);
             startActivity(intent);
         } else {
             // Show error message if there was an issue with registration

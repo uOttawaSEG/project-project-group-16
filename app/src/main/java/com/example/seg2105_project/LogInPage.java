@@ -47,6 +47,8 @@ public class LogInPage extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
+        String registrationStatus = getIntent().getStringExtra("registrationStatus");
+
         submitLogInButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -74,7 +76,7 @@ public class LogInPage extends AppCompatActivity {
                     return;  // Stops execution if password length is less than 5
                 }
 
-                // loggedIn = false;  // Variable to check if the user is connected
+                loggedIn = false;  // Variable to check if the user is connected
                 // Loop until the user logs in
                 while (!loggedIn) {
                     //Check admin crredentials
@@ -87,9 +89,17 @@ public class LogInPage extends AppCompatActivity {
                         String userRole = dbHelper.checkUser(emailAddressString, passwordString);
                         if (userRole !=null) {
                             // User credentials are valid, proceed to welcome page
+                            if (registrationStatus.equals("pending")) {
+                                Toast.makeText(LogInPage.this, "Your registration request has not been processed yet, approval is pending.", Toast.LENGTH_LONG).show();
+                            } else if (registrationStatus.equals("rejected")) {
+                                Toast.makeText(LogInPage.this, "Your registration request has been rejected. Please contact the administrator: (123)456-7890", Toast.LENGTH_LONG).show();
+                            } else if (registrationStatus.equals("approved")){
                             Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                             intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
                             startActivity(intent);
+                            } else {
+                                Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
                         }

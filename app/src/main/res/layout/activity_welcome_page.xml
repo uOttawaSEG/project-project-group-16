@@ -7,15 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".WelcomePage">
 
+
     <Button
         android:id="@+id/logOffButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="412dp"
+        android:layout_marginBottom="72dp"
         android:backgroundTint="@color/coloruOttawa"
         android:text="Log Off"
+        app:layout_constraintBottom_toTopOf="@+id/viewRegistrationRequestsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/viewRegistrationRequestsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/coloruOttawa"
+        android:text="Registration Requests"
+        app:layout_constraintBottom_toTopOf="@+id/viewRejectedRegistrationRequestsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/viewRejectedRegistrationRequestsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="276dp"
+        android:backgroundTint="@color/coloruOttawa"
+        android:text="Rejected Registration Requests"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

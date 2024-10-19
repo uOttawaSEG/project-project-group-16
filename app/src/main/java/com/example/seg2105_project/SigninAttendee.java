@@ -31,6 +31,7 @@ public class SigninAttendee extends AppCompatActivity {
     private EditText address;
     private EditText password;
     private EditText confirmPassword;
+    private String registrationStatus;
 
     @Override
    
@@ -72,6 +73,7 @@ public class SigninAttendee extends AppCompatActivity {
         String addressString = address.getText().toString().trim();
         String passwordString = password.getText().toString().trim();
         String confirmPasswordString = confirmPassword.getText().toString().trim();
+        registrationStatus = "pending";
 
         //Field validation
         if (TextUtils.isEmpty(firstNameString) || firstNameString.length() < 2 || !firstNameString.matches("[a-zA-Z]+")) {
@@ -150,6 +152,7 @@ public class SigninAttendee extends AppCompatActivity {
                 passwordString,
                 phoneNumberString,
                 addressString,
+                registrationStatus,
                 null,
                 "Attendee"
         );
@@ -169,6 +172,7 @@ public class SigninAttendee extends AppCompatActivity {
             intent.putExtra("UserType", "Attendee");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
+            intent.putExtra("registrationStatus", registrationStatus);
             startActivity(intent);
         } else {
             // Show error message if there was an issue with registration

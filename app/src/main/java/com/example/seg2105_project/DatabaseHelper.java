@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "password TEXT NOT NULL, "
                 + "phone_number TEXT NOT NULL, "
                 + "address TEXT NOT NULL, "
+                + "registration_status TEXT, " // pending approved rejected
                 + "organization_name TEXT, "
                 + "user_role TEXT CHECK(user_role IN ('Attendee', 'Organizer', 'Administrator')) NOT NULL" // user_role: defines if the user is an Attendee, Organizer, or Admin.
                 + ");";
@@ -50,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public boolean addUser(String firstName, String lastName, String email, String password,
-                           String phone, String address, String organizationName, String userRole) {
+                           String phone, String address, String registrationStatus, String organizationName, String userRole) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -61,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("password", password);
         values.put("phone_number", phone);
         values.put("address", address);
+        values.put("registration_status", registrationStatus); // pending approved rejected
         values.put("organization_name", organizationName); // null for Attendees
         values.put("user_role", userRole);
 

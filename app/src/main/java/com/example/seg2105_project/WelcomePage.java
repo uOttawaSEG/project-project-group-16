@@ -2,6 +2,7 @@ package com.example.seg2105_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 public class WelcomePage extends AppCompatActivity {
     private TextView welcomeMessage;
     private Button logOffButton;
+    private Button viewRegistrationRequestsButton;
+    private Button viewRejectedRegistrationRequestsButton;
 
 
     @Override
@@ -34,6 +37,8 @@ public class WelcomePage extends AppCompatActivity {
         });
         welcomeMessage = findViewById(R.id.WelcomeMessage);
         logOffButton = findViewById(R.id.logOffButton);
+        viewRegistrationRequestsButton = findViewById(R.id.viewRegistrationRequestsButton);
+        viewRejectedRegistrationRequestsButton = findViewById(R.id.viewRejectedRegistrationRequestsButton);
 
         // Retrieve the userData passed from another activity
 
@@ -45,7 +50,14 @@ public class WelcomePage extends AppCompatActivity {
         if (userTypeString!=null) {
 
             welcomeMessage.setText("Welcome " + userTypeString + "!");
+
+            if (userTypeString.equals("Administrator")) {
+                viewRegistrationRequestsButton.setVisibility(View.VISIBLE);
+                viewRejectedRegistrationRequestsButton.setVisibility(View.VISIBLE);
+            }
         }
+
+
 
         // Handle log off button click
         logOffButton.setOnClickListener(view -> {
@@ -54,6 +66,23 @@ public class WelcomePage extends AppCompatActivity {
             startActivity(intent);
             finish();  // Close the current activity
         });
+
+
+        // Handle viewRegistrationRequestsButton click
+        viewRegistrationRequestsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, RegistrationRequestOverview.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
+
+        // Handle viewRejectedRegistrationRequestsButton click
+        viewRejectedRegistrationRequestsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, RejectedRegistrationRequestOverview.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
     }
 }
 
