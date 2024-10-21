@@ -20,7 +20,7 @@ public class RejectedRegistrationRequestOverview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_registration_request_overview);
+        setContentView(R.layout.activity_rejected_registration_request_overview);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -31,6 +31,9 @@ public class RejectedRegistrationRequestOverview extends AppCompatActivity {
         returnToWelcomePageButton = findViewById(R.id.returnToWelcomePageButton);
 
         String userTypeString=getIntent().getStringExtra("UserType");
+
+        // Set a loading message while requests are being loaded
+        rejectedRegistrationRequestsList.setText("Loading rejected registration requests...");
 
         returnToWelcomePageButton.setOnClickListener(view -> {
             Intent intent = new Intent(RejectedRegistrationRequestOverview.this, WelcomePage.class);

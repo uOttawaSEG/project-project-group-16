@@ -95,10 +95,10 @@ public class RegistrationRequestOverview extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
-                String fullName = cursor.getString(cursor.getColumnIndex("first_name")) + " " +
-                        cursor.getString(cursor.getColumnIndex("last_name"));
-                String email = cursor.getString(cursor.getColumnIndex("email"));
-                String role = cursor.getString(cursor.getColumnIndex("user_role"));
+                String fullName = cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
+                        cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String role = cursor.getString(cursor.getColumnIndexOrThrow("user_role"));
 
                 // Append user information to the StringBuilder
                 requests.append("Name: ").append(fullName).append("\n");

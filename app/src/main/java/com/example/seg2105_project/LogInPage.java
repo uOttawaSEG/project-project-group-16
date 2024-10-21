@@ -83,6 +83,7 @@ public class LogInPage extends AppCompatActivity {
                     if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
                         Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                         intent.putExtra("UserType", "Administrator");
+                        intent.putExtra("registration_status", "approved");
                         loggedIn = true;
                         startActivity(intent);
                     } else {

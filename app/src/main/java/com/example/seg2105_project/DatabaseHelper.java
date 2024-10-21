@@ -20,7 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
 
     public DatabaseHelper(Context context) {
@@ -52,11 +52,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // To remove old data
-        db.execSQL("DROP TABLE IF EXISTS Users");
+        // To upgrade the database to version 2 (added registration_status)
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE Users ADD COLUMN registration_status TEXT");
+        }
 
-        // To recreate the table with any updates
-        onCreate(db);
     }
 
 
