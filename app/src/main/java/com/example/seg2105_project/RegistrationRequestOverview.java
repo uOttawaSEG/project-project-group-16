@@ -71,6 +71,7 @@ public class RegistrationRequestOverview extends AppCompatActivity {
                 if(dbHelper.rejectRegistrationRequest(currentEmail)){
                     Toast.makeText(RegistrationRequestOverview.this,"Request rejected",Toast.LENGTH_SHORT).show();
                     loadPendingRequests();
+
                 }
                 else{
                     Toast.makeText(RegistrationRequestOverview.this,"Failed to reject",Toast.LENGTH_SHORT).show();
@@ -100,16 +101,26 @@ public class RegistrationRequestOverview extends AppCompatActivity {
                 String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 String role = cursor.getString(cursor.getColumnIndexOrThrow("user_role"));
 
+                // user we want to approve/reject
+                currentEmail= email;
+
                 // Append user information to the StringBuilder
                 requests.append("Name: ").append(fullName).append("\n");
                 requests.append("Email: ").append(email).append("\n");
                 requests.append("Role: ").append(role).append("\n\n");
-                approveButton.setEnabled(true);
-                rejectButton.setEnabled(true);
+
+
             } while (cursor.moveToNext());
+
+            //activate buttons if a request is pending
+            approveButton.setEnabled(true);
+            rejectButton.setEnabled(true);
+
         } else {
             // No pending requests
             requests.append(" There are no pending registration requests.");
+            approveButton.setEnabled(false);
+            rejectButton.setEnabled(false);
         }
 
         // Display the requests in the TextView

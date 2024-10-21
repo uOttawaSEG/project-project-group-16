@@ -89,15 +89,17 @@ public class LogInPage extends AppCompatActivity {
                     } else {
                         String userRole = dbHelper.checkUser(emailAddressString, passwordString);
                         if (userRole !=null) {
+
+                            String registrationStatus=dbHelper.getRegistrationStatus(emailAddressString);
                             // User credentials are valid, proceed to welcome page
                             if (registrationStatus.equals("pending")) {
                                 Toast.makeText(LogInPage.this, "Your registration request has not been processed yet, approval is pending.", Toast.LENGTH_LONG).show();
                             } else if (registrationStatus.equals("rejected")) {
                                 Toast.makeText(LogInPage.this, "Your registration request has been rejected. Please contact the administrator: (123)456-7890", Toast.LENGTH_LONG).show();
                             } else if (registrationStatus.equals("approved")){
-                            Intent intent = new Intent(LogInPage.this, WelcomePage.class);
-                            intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
-                            startActivity(intent);
+                                Intent intent = new Intent(LogInPage.this, WelcomePage.class);
+                                intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
                             }

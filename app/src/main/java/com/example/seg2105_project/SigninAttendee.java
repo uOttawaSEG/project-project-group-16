@@ -34,7 +34,7 @@ public class SigninAttendee extends AppCompatActivity {
     private String registrationStatus;
 
     @Override
-   
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -59,7 +59,7 @@ public class SigninAttendee extends AppCompatActivity {
 
         submitAttendeeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-               registerAttendee();
+                registerAttendee();
             }
         });
     }
@@ -152,7 +152,7 @@ public class SigninAttendee extends AppCompatActivity {
                 passwordString,
                 phoneNumberString,
                 addressString,
-                registrationStatus,
+                "pending",
                 null,
                 "Attendee"
         );
@@ -176,6 +176,8 @@ public class SigninAttendee extends AppCompatActivity {
             startActivity(intent);
         } else {
             // Show error message if there was an issue with registration
+
+
             Toast.makeText(SigninAttendee.this, "Registration Failed. Try Again.", Toast.LENGTH_LONG).show();
         }
 

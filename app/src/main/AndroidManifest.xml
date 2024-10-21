@@ -19,6 +19,15 @@
             android:name=".RegistrationRequestOverview"
             android:exported="false" />
         <activity
+            android:name=".RequestDetailPage"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrationRequest"
+            android:exported="false" />
+        <activity
+            android:name=".AdminRequestsPage"
+            android:exported="false" />
+        <activity
             android:name=".DatabaseHelper"
             android:exported="false" />
         <activity
