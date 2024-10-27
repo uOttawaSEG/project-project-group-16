@@ -133,6 +133,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    // Method to simulate sending a notification
+    private void sendNotifications(String email, String message){
+        //Simulate sending an email or SMS notification
+        Log.d("Notification", "Notification sent to " + email + ": " + message);
+    }
+
     //update the registration_status of the user  based on the email
     public boolean approveRegistrationRequest(String email){
         //open the dataBase to modify it
@@ -144,9 +150,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Update the user Table where the email matches
         int rowAffected= db.update("Users",values,"email=?",new String[]{email});
         //return true if the row was updated and false if not
-        return(rowAffected>0);
-
-
+        if (rowAffected>0){
+            sendNotifications(email, "Your registration has been approved.");
+            return true;
+        }
+        return false;
     }
 
     //update the registration_status of the user based on the email
@@ -156,7 +164,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values=new ContentValues();
         values.put("registration_status","rejected");
         int rowAffected= db.update("Users",values,"email=?",new String[]{email});
-        return(rowAffected>0);
+        if (rowAffected>0){
+            sendNotifications(email, "Your registration has been rejected.");
+            return true;
+        }
+        return false;
     }
 
 
@@ -168,13 +180,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return status;
         }
-        return null; // Si l'utilisateur n'existe pas ou s'il n'a pas de statut
+        return null; // If the user doesn't exist or has no status
     }
-
-
-
-
-
-
 }
-
