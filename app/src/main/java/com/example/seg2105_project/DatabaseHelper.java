@@ -120,6 +120,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    public Cursor getRejectedRegistrationRequests() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(
+                "Users",
+                null,
+                "registration_status = ?",
+                new String[]{"rejected"},
+                null,
+                null,
+                null
+        );
+    }
+
     //update the registration_status of the user  based on the email
     public boolean approveRegistrationRequest(String email){
         //open the dataBase to modify it

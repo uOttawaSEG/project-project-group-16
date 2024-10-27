@@ -79,7 +79,7 @@ public class LogInPage extends AppCompatActivity {
                 loggedIn = false;  // Variable to check if the user is connected
                 // Loop until the user logs in
                 while (!loggedIn) {
-                    //Check admin crredentials
+                    //Check admin credentials
                     if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
                         Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                         intent.putExtra("UserType", "Administrator");
@@ -94,8 +94,10 @@ public class LogInPage extends AppCompatActivity {
                             // User credentials are valid, proceed to welcome page
                             if (registrationStatus.equals("pending")) {
                                 Toast.makeText(LogInPage.this, "Your registration request has not been processed yet, approval is pending.", Toast.LENGTH_LONG).show();
+                                break;
                             } else if (registrationStatus.equals("rejected")) {
                                 Toast.makeText(LogInPage.this, "Your registration request has been rejected. Please contact the administrator: (123)456-7890", Toast.LENGTH_LONG).show();
+                                break;
                             } else if (registrationStatus.equals("approved")){
                                 Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                                 intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
