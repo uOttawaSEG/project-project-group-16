@@ -88,6 +88,7 @@ public class LogInPage extends AppCompatActivity {
                         intent.putExtra("registration_status", "approved");
                         loggedIn = true;
                         startActivity(intent);
+                        finish();
                     } else {
                         userRole = dbHelper.checkUser(emailAddressString, passwordString);
                         if (userRole !=null) {
@@ -102,6 +103,7 @@ public class LogInPage extends AppCompatActivity {
                                 Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                                 intent.putExtra("registration_status", "approved");
                                 intent.putExtra("UserType", userRole); // Set appropriate user type based on your logic
+                                loggedIn = true;
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
