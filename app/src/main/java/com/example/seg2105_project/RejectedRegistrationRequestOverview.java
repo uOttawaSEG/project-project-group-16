@@ -82,6 +82,9 @@ public class RejectedRegistrationRequestOverview extends AppCompatActivity {
                         cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
                 String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 String role = cursor.getString(cursor.getColumnIndexOrThrow("user_role"));
+                String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+                String organization_name = cursor.getString(cursor.getColumnIndexOrThrow("organization_name"));
 
                 // user we want to approve/reject
                 currentEmail= email;
@@ -89,7 +92,13 @@ public class RejectedRegistrationRequestOverview extends AppCompatActivity {
                 // Append user information to the StringBuilder
                 requests.append("Name: ").append(fullName).append("\n");
                 requests.append("Email: ").append(email).append("\n");
-                requests.append("Role: ").append(role).append("\n\n");
+                requests.append("Role: ").append(role).append("\n");
+                requests.append("Phone number: ").append(phoneNumber).append("\n");
+                requests.append("Address: ").append(address).append("\n");
+                if (organization_name != null)  {   // if organizer
+                    requests.append("Organization name: ").append(organization_name).append("\n");
+                }
+                requests.append("\n");
 
 
             } while (cursor.moveToNext());
