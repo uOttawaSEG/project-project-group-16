@@ -99,7 +99,7 @@ public class RejectedRegistrationRequestOverview extends AppCompatActivity {
 
         } else {
             // No pending requests
-            requests.append(" There are no pending registration requests.");
+            requests.append(" There are no rejected registration requests.");
             approveButton.setEnabled(false);
         }
 
