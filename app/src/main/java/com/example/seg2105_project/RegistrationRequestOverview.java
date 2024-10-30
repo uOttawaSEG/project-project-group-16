@@ -72,6 +72,7 @@ public class RegistrationRequestOverview extends AppCompatActivity {
                     Toast.makeText(RegistrationRequestOverview.this,"Request rejected",Toast.LENGTH_SHORT).show();
                     loadPendingRequests();
 
+
                 }
                 else{
                     Toast.makeText(RegistrationRequestOverview.this,"Failed to reject",Toast.LENGTH_SHORT).show();
