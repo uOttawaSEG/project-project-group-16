@@ -52,9 +52,22 @@
         android:layout_height="51dp"
         android:text="Welcome to the University of Ottawa!"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/logOffButton"
+        app:layout_constraintBottom_toTopOf="@+id/createEventButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.945" />
+
+    <Button
+        android:id="@+id/createEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create an event"
+        android:backgroundTint="@color/coloruOttawa"
+        app:layout_constraintBottom_toTopOf="@+id/logOffButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="131dp"
+        tools:layout_editor_absoluteY="175dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.example.seg2105_project;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +24,12 @@ public class WelcomePage extends AppCompatActivity {
     private Button logOffButton;
     private Button viewRegistrationRequestsButton;
     private Button viewRejectedRegistrationRequestsButton;
+    private Button viewcreateEventButton;
+    private DatabaseHelper db;
 
     private String userTypeString;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +46,7 @@ public class WelcomePage extends AppCompatActivity {
         logOffButton = findViewById(R.id.logOffButton);
         viewRegistrationRequestsButton = findViewById(R.id.viewRegistrationRequestsButton);
         viewRejectedRegistrationRequestsButton = findViewById(R.id.viewRejectedRegistrationRequestsButton);
+        viewcreateEventButton= findViewById(R.id.createEventButton);
 
         // Retrieve the userData passed from another activity
 
@@ -57,9 +64,19 @@ public class WelcomePage extends AppCompatActivity {
                 viewRegistrationRequestsButton.setEnabled(true);
                 viewRejectedRegistrationRequestsButton.setVisibility(View.VISIBLE);
                 viewRejectedRegistrationRequestsButton.setEnabled(true);
+                viewcreateEventButton.setVisibility(View.GONE);
+            }
+
+            if(userTypeString.equals("Organizer")){
+
+                viewcreateEventButton.setVisibility(View.VISIBLE);
+            }
+
+            if(userTypeString.equals("Attendee")){
+                viewcreateEventButton.setVisibility(View.GONE);
+
             }
         }
-
 
 
         // Handle log off button click
@@ -85,6 +102,15 @@ public class WelcomePage extends AppCompatActivity {
             intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         });
+
+
+        //handle createEvents button
+        viewcreateEventButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, CreateEvents.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
 
     }
 }

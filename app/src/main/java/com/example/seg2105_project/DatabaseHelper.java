@@ -3,20 +3,9 @@ package com.example.seg2105_project;// Step 1: Import necessary classes
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -45,9 +34,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "organization_name TEXT, "
                 + "user_role TEXT CHECK(user_role IN ('Attendee', 'Organizer', 'Administrator')) NOT NULL" // user_role: defines if the user is an Attendee, Organizer, or Admin.
                 + ");";
+        
+
 
 
         db.execSQL(createUsersTable);
+
+        //This table will store the information about events
+        String createEventsTable="CREATE TABLE Events ("
+                + "event_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "title TEXT NOT NULL, "
+                +  "description TEXT, "
+                + "date TEXT NOT NULL"
+                + "start_time TEXT NOT NULL ,"
+                + "end_time TEXT NOT NULL, "
+                + "event_address TEXT NOT NULL ,"
+                +"organizer_id INTEGER, "
+                + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id)"
+                + ");";
     }
 
 
@@ -83,6 +87,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Return true if the data was successfully inserted, false otherwise
         return result != -1;
+    }
+
+
+    public boolean addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id){
+
+
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+        values.put("title", title);
+        values.put("description",description);
+        values.put("date", date);
+        values.put("start_time",start_time);
+        values.put("end_time",end_time);
+        values.put("event_address", event_address);
+        values.put("organizer_id",organizer_id);
+
+        long result=db.insert("Events",null,values);
+
+        //return 1 if the insertion has been done
+        return result !=1;
     }
 
     public String checkUser(String email, String password) {
@@ -178,6 +203,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    //get Organizer Id
+
+    @SuppressLint("Range")
+    public int getUserId(String email){
+    SQLiteDatabase db=this.getReadableDatabase(); // access data base
+    int userId=-1; // no organizer found with the given email
+    Cursor cursor=db.query(
+            "Users",
+            new String[]{"user_id"}, // what we are looking for
+            "email= ?", // condition WHERE
+            new String[]{email}, // value for the WHERE condition
+            null, null, null
+    );
+
+    if ( cursor!=null && cursor.moveToFirst()){
+        userId=cursor.getInt(cursor.getColumnIndex("userId"));
+        cursor.close();
+    }
+        return userId;
+    }
 
 
 
