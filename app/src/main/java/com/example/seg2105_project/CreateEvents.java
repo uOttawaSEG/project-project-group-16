@@ -15,6 +15,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class CreateEvents extends AppCompatActivity {
 
     private DatabaseHelper db;
@@ -66,7 +72,55 @@ public class CreateEvents extends AppCompatActivity {
 
 
         //field validation
+    if (titleString.isEmpty()){
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+    }
 
+        if (titleString.isEmpty()){
+            Toast.makeText(this, "Title cannot be empty .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (descriptionString.isEmpty()){
+            Toast.makeText(this, "Description cannot be empty .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if (dateString.isEmpty()){
+            Toast.makeText(this, "Date cannot be empty .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (startTimeString.isEmpty()){
+            Toast.makeText(this, "Start time cannot be empty .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (endTimeString.isEmpty()){
+            Toast.makeText(this, "End time cannot be empty .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (eventAddressString.isEmpty()){
+            Toast.makeText(this, "Event Address cannot be empty.", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+        // Date and Time Verification
+        if(!isValidDate(dateString)){
+            Toast.makeText(this, "Invalid time format", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isStartBeforeEnd(startTimeString,endTimeString)){
+            Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+        }
+
+        if (isValidTime(startTimeString)){
+            Toast.makeText(this, "Invalid start time format", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
 
@@ -96,5 +150,59 @@ public class CreateEvents extends AppCompatActivity {
             Toast.makeText(CreateEvents.this, "Event Creation Failed. Try Again.", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+
+    // Field Validation Methods
+
+
+    private boolean isFutureDat(String date){
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try{
+            Date selectedDate=dateFormat.parse(date);
+            Date currentDate= new Date(); // date at the moment
+            return !selectedDate.before(currentDate);
+
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+
+    private boolean isValidDate(String date){
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        dateFormat.setLenient(false);
+        try{
+            dateFormat.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+
+    }
+
+    private boolean isValidTime(String time){
+    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+    timeFormat.setLenient(false);
+    try{
+        timeFormat.parse(time);
+        return true;
+    } catch (ParseException e) {
+        return false;
+    }
+
+    }
+
+
+    private boolean isStartBeforeEnd(String startTime, String endTime){
+    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+    try{
+        Date start=timeFormat.parse(startTime);
+        Date end= timeFormat.parse(endTime);
+        return start.before(end);
+    } catch (ParseException e) {
+        return false;
+    }
     }
 }
