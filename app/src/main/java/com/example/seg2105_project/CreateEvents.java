@@ -108,8 +108,12 @@ public class CreateEvents extends AppCompatActivity {
         }
 
         // Date and Time Verification
+
+        if (isFutureDate(dateString)){
+            Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
+        }
         if(!isValidDate(dateString)){
-            Toast.makeText(this, "Invalid time format", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid Date format", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -156,7 +160,7 @@ public class CreateEvents extends AppCompatActivity {
     // Field Validation Methods
 
 
-    private boolean isFutureDat(String date){
+    private boolean isFutureDate(String date){
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         try{
