@@ -288,6 +288,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null                     // ORDER BY clause (null means no specific order)
         );
     }
+    //method to fetch attendee for a specific event
+    public Cursor getAttendeeForEvent(String eventId){
+        SQLiteDatabase db=this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT U.first_name, U.last_name, U.email, U.phone_number " +
+                        "FROM Users U " +
+                        "JOIN Events E ON E.organizer_id = U.user_id " +
+                        "WHERE E.event_id = ? AND U.user_role = 'Attendee' AND U.registration_status = 'pending'",
+                new String[]{eventId}
+        );
+    }
 
 }
 
