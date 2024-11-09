@@ -334,6 +334,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rowsAffected = db.update("Events", values, "event_id=?", new String[]{String.valueOf(eventId)});
         return rowsAffected > 0;
     }
+    public boolean approveAllRegistrationsForEvent(int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("registration_status", "approved");
+
+        int rowsAffected = db.update(
+                "EventAttendees",
+                values,
+                "event_id = ? AND registration_status = ?",
+                new String[]{String.valueOf(eventId), "pending"}
+        );
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updateRegistrationStatus(int attendeeId, int eventId, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("registration_status", status);
+
+        int rowsAffected = db.update(
+                "EventAttendees",
+                values,
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)}
+        );
+
+        return rowsAffected > 0;
+    }
+
 
 
 
