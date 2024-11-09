@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
 
     public DatabaseHelper(Context context) {
@@ -86,7 +86,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 4) {  // added eventState
             db.execSQL("ALTER TABLE Events ADD COLUMN eventState TEXT");
         }
-
+        if (oldVersion < 5) {  // Added EventAttendees table
+            String createEventAttendeesTable = "CREATE TABLE EventAttendees ("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "event_id INTEGER NOT NULL, "
+                    + "attendee_id INTEGER NOT NULL, "
+                    + "registration_status TEXT DEFAULT 'pending', "
+                    + "FOREIGN KEY (event_id) REFERENCES Events(event_id), "
+                    + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
+                    + ");";
+            db.execSQL(createEventAttendeesTable);
+        }
 
     }
 
@@ -294,12 +304,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //method to fetch attendee for a specific event
     public Cursor getAttendeeForEvent(String eventId){
-        SQLiteDatabase db=this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
                 "SELECT U.first_name, U.last_name, U.email, U.phone_number " +
                         "FROM Users U " +
-                        "JOIN Events E ON E.organizer_id = U.user_id " +
-                        "WHERE E.event_id = ? AND U.user_role = 'Attendee' AND U.registration_status = 'pending'",
+                        "JOIN EventAttendees EA ON EA.attendee_id = U.user_id " +
+                        "WHERE EA.event_id = ? AND EA.registration_status = 'pending'",
                 new String[]{eventId}
         );
     }
