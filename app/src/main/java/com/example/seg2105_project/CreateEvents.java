@@ -27,6 +27,9 @@ public class CreateEvents extends AppCompatActivity {
     private Button submitEventButton;
     private EditText title, description, date, start_time, end_time, event_address;
     private String organizerId;
+    private String eventState;
+
+    private String userTypeString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class CreateEvents extends AppCompatActivity {
         end_time=findViewById(R.id.endTimeField);
         event_address=findViewById(R.id.eventAddressField);
 
+        userTypeString = getIntent().getStringExtra("UserType");
 
         db=new DatabaseHelper(this);
 
@@ -68,7 +72,6 @@ public class CreateEvents extends AppCompatActivity {
         String startTimeString=start_time.getText().toString().trim();
         String endTimeString=end_time.getText().toString().trim();
         String eventAddressString=event_address.getText().toString().trim();
-
 
 
         //field validation
@@ -109,7 +112,7 @@ public class CreateEvents extends AppCompatActivity {
 
         // Date and Time Verification
 
-        if (isFutureDate(dateString)){
+        if (!isFutureDate(dateString)){
             Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
         }
         if(!isValidDate(dateString)){
@@ -121,7 +124,7 @@ public class CreateEvents extends AppCompatActivity {
             Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
         }
 
-        if (isValidTime(startTimeString)){
+        if (!isValidTime(startTimeString)){
             Toast.makeText(this, "Invalid start time format", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -132,8 +135,8 @@ public class CreateEvents extends AppCompatActivity {
 
         SharedPreferences sharedPreferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String currentEmail=sharedPreferences.getString("email", null);
-        int organizerId= db.getUserId(currentEmail);
-
+        //int organizerId= db.getUserId(currentEmail);
+        int organizerId = 0;
         boolean insertSuccess=db.addEvent(
                 titleString,
                 descriptionString,
@@ -148,6 +151,7 @@ public class CreateEvents extends AppCompatActivity {
 
             Toast.makeText(CreateEvents.this, "Event Creation Successful", Toast.LENGTH_LONG).show();
             Intent intent= new Intent(CreateEvents.this, WelcomePage.class);
+            intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         }
         else{

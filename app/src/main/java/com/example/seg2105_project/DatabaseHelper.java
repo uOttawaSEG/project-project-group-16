@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
 
     public DatabaseHelper(Context context) {
@@ -34,24 +34,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "organization_name TEXT, "
                 + "user_role TEXT CHECK(user_role IN ('Attendee', 'Organizer', 'Administrator')) NOT NULL" // user_role: defines if the user is an Attendee, Organizer, or Admin.
                 + ");";
-        
-
 
 
         db.execSQL(createUsersTable);
 
+
         //This table will store the information about events
-        String createEventsTable="CREATE TABLE Events ("
+        String createEventsTable = "CREATE TABLE Events ("
                 + "event_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "title TEXT NOT NULL, "
-                +  "description TEXT, "
-                + "date TEXT NOT NULL"
+                + "description TEXT NOT NULL, "
+                + "date TEXT NOT NULL ,"
                 + "start_time TEXT NOT NULL ,"
                 + "end_time TEXT NOT NULL, "
                 + "event_address TEXT NOT NULL ,"
-                +"organizer_id INTEGER, "
-                + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id)"
+                + "eventState TEXT NOT NULL, "
+                + "organizer_id INTEGER NOT NULL, "
+                + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id) "
                 + ");";
+
+
+        db.execSQL(createEventsTable);
     }
 
 
@@ -61,6 +64,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE Users ADD COLUMN registration_status TEXT");
         }
+
+        if (oldVersion < 3) {
+            String createEventsTable = "CREATE TABLE Events ("
+                    + "event_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "title TEXT NOT NULL, "
+                    + "description TEXT NOT NULL, "
+                    + "date TEXT NOT NULL ,"
+                    + "start_time TEXT NOT NULL ,"
+                    + "end_time TEXT NOT NULL, "
+                    + "event_address TEXT NOT NULL ,"
+                    + "eventState TEXT NOT NULL, "
+                    + "organizer_id INTEGER NOT NULL, "
+                    + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id) "
+                    + ");";
+            db.execSQL(createEventsTable);
+        }
+
+        if (oldVersion < 4) {  // added eventState
+            db.execSQL("ALTER TABLE Events ADD COLUMN eventState TEXT");
+        }
+
 
     }
 
@@ -102,12 +126,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("start_time",start_time);
         values.put("end_time",end_time);
         values.put("event_address", event_address);
+        values.put("eventState", "upcoming");
         values.put("organizer_id",organizer_id);
+
 
         long result=db.insert("Events",null,values);
 
         //return 1 if the insertion has been done
-        return result !=1;
+        return result !=-1;
     }
 
     public String checkUser(String email, String password) {
@@ -210,11 +236,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     SQLiteDatabase db=this.getReadableDatabase(); // access data base
     int userId=-1; // no organizer found with the given email
     Cursor cursor=db.query(
-            "Users",
-            new String[]{"user_id"}, // what we are looking for
-            "email= ?", // condition WHERE
-            new String[]{email}, // value for the WHERE condition
-            null, null, null
+            "Users",                 // Table name
+            null,                         // Columns to return (null means all columns)
+            "email= ?",     // WHERE clause to filter by the state of the event (past or upcoming)
+            new String[]{email},    // Argument for the WHERE clause (upcoming event)
+            null,                      // GROUP BY clause (not needed)
+            null,                     // HAVING clause (not needed)
+            null                     // ORDER BY clause (null means no specific order)
+
     );
 
     if ( cursor!=null && cursor.moveToFirst()){
@@ -225,6 +254,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    // Method to fetch all upcoming events
+    public Cursor getUpcomingEvents() {
+        // Get a readable version of the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Perform the query to fetch upcoming events
+        return db.query(
+                "Events",                 // Table name
+                null,                         // Columns to return (null means all columns)
+                "eventState= ?",     // WHERE clause to filter by the state of the event (past or upcoming)
+                new String[]{"upcoming"},    // Argument for the WHERE clause (upcoming event)
+                null,                      // GROUP BY clause (not needed)
+                null,                     // HAVING clause (not needed)
+                null                     // ORDER BY clause (null means no specific order)
+        );
+    }
+
+
+    // Method to fetch all past events
+    public Cursor getPastEvents() {
+        // Get a readable version of the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Perform the query to fetch past events
+        return db.query(
+                "Events",                 // Table name
+                null,                         // Columns to return (null means all columns)
+                "eventState= ?",     // WHERE clause to filter by the state of the event (past or upcoming)
+                new String[]{"past"},    // Argument for the WHERE clause (upcoming event)
+                null,                      // GROUP BY clause (not needed)
+                null,                     // HAVING clause (not needed)
+                null                     // ORDER BY clause (null means no specific order)
+        );
+    }
 
 }
 

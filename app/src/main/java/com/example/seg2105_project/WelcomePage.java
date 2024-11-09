@@ -25,6 +25,8 @@ public class WelcomePage extends AppCompatActivity {
     private Button viewRegistrationRequestsButton;
     private Button viewRejectedRegistrationRequestsButton;
     private Button viewcreateEventButton;
+    private Button viewUpcomingEvents;
+    private Button viewPastEvents;
     private DatabaseHelper db;
 
     private String userTypeString;
@@ -46,7 +48,9 @@ public class WelcomePage extends AppCompatActivity {
         logOffButton = findViewById(R.id.logOffButton);
         viewRegistrationRequestsButton = findViewById(R.id.viewRegistrationRequestsButton);
         viewRejectedRegistrationRequestsButton = findViewById(R.id.viewRejectedRegistrationRequestsButton);
-        viewcreateEventButton= findViewById(R.id.createEventButton);
+        viewcreateEventButton = findViewById(R.id.createEventButton);
+        viewUpcomingEvents = findViewById(R.id.viewUpcomingEvents);
+        viewPastEvents = findViewById(R.id.viewPastEvents);
 
         // Retrieve the userData passed from another activity
 
@@ -70,12 +74,16 @@ public class WelcomePage extends AppCompatActivity {
             if(userTypeString.equals("Organizer")){
 
                 viewcreateEventButton.setVisibility(View.VISIBLE);
+                viewcreateEventButton.setEnabled(true);
+
+                viewUpcomingEvents.setVisibility(View.VISIBLE);
+                viewUpcomingEvents.setEnabled(true);
+
+                viewPastEvents.setVisibility(View.VISIBLE);
+                viewPastEvents.setEnabled(true);
             }
 
-            if(userTypeString.equals("Attendee")){
-                viewcreateEventButton.setVisibility(View.GONE);
 
-            }
         }
 
 
@@ -111,6 +119,19 @@ public class WelcomePage extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Handle viewUpcomingEvents button click
+        viewUpcomingEvents.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, UpcomingEventsOverview.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
+        // Handle viewPastEvents button click
+        viewPastEvents.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, PastEventsOverview.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
 
     }
 }
