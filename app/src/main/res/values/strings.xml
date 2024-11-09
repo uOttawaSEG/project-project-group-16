@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">SEG2105_Project</string>
+    <!-- Approval Modes Array -->
+    <string-array name="approval_modes">
+        <item>Automatic Approval</item>
+        <item>Manual Approval</item>
+    </string-array>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

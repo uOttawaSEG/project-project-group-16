@@ -54,9 +54,11 @@ public class UpcomingEventsOverview extends AppCompatActivity {
                 String end_time = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
                 String event_address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
                 String organizer_id = cursor.getString(cursor.getColumnIndexOrThrow("organizer_id"));
-                List<String> attendees = new ArrayList<>();
+                List<Attendee> attendees = new ArrayList<>();
+                String autoApproveString = cursor.getString(cursor.getColumnIndexOrThrow("auto_approve"));
+                boolean isManualApproval = !Boolean.parseBoolean(autoApproveString); // true for manual, false for automatic
 
-                Event event = new Event(title, description, date, start_time, end_time, event_address, attendees);
+                Event event = new Event(title, description, date, start_time, end_time, event_address,isManualApproval, attendees);
                 eventList.add(event);
             } while (cursor.moveToNext());
 
