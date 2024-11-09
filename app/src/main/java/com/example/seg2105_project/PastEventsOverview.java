@@ -3,6 +3,7 @@ package com.example.seg2105_project;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.seg2105_project.Event;
 
 public class PastEventsOverview extends AppCompatActivity {
 
@@ -55,9 +57,11 @@ public class PastEventsOverview extends AppCompatActivity {
                 String end_time = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
                 String event_address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
                 String organizer_id = cursor.getString(cursor.getColumnIndexOrThrow("organizer_id"));
-                List<String> attendees = new ArrayList<>();
+                List<Attendee> attendees = new ArrayList<>();
+                String autoApproveString = cursor.getString(cursor.getColumnIndexOrThrow("auto_approve"));
+                boolean isManualApproval = !Boolean.parseBoolean(autoApproveString); // true for manual, false for automatic
 
-                Event event = new Event(title, description, date, start_time, end_time, event_address, attendees);
+                Event event = new Event(title, description, date, start_time, end_time, event_address,isManualApproval,attendees);
                 eventList.add(event);
             } while (cursor.moveToNext());
 
@@ -72,8 +76,20 @@ public class PastEventsOverview extends AppCompatActivity {
         // Create the adapter, and set it with the events
         EventAdapter adapter = new EventAdapter(this, eventList);
         eventListView.setAdapter(adapter);
+        // Example of setting up an approval mechanism for attendees
+        eventListView.setOnItemClickListener((parent, view, position, id) -> {
+            Event selectedEvent = eventList.get(position);
 
+            // Example: When clicking an "Approve All" button
+            Button approveAllButton = view.findViewById(R.id.approveAllButton);
+            approveAllButton.setOnClickListener(v -> selectedEvent.approveAllAttendees());
 
-
+            // Example: When clicking on an attendee to approve/reject
+            // (You will need to handle selecting and showing the attendee details separately)
+        });
     }
 }
+
+
+
+

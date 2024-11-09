@@ -50,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "event_address TEXT NOT NULL ,"
                 + "eventState TEXT NOT NULL, "
                 + "organizer_id INTEGER NOT NULL, "
+                + "isManualApproval INTEGER DEFAULT 0, "  // 0 = automatic, 1 = manual
                 + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id) "
                 + ");";
 
@@ -76,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "event_address TEXT NOT NULL ,"
                     + "eventState TEXT NOT NULL, "
                     + "organizer_id INTEGER NOT NULL, "
+                    + "isManualApproval INTEGER DEFAULT 0, "  // 0 = automatic, 1 = manual
                     + "FOREIGN KEY (organizer_id) REFERENCES Users(user_id) "
                     + ");";
             db.execSQL(createEventsTable);
@@ -114,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id){
+    public boolean addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id,boolean isManualApproval){
 
 
         SQLiteDatabase db=this.getWritableDatabase();
@@ -128,6 +130,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("event_address", event_address);
         values.put("eventState", "upcoming");
         values.put("organizer_id",organizer_id);
+        values.put("isManualApproval", isManualApproval);  // Store the approval mode (0 or 1)
 
 
         long result=db.insert("Events",null,values);
@@ -288,6 +291,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null                     // ORDER BY clause (null means no specific order)
         );
     }
+
     //method to fetch attendee for a specific event
     public Cursor getAttendeeForEvent(String eventId){
         SQLiteDatabase db=this.getReadableDatabase();
@@ -299,6 +303,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{eventId}
         );
     }
+
+    public Cursor getUpcomingEventsWithApprovalMode(int approvalMode) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(
+                "Events",
+                null,                        // All columns
+                "eventState=? AND isManualApproval=?",   // Filter by event state and approval mode
+                new String[]{"upcoming", String.valueOf(approvalMode)},
+                null,
+                null,
+                null
+        );
+    }
+    public boolean updateEventApprovalMode(int eventId, int isManualApproval) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("isManualApproval", isManualApproval);
+
+        int rowsAffected = db.update("Events", values, "event_id=?", new String[]{String.valueOf(eventId)});
+        return rowsAffected > 0;
+    }
+
+
+
 
 }
 
