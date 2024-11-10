@@ -364,7 +364,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-
+    public boolean deleteEvent(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("events", "event_id = ?", new String[]{title}) > 0;
+    }
 
 
 

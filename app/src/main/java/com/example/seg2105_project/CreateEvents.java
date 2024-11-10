@@ -77,7 +77,7 @@ public class CreateEvents extends AppCompatActivity {
     public void registerEvent(){
 
         //input values
-        String titleString=title.getText().toString().trim();;
+        String titleString=title.getText().toString().trim();
         String descriptionString=description.getText().toString().trim();
         String dateString=date.getText().toString().trim();
         String startTimeString=start_time.getText().toString().trim();
