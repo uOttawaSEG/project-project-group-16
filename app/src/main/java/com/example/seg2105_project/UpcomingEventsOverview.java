@@ -3,8 +3,10 @@ package com.example.seg2105_project;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +42,17 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         // Initialize DatabaseHelper
         dbHelper = new DatabaseHelper(this);
 
+        // Load upcoming events into eventList
+        loadUpcomingEvents();
 
+        // Set item click listener for deletion
+        eventListView.setOnItemClickListener((parent, view, position, id) -> {
+            Event selectedEvent = eventList.get(position);
+            deleteEvent(selectedEvent.getTitle());
+        });
+    }
+
+    private void loadUpcomingEvents(){
         // add the upcoming events to the eventList
         Cursor cursor = dbHelper.getUpcomingEvents();
 
@@ -77,6 +89,17 @@ public class UpcomingEventsOverview extends AppCompatActivity {
 
     }
 
+    public void deleteEvent(String title) {
+        boolean isDeleted = dbHelper.deleteEvent(title);
+        if (isDeleted) {
+            Toast.makeText(this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
+            // Refresh the event list
+            eventList.clear();
+            loadUpcomingEvents();
+        } else {
+            Toast.makeText(this, "Failed to delete the event", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 }

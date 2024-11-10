@@ -27,40 +27,40 @@
         android:id="@+id/titleField"
         android:layout_width="136dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="12dp"
         android:hint="Title"
         app:layout_constraintBottom_toTopOf="@+id/descriptionField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.414"
+        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/descriptionField"
         android:layout_width="136dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="16dp"
         android:hint="Description"
         app:layout_constraintBottom_toTopOf="@+id/dateField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.414"
+        app:layout_constraintHorizontal_bias="0.436"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/dateField"
         android:layout_width="145dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="12dp"
         android:hint="Date"
         app:layout_constraintBottom_toTopOf="@+id/startTimeField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.451"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/startTimeField"
         android:layout_width="149dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:hint="Start Time"
         app:layout_constraintBottom_toTopOf="@+id/endTimeField"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,18 +71,18 @@
         android:id="@+id/endTimeField"
         android:layout_width="140dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:hint="End Time"
         app:layout_constraintBottom_toTopOf="@+id/eventAddressField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/eventAddressField"
         android:layout_width="168dp"
         android:layout_height="56dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="92dp"
         android:hint="Event Address"
         app:layout_constraintBottom_toTopOf="@+id/submitEventButton"
         app:layout_constraintEnd_toEndOf="parent"
