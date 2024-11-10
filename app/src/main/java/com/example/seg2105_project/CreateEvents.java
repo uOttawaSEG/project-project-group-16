@@ -127,6 +127,7 @@ public class CreateEvents extends AppCompatActivity {
 
         if (!isFutureDate(dateString)){
             Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(!isValidDate(dateString)){
             Toast.makeText(this, "Invalid Date format", Toast.LENGTH_SHORT).show();
@@ -135,6 +136,7 @@ public class CreateEvents extends AppCompatActivity {
 
         if (!isStartBeforeEnd(startTimeString,endTimeString)){
             Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (!isValidTime(startTimeString)){

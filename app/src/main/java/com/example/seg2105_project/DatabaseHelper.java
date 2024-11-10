@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
 
     public DatabaseHelper(Context context) {
@@ -96,6 +96,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
                     + ");";
             db.execSQL(createEventAttendeesTable);
+        }
+
+        if (oldVersion < 6) {   // added isManualApproval column
+            db.execSQL("ALTER TABLE Events ADD COLUMN isManualApproval INTEGER");
         }
 
     }
