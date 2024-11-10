@@ -45,10 +45,11 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         // Load upcoming events into eventList
         loadUpcomingEvents();
 
-        // Set item click listener for deletion
+        // Set item click listener for details
         eventListView.setOnItemClickListener((parent, view, position, id) -> {
             Event selectedEvent = eventList.get(position);
-            deleteEvent(selectedEvent.getTitle());
+            Toast.makeText(this, "Événement sélectionné : " + selectedEvent.getTitle(), Toast.LENGTH_SHORT).show();
+            //deleteEvent(selectedEvent.getTitle());
         });
     }
 
