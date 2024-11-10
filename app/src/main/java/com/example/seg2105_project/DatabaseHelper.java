@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
 
     public DatabaseHelper(Context context) {
@@ -96,6 +96,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
                     + ");";
             db.execSQL(createEventAttendeesTable);
+        }
+
+        if (oldVersion < 6) {   // added isManualApproval column
+            db.execSQL("ALTER TABLE Events ADD COLUMN isManualApproval INTEGER");
         }
 
     }
@@ -334,7 +338,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rowsAffected = db.update("Events", values, "event_id=?", new String[]{String.valueOf(eventId)});
         return rowsAffected > 0;
     }
+    public boolean approveAllRegistrationsForEvent(int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("registration_status", "approved");
 
+        int rowsAffected = db.update(
+                "EventAttendees",
+                values,
+                "event_id = ? AND registration_status = ?",
+                new String[]{String.valueOf(eventId), "pending"}
+        );
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updateRegistrationStatus(int attendeeId, int eventId, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("registration_status", status);
+
+        int rowsAffected = db.update(
+                "EventAttendees",
+                values,
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)}
+        );
+
+        return rowsAffected > 0;
+    }
+
+    public boolean deleteEvent(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("events", "event_id = ?", new String[]{title}) > 0;
+    }
 
 
 

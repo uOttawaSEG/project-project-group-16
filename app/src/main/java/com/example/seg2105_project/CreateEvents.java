@@ -77,7 +77,7 @@ public class CreateEvents extends AppCompatActivity {
     public void registerEvent(){
 
         //input values
-        String titleString=title.getText().toString().trim();;
+        String titleString=title.getText().toString().trim();
         String descriptionString=description.getText().toString().trim();
         String dateString=date.getText().toString().trim();
         String startTimeString=start_time.getText().toString().trim();
@@ -127,6 +127,7 @@ public class CreateEvents extends AppCompatActivity {
 
         if (!isFutureDate(dateString)){
             Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(!isValidDate(dateString)){
             Toast.makeText(this, "Invalid Date format", Toast.LENGTH_SHORT).show();
@@ -135,6 +136,7 @@ public class CreateEvents extends AppCompatActivity {
 
         if (!isStartBeforeEnd(startTimeString,endTimeString)){
             Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (!isValidTime(startTimeString)){
