@@ -8,6 +8,7 @@
     tools:context=".CreateEvents">
 
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="361dp"
@@ -69,7 +70,7 @@
     <EditText
         android:id="@+id/endTimeField"
         android:layout_width="140dp"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="24dp"
         android:hint="End Time"
         app:layout_constraintBottom_toTopOf="@+id/eventAddressField"
@@ -91,7 +92,7 @@
     <Button
         android:id="@+id/submitEventButton"
         android:layout_width="151dp"
-        android:layout_height="44dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="92dp"
         android:backgroundTint="@color/coloruOttawa"
         android:text="Submit"
@@ -99,5 +100,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/approvalModeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/submitEventButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventAddressField" />
+    <?xml version="1.0" encoding="utf-8"?>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

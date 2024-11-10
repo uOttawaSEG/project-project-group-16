@@ -12,10 +12,10 @@
         android:id="@+id/logOffButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="64dp"
         android:backgroundTint="@color/coloruOttawa"
         android:text="Log Off"
-        app:layout_constraintBottom_toTopOf="@+id/viewRegistrationRequestsButton"
+        app:layout_constraintBottom_toTopOf="@+id/createEventButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -25,26 +25,26 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/coloruOttawa"
+        android:enabled="false"
         android:text="Registration Requests"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/viewRejectedRegistrationRequestsButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        android:enabled="false"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/viewRejectedRegistrationRequestsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="276dp"
+        android:layout_marginBottom="124dp"
         android:backgroundTint="@color/coloruOttawa"
+        android:enabled="false"
         android:text="Rejected Registration Requests"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        android:enabled="false"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/WelcomeMessage"
@@ -52,7 +52,7 @@
         android:layout_height="51dp"
         android:text="Welcome to the University of Ottawa!"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/createEventButton"
+        app:layout_constraintBottom_toTopOf="@+id/logOffButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -62,12 +62,44 @@
         android:id="@+id/createEventButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an event"
         android:backgroundTint="@color/coloruOttawa"
-        app:layout_constraintBottom_toTopOf="@+id/logOffButton"
+        android:enabled="false"
+        android:text="Create an event"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/viewUpcomingEvents"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="175dp" />
+        app:layout_constraintVertical_bias="0.966" />
+
+    <Button
+        android:id="@+id/viewUpcomingEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/coloruOttawa"
+        android:enabled="false"
+        android:text="View upcoming events"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/viewPastEvents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/viewPastEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="68dp"
+        android:backgroundTint="@color/coloruOttawa"
+        android:enabled="false"
+        android:text="View past events"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/viewRegistrationRequestsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

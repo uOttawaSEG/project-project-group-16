@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,6 +30,9 @@ public class CreateEvents extends AppCompatActivity {
     private Button submitEventButton;
     private EditText title, description, date, start_time, end_time, event_address;
     private String organizerId;
+    private String eventState;
+    private Spinner approvalModeSpinner;
+    private String userTypeString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +52,18 @@ public class CreateEvents extends AppCompatActivity {
         start_time=findViewById(R.id.startTimeField);
         end_time=findViewById(R.id.endTimeField);
         event_address=findViewById(R.id.eventAddressField);
+        approvalModeSpinner = findViewById(R.id.approvalModeSpinner);
 
+        // Populate Spinner with options
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.approval_modes, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        approvalModeSpinner.setAdapter(adapter);
+
+        userTypeString = getIntent().getStringExtra("UserType");
 
         db=new DatabaseHelper(this);
+        userTypeString = getIntent().getStringExtra("UserType");
 
 
         submitEventButton.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +83,9 @@ public class CreateEvents extends AppCompatActivity {
         String startTimeString=start_time.getText().toString().trim();
         String endTimeString=end_time.getText().toString().trim();
         String eventAddressString=event_address.getText().toString().trim();
-
-
+        // Get selected approval mode
+        String selectedMode = approvalModeSpinner.getSelectedItem().toString();
+        boolean isManualApproval = selectedMode.equals("Manual");
 
         //field validation
     if (titleString.isEmpty()){
@@ -109,7 +125,7 @@ public class CreateEvents extends AppCompatActivity {
 
         // Date and Time Verification
 
-        if (isFutureDate(dateString)){
+        if (!isFutureDate(dateString)){
             Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
         }
         if(!isValidDate(dateString)){
@@ -121,10 +137,21 @@ public class CreateEvents extends AppCompatActivity {
             Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
         }
 
-        if (isValidTime(startTimeString)){
+        if (!isValidTime(startTimeString)){
             Toast.makeText(this, "Invalid start time format", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Create a new Event object with approval mode
+        Event event = new Event(
+                titleString,
+                descriptionString,
+                dateString,
+                startTimeString,
+                endTimeString,
+                eventAddressString,
+                isManualApproval,
+                new ArrayList<>()
+        );
 
 
 
@@ -132,8 +159,8 @@ public class CreateEvents extends AppCompatActivity {
 
         SharedPreferences sharedPreferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String currentEmail=sharedPreferences.getString("email", null);
-        int organizerId= db.getUserId(currentEmail);
-
+        //int organizerId= db.getUserId(currentEmail);
+        int organizerId = 0;
         boolean insertSuccess=db.addEvent(
                 titleString,
                 descriptionString,
@@ -141,13 +168,14 @@ public class CreateEvents extends AppCompatActivity {
                 startTimeString,
                 endTimeString,
                 eventAddressString,
-                organizerId
-
+                organizerId,
+                isManualApproval
         );
         if(insertSuccess){
 
             Toast.makeText(CreateEvents.this, "Event Creation Successful", Toast.LENGTH_LONG).show();
             Intent intent= new Intent(CreateEvents.this, WelcomePage.class);
+            intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         }
         else{

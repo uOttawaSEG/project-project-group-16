@@ -13,6 +13,19 @@
         android:theme="@style/Theme.SEG2105_Project"
         tools:targetApi="31">
         <activity
+            android:name=".AttendeeDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AttendeeRequestOverview"
+            android:exported="false" />
+        <activity
+            android:name=".PastEventsOverview"
+            android:exported="false" />
+        <activity
+            android:name=".UpcomingEventsOverview"
+            android:exported="false"
+            android:theme="@style/Theme.SEG2105_Project" />
+        <activity
             android:name=".CreateEvents"
             android:exported="false" />
         <activity
