@@ -97,8 +97,15 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         if (isDeleted) {
             Toast.makeText(this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
             // Refresh the event list
-            eventList.clear();
-            loadUpcomingEvents();
+            for (int i = 0; i < eventList.size(); i++) {
+                if (eventList.get(i).getTitle().equals(title)) {
+                    eventList.remove(i);
+                    break;
+                }
+            }
+
+            ((EventAdapter) eventListView.getAdapter()).notifyDataSetChanged();
+
         } else {
             Toast.makeText(this, "Failed to delete the event", Toast.LENGTH_SHORT).show();
         }

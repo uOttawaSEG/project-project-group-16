@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
 
     public DatabaseHelper(Context context) {
@@ -370,7 +370,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteEvent(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("events", "event_id = ?", new String[]{title}) > 0;
+        int deletedRows = db.delete("Events", "title = ?", new String[]{title});
+        return deletedRows > 0;
     }
 
 

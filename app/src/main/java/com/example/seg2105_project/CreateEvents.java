@@ -135,7 +135,7 @@ public class CreateEvents extends AppCompatActivity {
         }
 
         if (!isStartBeforeEnd(startTimeString,endTimeString)){
-            Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "End time must be after start time", Toast.LENGTH_SHORT).show();
             return;
         }
 
