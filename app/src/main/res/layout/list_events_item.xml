@@ -44,23 +44,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Event address" />
+
+
     <Button
-        android:id="@+id/approveAllButton"
+        android:id="@+id/viewAttendeesRequestListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Approve All"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/eventDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <Button
-        android:id="@+id/approveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Approve"
+        android:text="Requests"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/eventDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <Button
         android:id="@+id/deleteEventButton"
@@ -70,6 +65,8 @@
         app:layout_constraintTop_toBottomOf="@id/eventDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
 
 </LinearLayout>

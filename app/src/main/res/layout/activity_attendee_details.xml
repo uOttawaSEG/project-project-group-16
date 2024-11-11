@@ -51,8 +51,25 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go Back"
-            android:layout_gravity="center" />
+            android:text="Go Back" />
+
+        <Button
+            android:id="@+id/approveAllButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approve All"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventDescription" />
+
+        <Button
+            android:id="@+id/approveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approve"
+            app:layout_constraintTop_toBottomOf="@id/eventDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </LinearLayout>
 

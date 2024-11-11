@@ -143,17 +143,7 @@ public class CreateEvents extends AppCompatActivity {
             Toast.makeText(this, "Invalid start time format", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Create a new Event object with approval mode
-        Event event = new Event(
-                titleString,
-                descriptionString,
-                dateString,
-                startTimeString,
-                endTimeString,
-                eventAddressString,
-                isManualApproval,
-                new ArrayList<>()
-        );
+
 
 
 
@@ -163,7 +153,7 @@ public class CreateEvents extends AppCompatActivity {
         String currentEmail=sharedPreferences.getString("email", null);
         //int organizerId= db.getUserId(currentEmail);
         int organizerId = 0;
-        boolean insertSuccess=db.addEvent(
+        long event_id=db.addEvent(
                 titleString,
                 descriptionString,
                 dateString,
@@ -173,7 +163,7 @@ public class CreateEvents extends AppCompatActivity {
                 organizerId,
                 isManualApproval
         );
-        if(insertSuccess){
+        if(event_id != -1){
 
             Toast.makeText(CreateEvents.this, "Event Creation Successful", Toast.LENGTH_LONG).show();
             Intent intent= new Intent(CreateEvents.this, WelcomePage.class);

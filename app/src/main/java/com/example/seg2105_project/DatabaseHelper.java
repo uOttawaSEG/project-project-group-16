@@ -56,6 +56,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         db.execSQL(createEventsTable);
+
+
+        String createEventAttendeesTable = "CREATE TABLE EventAttendees ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "event_id INTEGER NOT NULL, "
+                + "attendee_id INTEGER NOT NULL, "
+                + "registration_status TEXT DEFAULT 'pending', "
+                + "FOREIGN KEY (event_id) REFERENCES Events(event_id), "
+                + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
+                + ");";
+        db.execSQL(createEventAttendeesTable);
     }
 
 
@@ -130,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id,boolean isManualApproval){
+    public long addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id,boolean isManualApproval){
 
 
         SQLiteDatabase db=this.getWritableDatabase();
@@ -144,13 +155,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("event_address", event_address);
         values.put("eventState", "upcoming");
         values.put("organizer_id",organizer_id);
-        values.put("isManualApproval", isManualApproval);  // Store the approval mode (0 or 1)
+        values.put("isManualApproval", isManualApproval ? 1 : 0);  // Store the approval mode (0 or 1)
 
 
-        long result=db.insert("Events",null,values);
+        long eventId = db.insert("Events", null, values);
 
         //return 1 if the insertion has been done
-        return result !=-1;
+        return eventId;
     }
 
     public String checkUser(String email, String password) {

@@ -3,6 +3,8 @@ package com.example.seg2105_project;
 import android.content.Context;
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             holder.eventStartTime = listItem.findViewById(R.id.eventStartTime);
             holder.eventEndTime = listItem.findViewById(R.id.eventEndTime);
             holder.eventAddress = listItem.findViewById(R.id.eventAddress);
+            holder.viewAttendeesRequestListButton = listItem.findViewById(R.id.viewAttendeesRequestListButton);
             holder.deleteButton = listItem.findViewById(R.id.deleteEventButton);
 
             listItem.setTag(holder);
@@ -78,6 +81,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     .show();
         });
 
+        // Set up viewAttendeesRequestListButton click listener
+        holder.viewAttendeesRequestListButton.setOnClickListener(v ->{
+            Context context = v.getContext();
+            Intent intent = new Intent(context, AttendeeRequestOverview.class);
+            intent.putExtra("event_id", currentEvent.getEvent_id());
+            context.startActivity(intent);
+        });
+
         return listItem;
     }
 
@@ -89,6 +100,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         TextView eventEndTime;
         TextView eventAddress;
         Button deleteButton;
+        Button viewAttendeesRequestListButton;
     }
 
 }

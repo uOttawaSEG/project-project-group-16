@@ -48,6 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listOfTheUpcomingEventsText"
         android:clickable="true"
-        android:focusable="false"/>
+        android:focusable="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

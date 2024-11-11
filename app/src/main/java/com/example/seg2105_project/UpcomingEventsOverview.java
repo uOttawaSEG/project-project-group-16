@@ -45,12 +45,7 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         // Load upcoming events into eventList
         loadUpcomingEvents();
 
-        // Set item click listener for details
-        eventListView.setOnItemClickListener((parent, view, position, id) -> {
-            Event selectedEvent = eventList.get(position);
-            Toast.makeText(this, "Événement sélectionné : " + selectedEvent.getTitle(), Toast.LENGTH_SHORT).show();
-            //deleteEvent(selectedEvent.getTitle());
-        });
+
     }
 
     private void loadUpcomingEvents(){
@@ -60,6 +55,7 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             noEventText.setVisibility(View.INVISIBLE);
             do {
+                int event_id = cursor.getColumnIndex("event_id");
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -73,7 +69,7 @@ public class UpcomingEventsOverview extends AppCompatActivity {
                 if (isManualApprovalInt == 1) isManualApproval = true;
                 else isManualApproval = false;
 
-                Event event = new Event(title, description, date, start_time, end_time, event_address,isManualApproval, attendees);
+                Event event = new Event(event_id, title, description, date, start_time, end_time, event_address,isManualApproval, attendees);
                 eventList.add(event);
             } while (cursor.moveToNext());
 
