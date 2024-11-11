@@ -17,10 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -144,6 +143,16 @@ public class CreateEvents extends AppCompatActivity {
             return;
         }
 
+        if (!is30minIncrement(startTimeString)){
+            Toast.makeText(this, "The start time must be selected in 30-minute increments", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!is30minIncrement(endTimeString)){
+            Toast.makeText(this, "The end time must be selected in 30-minute increments", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
 
 
@@ -216,6 +225,25 @@ public class CreateEvents extends AppCompatActivity {
         return false;
     }
 
+    }
+
+
+    private boolean is30minIncrement(String time) {
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        timeFormat.setLenient(false);
+
+        try{
+            Date parsedTime = timeFormat.parse(time);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parsedTime);
+
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            return (minutes == 0 || minutes == 30);
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
 
