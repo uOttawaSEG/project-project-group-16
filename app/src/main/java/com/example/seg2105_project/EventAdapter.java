@@ -92,7 +92,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         return listItem;
     }
 
-    private static class ViewHolder {
+    static class ViewHolder {
         TextView eventTitle;
         TextView eventDescription;
         TextView eventDate;

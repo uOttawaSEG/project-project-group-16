@@ -55,7 +55,9 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             noEventText.setVisibility(View.INVISIBLE);
             do {
-                int event_id = cursor.getColumnIndex("event_id");
+                int event_idIndex = cursor.getColumnIndex("event_id");
+                long event_idLong = cursor.getLong(event_idIndex);
+                int event_id = (int) event_idLong;
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));

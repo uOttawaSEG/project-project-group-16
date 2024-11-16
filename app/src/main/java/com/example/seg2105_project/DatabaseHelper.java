@@ -385,7 +385,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return deletedRows > 0;
     }
 
+    public Cursor getEvent(int event_id){
+        // Get a readable version of the database
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Perform the query to fetch upcoming events
+        return db.query(
+                "Events",                 // Table name
+                null,                         // Columns to return (null means all columns)
+                "event_id= ?",               // WHERE clause to filter by the state of the event (event_id)
+                new String[]{String.valueOf(event_id)},    // Argument for the WHERE clause (event_id)
+                null,                      // GROUP BY clause (not needed)
+                null,                     // HAVING clause (not needed)
+                null                     // ORDER BY clause (null means no specific order)
+        );
+    }
 
 }
 

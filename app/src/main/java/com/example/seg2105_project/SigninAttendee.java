@@ -157,18 +157,11 @@ public class SigninAttendee extends AppCompatActivity {
                 "Attendee"
         );
 
-        /* Toast.makeText(SigninAttendee.this,"You are signed in as an Attendee",Toast.LENGTH_LONG).show();
-        Intent intent =new Intent(SigninAttendee.this,LogInPage.class);
-        intent.putExtra("UserType","Attendee");
-        intent.putExtra("Email",emailAddressString);
-        intent.putExtra("passWord",passwordString);
-        startActivity(intent);
 
-         */
 
         if (insertSuccess) {
             Toast.makeText(SigninAttendee.this, "Registration Successful", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SigninAttendee.this, LogInPage.class);
+            Intent intent = new Intent(SigninAttendee.this, MainActivity.class);
             intent.putExtra("UserType", "Attendee");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);

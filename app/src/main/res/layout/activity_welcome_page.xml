@@ -36,14 +36,14 @@
         android:id="@+id/viewRejectedRegistrationRequestsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="80dp"
         android:backgroundTint="@color/coloruOttawa"
         android:enabled="false"
         android:text="Rejected Registration Requests"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -87,16 +87,31 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <Button
         android:id="@+id/viewPastEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="44dp"
         android:backgroundTint="@color/coloruOttawa"
         android:enabled="false"
         android:text="View past events"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/viewRegistrationRequestsButton"
+        app:layout_constraintBottom_toTopOf="@+id/searchForEventsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/searchForEventsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="252dp"
+        android:backgroundTint="@color/coloruOttawa"
+        android:enabled="false"
+        android:text="Search for events"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
