@@ -13,6 +13,9 @@
         android:theme="@style/Theme.SEG2105_Project"
         tools:targetApi="31">
         <activity
+            android:name=".EventAdapter2"
+            android:exported="false" />
+        <activity
             android:name=".ViewRegistredEvents"
             android:exported="false" />
         <activity

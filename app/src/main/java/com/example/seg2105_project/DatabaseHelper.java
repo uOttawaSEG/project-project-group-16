@@ -6,11 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
 
     public DatabaseHelper(Context context) {
@@ -400,6 +401,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null                     // ORDER BY clause (null means no specific order)
         );
     }
+
+    public boolean registerAttendeetoEvent(int attendeeId, int eventId){
+
+        SQLiteDatabase dbHelper= this.getWritableDatabase();
+
+        Log.d("DatabaseHelper", "Attempting to register attendee " + attendeeId + " to event " + eventId);
+
+
+
+        // verify if the attendee is already registered
+
+        Cursor cursor = dbHelper.rawQuery("SELECT * FROM EventAttendees WHERE attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
+
+        if (cursor.moveToFirst()){
+            Log.d("DatabaseHelper", "User is already registered for this event.");
+            cursor.close();
+            return false; // attendee already registered
+        }
+
+        // attendee not registered
+        ContentValues values = new ContentValues();
+        values.put("attendee_id", attendeeId);
+        values.put("event_id", eventId);
+        values.put("registration_status", "requested"); // default value is "requested"
+
+        long result= dbHelper.insert("EventAttendees", null,values);
+        return result !=1 ;// TRUE if successful registration
+
+
+    }
+
+    public Cursor getRegisteredEventsForAttendee(int attendeeId){
+        SQLiteDatabase dbHelper= this.getWritableDatabase();
+
+        String query =  "SELECT E.* " +
+                "FROM Events E " +
+                "JOIN EventAttendees EA ON E.event_id = EA.event_id " +
+                "WHERE EA.attendee_id = ?"+
+                "ORDER BY E.date DESC"; // Newest events at the top
+
+        return dbHelper.rawQuery(query, new String [] {String.valueOf(attendeeId)});
+    }
+
 
 }
 
