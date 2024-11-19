@@ -21,6 +21,7 @@ public class ViewRegistredEvents extends AppCompatActivity {
     private RegisteredEventsAdapter adapter;
     private List<Event> registeredEvents;
     private int event_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +33,11 @@ public class ViewRegistredEvents extends AppCompatActivity {
             return insets;
         });
 
-        dbHelper= new DatabaseHelper(this);
-        recyclerView=findViewById(R.id.recycler_view);
+        dbHelper = new DatabaseHelper(this);
+        recyclerView = findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        registeredEvents=new ArrayList<>();
+        registeredEvents = new ArrayList<>();
 
 
         // load registered events
@@ -48,14 +49,13 @@ public class ViewRegistredEvents extends AppCompatActivity {
     }
 
     private void loadRegisteredEvents() {
-        // ID de l'utilisateur connecté (exemple : récupérez cet ID depuis les préférences ou la session utilisateur)
-        int attendeeId = 1; // Remplacez par l'ID réel
 
-        // Utiliser la méthode pour récupérer les événements enregistrés
+        int attendeeId = 1;
+
+
         Cursor cursor = dbHelper.getRegisteredEventsForAttendee(attendeeId);
 
         while (cursor.moveToNext()) {
-            // Récupérer les colonnes depuis le curseur
             String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
             String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
             String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -69,10 +69,10 @@ public class ViewRegistredEvents extends AppCompatActivity {
             if (isManualApprovalInt == 1) isManualApproval = true;
             else isManualApproval = false;
 
-            // Ajouter l'événement à une liste (exemple : `registeredEvents`)
-            registeredEvents.add(new Event(event_id, title, description,date, startTime,endTime, address,isManualApproval, attendees));
+
+            registeredEvents.add(new Event(event_id, title, description, date, startTime, endTime, address, isManualApproval, attendees));
         }
 
-        cursor.close(); // Toujours fermer le curseur après utilisation
+        cursor.close();
     }
 }
