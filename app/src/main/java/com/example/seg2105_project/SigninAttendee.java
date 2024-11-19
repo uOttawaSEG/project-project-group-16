@@ -134,6 +134,14 @@ public class SigninAttendee extends AppCompatActivity {
             return;
         }
 
+        if (dbHelper.emailExists(emailAddressString)){
+            Toast.makeText(this, "This email already exists ! Please choose a different email.", Toast.LENGTH_SHORT).show();
+        }
+
+        if (dbHelper.phoneExists(phoneNumberString)){
+            Toast.makeText(this, "This phone number already exists ! Please choose a different phone number.", Toast.LENGTH_SHORT).show();
+        }
+
         // If all validations pass, proceed to register
          /* userData = new ArrayList<>(7);
         userData.add(firstNameString);

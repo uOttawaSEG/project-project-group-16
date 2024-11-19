@@ -446,5 +446,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    // Methods to verify if the email and the phoneNumber exist in the SQLite Database
+    public boolean emailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                "Users",
+                new String[]{"email"},
+                "email = ?",
+                new String[]{email},
+                null, null, null
+        );
+
+        boolean exists = cursor.getCount() > 0;
+        return exists;
+    }
+
+    public boolean phoneExists(String phoneNumber) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                "Users",
+                new String[]{"phone_number"},
+                "phone_number = ?",
+                new String[]{phoneNumber},
+                null, null, null
+        );
+
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+
+
+
 }
 
