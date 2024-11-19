@@ -22,6 +22,9 @@ public class Event {
         this.isManualApproval = isManualApproval;
     }
 
+    public Event(String titleString, String descriptionString, String dateString, String startTimeString, String endTimeString, String eventAddressString, boolean isManualApproval, ArrayList<Object> objects) {
+    }
+
     public int getEvent_id() {return event_id;}
 
     public String getTitle() {return title;}

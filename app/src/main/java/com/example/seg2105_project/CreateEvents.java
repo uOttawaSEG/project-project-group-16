@@ -87,9 +87,9 @@ public class CreateEvents extends AppCompatActivity {
         boolean isManualApproval = selectedMode.equals("Manual");
 
         //field validation
-    if (titleString.isEmpty()){
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-    }
+        if (titleString.isEmpty()){
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        }
 
         if (titleString.isEmpty()){
             Toast.makeText(this, "Title cannot be empty .", Toast.LENGTH_SHORT).show();
@@ -216,14 +216,14 @@ public class CreateEvents extends AppCompatActivity {
     }
 
     private boolean isValidTime(String time){
-    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
-    timeFormat.setLenient(false);
-    try{
-        timeFormat.parse(time);
-        return true;
-    } catch (ParseException e) {
-        return false;
-    }
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        timeFormat.setLenient(false);
+        try{
+            timeFormat.parse(time);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
 
     }
 
@@ -248,13 +248,13 @@ public class CreateEvents extends AppCompatActivity {
 
 
     private boolean isStartBeforeEnd(String startTime, String endTime){
-    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
-    try{
-        Date start=timeFormat.parse(startTime);
-        Date end= timeFormat.parse(endTime);
-        return start.before(end);
-    } catch (ParseException e) {
-        return false;
-    }
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        try{
+            Date start=timeFormat.parse(startTime);
+            Date end= timeFormat.parse(endTime);
+            return start.before(end);
+        } catch (ParseException e) {
+            return false;
+        }
     }
 }

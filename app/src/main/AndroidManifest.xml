@@ -13,10 +13,19 @@
         android:theme="@style/Theme.SEG2105_Project"
         tools:targetApi="31">
         <activity
+            android:name=".ViewRegistredEvents"
+            android:exported="false" />
+        <activity
             android:name=".ViewSpecificEventAsAttendees"
             android:exported="false" />
         <activity
             android:name=".SearchEventsAttendees"
+            android:exported="false" />
+        <activity
+            android:name=".AttendeeRequestAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".AttendeeRequestItem"
             android:exported="false" />
         <activity
             android:name=".AttendeeDetailsActivity"
