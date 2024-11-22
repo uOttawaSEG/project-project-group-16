@@ -2,8 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
+      <SelectionState runConfigName="Unnamed">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+<<<<<<< Updated upstream
         <DropdownSelection timestamp="2024-11-19T01:57:37.911323900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
@@ -12,6 +16,8 @@
           </Target>
         </DropdownSelection>
         <DialogSelection />
+=======
+>>>>>>> Stashed changes
       </SelectionState>
     </selectionStates>
   </component>
