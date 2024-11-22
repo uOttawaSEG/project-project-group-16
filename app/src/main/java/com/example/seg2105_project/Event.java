@@ -22,6 +22,15 @@ public class Event {
         this.isManualApproval = isManualApproval;
     }
 
+    public Event(String title, String description, String date, String start_time, String end_time, String event_address) {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.event_address = event_address;
+    }
+
     public Event(String titleString, String descriptionString, String dateString, String startTimeString, String endTimeString, String eventAddressString, boolean isManualApproval, ArrayList<Object> objects) {
     }
 

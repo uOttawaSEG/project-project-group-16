@@ -1,4 +1,5 @@
 package com.example.seg2105_project;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +24,15 @@ public class RegisteredEventsAdapter extends RecyclerView.Adapter<RegisteredEven
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // the layout for each item
-        View view = LayoutInflater.from(context).inflate(R.layout.list_events_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_registered_events_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Bind data to views
         Event event = events.get(position);
+
+
         holder.eventTitle.setText(event.getTitle());
         holder.eventDescription.setText(event.getDescription());
         holder.eventDate.setText("Date: " + event.getDate());

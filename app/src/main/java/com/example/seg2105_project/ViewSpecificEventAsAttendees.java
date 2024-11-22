@@ -1,5 +1,6 @@
 package com.example.seg2105_project;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewSpecificEventAsAttendees extends AppCompatActivity {
 
     private TextView eventTitle, eventDescription, eventDate, eventStartTime, eventEndTime, eventAddress;
@@ -20,6 +24,8 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private long event_idLong;
     private int event_id;
+    private List<Integer> viewRegisteredEvents = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +95,16 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
                 Toast.makeText(this, "Event ID is missing!", Toast.LENGTH_SHORT).show();
                 finish();
             }
+
             boolean isRegistered= dbHelper.registerAttendeetoEvent(attendeeId,event_id);
 
+
+
             if (isRegistered){
+
+                viewRegisteredEvents.add(event_id);
                 Toast.makeText(this, "You have been successfully registered for the event ! ", Toast.LENGTH_SHORT).show();
+
             }
 
             else{

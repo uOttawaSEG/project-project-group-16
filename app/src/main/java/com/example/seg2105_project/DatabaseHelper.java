@@ -406,29 +406,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase dbHelper= this.getWritableDatabase();
 
-        Log.d("DatabaseHelper", "Attempting to register attendee " + attendeeId + " to event " + eventId);
-
-
-
         // verify if the attendee is already registered
 
         Cursor cursor = dbHelper.rawQuery("SELECT * FROM EventAttendees WHERE attendee_id = ? AND event_id = ?",
                 new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
 
         if (cursor.moveToFirst()){
-            Log.d("DatabaseHelper", "User is already registered for this event.");
             cursor.close();
             return false; // attendee already registered
         }
+
+        cursor.close();
 
         // attendee not registered
         ContentValues values = new ContentValues();
         values.put("attendee_id", attendeeId);
         values.put("event_id", eventId);
-        values.put("registration_status", "requested"); // default value is "requested"
+        values.put("registration_status", "registered"); // default value is "registered"
 
         long result= dbHelper.insert("EventAttendees", null,values);
-        return result !=1 ;// TRUE if successful registration
+        return result !=-1 ;// TRUE if successful registration
 
 
     }

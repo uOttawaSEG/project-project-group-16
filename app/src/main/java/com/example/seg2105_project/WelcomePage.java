@@ -155,7 +155,7 @@ public class WelcomePage extends AppCompatActivity {
 
         // Handle registered Events (attendees)
         viewRegistredEventsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(WelcomePage.this, ViewRegistredEvents.class);
+            Intent intent = new Intent(WelcomePage.this, ViewRegistratedEvents.class);
             intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         });
