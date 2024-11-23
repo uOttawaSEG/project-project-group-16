@@ -28,6 +28,7 @@ public class WelcomePage extends AppCompatActivity {
     private Button viewUpcomingEvents;
     private Button viewPastEvents;
     private Button searchForEventsButton;
+    private Button viewRegistredEventsButton;
     private DatabaseHelper db;
 
     private String userTypeString;
@@ -53,6 +54,7 @@ public class WelcomePage extends AppCompatActivity {
         viewUpcomingEvents = findViewById(R.id.viewUpcomingEvents);
         viewPastEvents = findViewById(R.id.viewPastEvents);
         searchForEventsButton = findViewById(R.id.searchForEventsButton);
+        viewRegistredEventsButton=findViewById(R.id.viewregistredeventsBtn);
 
         // Retrieve the userData passed from another activity
 
@@ -89,6 +91,8 @@ public class WelcomePage extends AppCompatActivity {
 
                 searchForEventsButton.setVisibility(View.VISIBLE);
                 searchForEventsButton.setEnabled(true);
+                viewRegistredEventsButton.setVisibility(View.VISIBLE);
+                viewRegistredEventsButton.setEnabled(true);
 
             }
 
@@ -142,8 +146,16 @@ public class WelcomePage extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Search for events (attendee)
         searchForEventsButton.setOnClickListener(view -> {
             Intent intent = new Intent(WelcomePage.this, SearchEventsAttendees.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
+        // Handle registered Events (attendees)
+        viewRegistredEventsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, ViewRegistratedEvents.class);
             intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         });

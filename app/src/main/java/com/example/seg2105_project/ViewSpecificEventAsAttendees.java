@@ -1,7 +1,9 @@
 package com.example.seg2105_project;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewSpecificEventAsAttendees extends AppCompatActivity {
 
     private TextView eventTitle, eventDescription, eventDate, eventStartTime, eventEndTime, eventAddress;
@@ -19,6 +24,8 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private long event_idLong;
     private int event_id;
+    private List<Integer> viewRegisteredEvents = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
 
         // Initialize DatabaseHelper
         dbHelper = new DatabaseHelper(this);
+
+        registerButton = findViewById(R.id.registerButton);
 
         event_idLong = getIntent().getIntExtra("event_id", -1);
         event_id = (int) event_idLong;
@@ -73,6 +82,36 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
         } else {
             Toast.makeText(ViewSpecificEventAsAttendees.this, "Impossible to access the information of the event. Please try again.", Toast.LENGTH_LONG).show();
         }
+
+
+        registerButton.setOnClickListener(v ->{
+
+            int event_id= getIntent().getIntExtra("event_id", -1);
+            int attendeeId= 1;
+
+
+            if (event_id==-1){
+                Log.e("ViewSpecificEventsAsAttendee","Event id is missing" );
+                Toast.makeText(this, "Event ID is missing!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            boolean isRegistered= dbHelper.registerAttendeetoEvent(attendeeId,event_id);
+
+
+
+            if (isRegistered){
+
+                viewRegisteredEvents.add(event_id);
+                Toast.makeText(this, "You have been successfully registered for the event ! ", Toast.LENGTH_SHORT).show();
+
+            }
+
+            else{
+                Toast.makeText(this, "You already have registered for this event", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
     }
 }

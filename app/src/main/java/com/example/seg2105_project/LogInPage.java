@@ -80,7 +80,7 @@ public class LogInPage extends AppCompatActivity {
 
                 loggedIn = false;  // Variable to check if the user is connected
                 // Loop until the user logs in
-                while (!loggedIn) {
+               if (!loggedIn) {
                     //Check admin credentials
                     if (emailAddressString.equals(adminEmail) && passwordString.equals(adminpassword)) {
                         Intent intent = new Intent(LogInPage.this, WelcomePage.class);

@@ -85,8 +85,16 @@ public class EventAdapter extends ArrayAdapter<Event> {
         holder.viewAttendeesRequestListButton.setOnClickListener(v ->{
             Context context = v.getContext();
             Intent intent = new Intent(context, AttendeeRequestOverview.class);
-            intent.putExtra("event_id", currentEvent.getEvent_id());
-            context.startActivity(intent);
+
+
+            // verify event id
+            if (currentEvent.getEvent_id() != 0) {
+                intent.putExtra("event_id", currentEvent.getEvent_id());
+                context.startActivity(intent);
+            } else {
+                Toast.makeText(context, "Event ID is invalid!", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         return listItem;
