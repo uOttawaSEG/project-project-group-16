@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -493,7 +496,81 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return result != -1; // Return true if insertion succeeded
     }
+    // Convert date and time string to milliseconds
+    private long parseDateTimeToMillis(String dateTime) {
+        try {
+            // Define the format of your date and time strings
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
+            // Parse the dateTime string into a Date object
+            Date date = sdf.parse(dateTime);
+
+            // Return the time in milliseconds
+            return date != null ? date.getTime() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0; // Return 0 in case of an error
+        }
+    }
+    //Handle event registration cancellation
+    public boolean cancelRegistration(int attendeeId, int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Step 1: Check the event timing
+        Cursor eventCursor = db.query(
+                "Events",
+                new String[]{"date", "start_time"},
+                "event_id = ?",
+                new String[]{String.valueOf(eventId)},
+                null, null, null
+        );
+
+        if (eventCursor != null && eventCursor.moveToFirst()) {
+            String eventDate = eventCursor.getString(eventCursor.getColumnIndexOrThrow("date"));
+            String startTime = eventCursor.getString(eventCursor.getColumnIndexOrThrow("start_time"));
+            eventCursor.close();
+
+            // Combine date and start_time
+            String eventDateTime = eventDate + " " + startTime;
+            long eventTimeMillis = parseDateTimeToMillis(eventDateTime);
+            long currentTimeMillis = System.currentTimeMillis();
+
+            // Check if event starts in less than 24 hours
+            if (eventTimeMillis - currentTimeMillis < 24 * 60 * 60 * 1000) {
+                return false; // Event is too close to start
+            }
+        }
+
+        // Step 2: Check if the registration status is pending
+        Cursor regCursor = db.query(
+                "EventAttendees",
+                new String[]{"registration_status"},
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
+                null, null, null
+        );
+
+        if (regCursor != null && regCursor.moveToFirst()) {
+            String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
+            regCursor.close();
+
+            if (!status.equals("pending")) {
+                return false; // Registration is not pending
+            }
+        } else {
+            // No matching registration found
+            return false;
+        }
+
+        // Step 3: Cancel the registration
+        int rowsDeleted = db.delete(
+                "EventAttendees",
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)}
+        );
+
+        return rowsDeleted > 0; // Return true if a row was deleted
+    }
 
 
 

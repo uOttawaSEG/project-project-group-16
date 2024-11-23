@@ -50,5 +50,12 @@
         android:layout_height="wrap_content"
         android:text="Event Address"
         app:layout_constraintTop_toBottomOf="@+id/eventEndTime"/>
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel Registration"
+        app:layout_constraintTop_toBottomOf="@+id/eventAddress"
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

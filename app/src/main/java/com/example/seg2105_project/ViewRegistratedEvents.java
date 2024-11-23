@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +50,8 @@ public class ViewRegistratedEvents extends AppCompatActivity {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                // Extract eventId from the cursor
+                int eventId = cursor.getInt(cursor.getColumnIndexOrThrow("event_id"));
                 // Extract event details from the cursor
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
@@ -56,6 +59,12 @@ public class ViewRegistratedEvents extends AppCompatActivity {
                 String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
                 String endTime = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
                 String address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
+
+                // Create a container (eventLayout) for event details and the cancel button
+                LinearLayout eventLayout = new LinearLayout(this);
+                eventLayout.setOrientation(LinearLayout.VERTICAL);
+                eventLayout.setPadding(16, 16, 16, 16);
+                eventLayout.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
 
                 // Create a TextView for each event and configure its display
                 TextView eventView = new TextView(this);
@@ -72,8 +81,28 @@ public class ViewRegistratedEvents extends AppCompatActivity {
                     Toast.makeText(this, "Selected Event: " + title, Toast.LENGTH_SHORT).show();
                 });
 
-                // Add the event view to the container
-                eventContainer.addView(eventView);
+                // Create a Cancel Button
+                Button cancelButton = new Button(this);
+                cancelButton.setText("Cancel Registration");
+
+                // Set click listener for the cancel button
+                cancelButton.setOnClickListener(v -> {
+                    boolean isCancelled = dbHelper.cancelRegistration(attendeeId, eventId);
+
+                    if (isCancelled) {
+                        Toast.makeText(this, "Registration cancelled successfully.", Toast.LENGTH_SHORT).show();
+                        eventContainer.removeView(eventLayout); // Remove the entire event layout from the UI
+                    } else {
+                        Toast.makeText(this, "Failed to cancel registration.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Add the TextView and Button to the eventLayout
+                eventLayout.addView(eventView);
+                eventLayout.addView(cancelButton);
+
+                // Add the eventLayout to the eventContainer
+                eventContainer.addView(eventLayout);
 
             } while (cursor.moveToNext());
 
