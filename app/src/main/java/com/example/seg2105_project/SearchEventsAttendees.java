@@ -62,6 +62,7 @@ public class SearchEventsAttendees extends AppCompatActivity {
 
 
     private void loadCorrespondingEvents(){
+
         // add the corresponding future events to the eventList
         Cursor cursor = dbHelper.getUpcomingEvents();
 

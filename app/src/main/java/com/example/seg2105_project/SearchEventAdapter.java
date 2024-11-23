@@ -20,6 +20,7 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
 
     private Context context;
     private List<Event> events;
+    private Object attendeeId;
 
     public SearchEventAdapter(Context context, List<Event> events) {
         super(context, R.layout.list_event_search_by_attendees, events);
@@ -32,18 +33,19 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        SearchEventAdapter.ViewHolder holder;
+        ViewHolder holder;
 
         if (listItem == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             listItem = inflater.inflate(R.layout.list_event_search_by_attendees, parent, false);
 
-            holder = new SearchEventAdapter.ViewHolder();
+            holder = new ViewHolder();
             holder.eventTitle = listItem.findViewById(R.id.eventTitle);
             holder.eventDate = listItem.findViewById(R.id.eventDate);
             holder.eventStartTime = listItem.findViewById(R.id.eventStartTime);
             holder.eventEndTime = listItem.findViewById(R.id.eventEndTime);
             holder.viewMoreInfo = listItem.findViewById(R.id.viewMoreInfo);
+            holder.requestRegistration = listItem.findViewById(R.id.requestRegistration);
 
             listItem.setTag(holder);
         } else {
@@ -56,6 +58,23 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
         holder.eventDate.setText("Date: " + currentEvent.getDate());
         holder.eventStartTime.setText("From: " + currentEvent.getStart_time());
         holder.eventEndTime.setText("To: " + currentEvent.getEnd_time());
+        // Handle Request Registration button
+        holder.requestRegistration.setOnClickListener(v -> {
+
+            DatabaseHelper dbHelper = new DatabaseHelper(context);
+            boolean success = dbHelper.requestEventRegistration(String.valueOf(attendeeId), String.valueOf(currentEvent.getEvent_id()));
+
+            if (success) {
+                // Remove the event from the current list and update the adapter
+                events.remove(position);
+                notifyDataSetChanged();
+
+                Toast.makeText(context, "Registration requested successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Failed to request registration. Try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         // Set up info button click listener
         holder.viewMoreInfo.setOnClickListener(v -> {
@@ -75,6 +94,7 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
         TextView eventStartTime;
         TextView eventEndTime;
         Button viewMoreInfo;
+        Button requestRegistration;
     }
 
 }

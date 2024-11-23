@@ -472,6 +472,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
+    public boolean requestEventRegistration(String attendeeId, String eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("attendeeId", attendeeId); // Add attendee ID
+        values.put("eventId", eventId);       // Add event ID
+        values.put("status", "Pending");      // Default status is Pending
+        values.put("timestamp", System.currentTimeMillis()); // Add request time
+
+        long result = db.insert("EventRegistrations", null, values);
+        db.close();
+
+        return result != -1; // Return true if insertion succeeded
+    }
+
 
 
 
