@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
@@ -283,6 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+
     // Method to fetch all upcoming events
     public Cursor getUpcomingEvents() {
         // Get a readable version of the database
@@ -298,7 +304,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                     // HAVING clause (not needed)
                 null                     // ORDER BY clause (null means no specific order)
         );
+
     }
+
 
 
     // Method to fetch all past events
