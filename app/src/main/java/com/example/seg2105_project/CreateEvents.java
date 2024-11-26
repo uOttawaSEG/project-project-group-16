@@ -26,7 +26,7 @@ import java.util.Locale;
 public class CreateEvents extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private Button submitEventButton;
+    private Button submitEventButton, deleteEventButton;
     private EditText title, description, date, start_time, end_time, event_address;
     private String organizerId;
     private String eventState;
@@ -64,13 +64,7 @@ public class CreateEvents extends AppCompatActivity {
         db=new DatabaseHelper(this);
         userTypeString = getIntent().getStringExtra("UserType");
 
-
-        submitEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerEvent();
-            }
-        });
+        submitEventButton.setOnClickListener(view -> registerEvent());
     }
 
     public void registerEvent(){

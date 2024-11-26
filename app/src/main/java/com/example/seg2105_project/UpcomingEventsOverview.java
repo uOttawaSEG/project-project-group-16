@@ -90,20 +90,11 @@ public class UpcomingEventsOverview extends AppCompatActivity {
 
     }
 
-    public void deleteEvent(String title) {
-        boolean isDeleted = dbHelper.deleteEvent(title);
+    public void deleteEvent(int event_id) {
+        boolean isDeleted = dbHelper.deleteEventById(event_id);
         if (isDeleted) {
             Toast.makeText(this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
-            // Refresh the event list
-            for (int i = 0; i < eventList.size(); i++) {
-                if (eventList.get(i).getTitle().equals(title)) {
-                    eventList.remove(i);
-                    break;
-                }
-            }
-
-            ((EventAdapter) eventListView.getAdapter()).notifyDataSetChanged();
-
+            loadUpcomingEvents(); // Reload the event list to reflect changes
         } else {
             Toast.makeText(this, "Failed to delete the event", Toast.LENGTH_SHORT).show();
         }
