@@ -45,7 +45,6 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
             holder.eventStartTime = listItem.findViewById(R.id.eventStartTime);
             holder.eventEndTime = listItem.findViewById(R.id.eventEndTime);
             holder.viewMoreInfo = listItem.findViewById(R.id.viewMoreInfo);
-            holder.requestRegistration = listItem.findViewById(R.id.requestRegistration);
 
             listItem.setTag(holder);
         } else {
@@ -54,26 +53,13 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
 
         Event currentEvent = events.get(position);
 
+
         holder.eventTitle.setText(currentEvent.getTitle());
         holder.eventDate.setText("Date: " + currentEvent.getDate());
         holder.eventStartTime.setText("From: " + currentEvent.getStart_time());
         holder.eventEndTime.setText("To: " + currentEvent.getEnd_time());
-        // Handle Request Registration button
-        holder.requestRegistration.setOnClickListener(v -> {
 
-            DatabaseHelper dbHelper = new DatabaseHelper(context);
-            boolean success = dbHelper.requestEventRegistration(String.valueOf(attendeeId), String.valueOf(currentEvent.getEvent_id()));
 
-            if (success) {
-                // Remove the event from the current list and update the adapter
-                events.remove(position);
-                notifyDataSetChanged();
-
-                Toast.makeText(context, "Registration requested successfully!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, "Failed to request registration. Try again.", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
         // Set up info button click listener
@@ -94,7 +80,6 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
         TextView eventStartTime;
         TextView eventEndTime;
         Button viewMoreInfo;
-        Button requestRegistration;
     }
 
 }
