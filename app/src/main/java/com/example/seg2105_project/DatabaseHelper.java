@@ -395,6 +395,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean checkEventConflict(int organizerId, String startTime, String endTime, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM events WHERE organizer_id = ? AND event_date = ? AND " +
+                "(start_time < ? AND end_time > ? OR start_time < ? AND end_time > ?)";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(organizerId), date, endTime, startTime, startTime, endTime});
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            return true; // Conflict exists
+        }
+        return false; // No conflict
+    }
+
     public boolean deleteEventById(int event_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete("events", "event_id = ?", new String[]{String.valueOf(event_id)});
