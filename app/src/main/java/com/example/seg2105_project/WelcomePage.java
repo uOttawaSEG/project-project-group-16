@@ -27,6 +27,8 @@ public class WelcomePage extends AppCompatActivity {
     private Button viewcreateEventButton;
     private Button viewUpcomingEvents;
     private Button viewPastEvents;
+    private Button searchForEventsButton;
+    private Button viewRegistredEventsButton;
     private DatabaseHelper db;
 
     private String userTypeString;
@@ -51,6 +53,8 @@ public class WelcomePage extends AppCompatActivity {
         viewcreateEventButton = findViewById(R.id.createEventButton);
         viewUpcomingEvents = findViewById(R.id.viewUpcomingEvents);
         viewPastEvents = findViewById(R.id.viewPastEvents);
+        searchForEventsButton = findViewById(R.id.searchForEventsButton);
+        viewRegistredEventsButton=findViewById(R.id.viewregistredeventsBtn);
 
         // Retrieve the userData passed from another activity
 
@@ -81,6 +85,15 @@ public class WelcomePage extends AppCompatActivity {
 
                 viewPastEvents.setVisibility(View.VISIBLE);
                 viewPastEvents.setEnabled(true);
+            }
+
+            if(userTypeString.equals("Attendee")){
+
+                searchForEventsButton.setVisibility(View.VISIBLE);
+                searchForEventsButton.setEnabled(true);
+                viewRegistredEventsButton.setVisibility(View.VISIBLE);
+                viewRegistredEventsButton.setEnabled(true);
+
             }
 
 
@@ -129,6 +142,20 @@ public class WelcomePage extends AppCompatActivity {
         // Handle viewPastEvents button click
         viewPastEvents.setOnClickListener(view -> {
             Intent intent = new Intent(WelcomePage.this, PastEventsOverview.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
+        // Search for events (attendee)
+        searchForEventsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, SearchEventsAttendees.class);
+            intent.putExtra("UserType", userTypeString);
+            startActivity(intent);
+        });
+
+        // Handle registered Events (attendees)
+        viewRegistredEventsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WelcomePage.this, ViewRegistratedEvents.class);
             intent.putExtra("UserType", userTypeString);
             startActivity(intent);
         });

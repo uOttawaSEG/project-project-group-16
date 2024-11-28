@@ -3,8 +3,10 @@ package com.example.seg2105_project;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,13 +42,22 @@ public class UpcomingEventsOverview extends AppCompatActivity {
         // Initialize DatabaseHelper
         dbHelper = new DatabaseHelper(this);
 
+        // Load upcoming events into eventList
+        loadUpcomingEvents();
 
+
+    }
+
+    private void loadUpcomingEvents(){
         // add the upcoming events to the eventList
         Cursor cursor = dbHelper.getUpcomingEvents();
 
         if (cursor.moveToFirst()) {
             noEventText.setVisibility(View.INVISIBLE);
             do {
+                int event_idIndex = cursor.getColumnIndex("event_id");
+                long event_idLong = cursor.getLong(event_idIndex);
+                int event_id = (int) event_idLong;
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -55,10 +66,12 @@ public class UpcomingEventsOverview extends AppCompatActivity {
                 String event_address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
                 String organizer_id = cursor.getString(cursor.getColumnIndexOrThrow("organizer_id"));
                 List<Attendee> attendees = new ArrayList<>();
-                String autoApproveString = cursor.getString(cursor.getColumnIndexOrThrow("auto_approve"));
-                boolean isManualApproval = !Boolean.parseBoolean(autoApproveString); // true for manual, false for automatic
+                Integer isManualApprovalInt = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("isManualApproval")));
+                boolean isManualApproval;
+                if (isManualApprovalInt == 1) isManualApproval = true;
+                else isManualApproval = false;
 
-                Event event = new Event(title, description, date, start_time, end_time, event_address,isManualApproval, attendees);
+                Event event = new Event(event_id, title, description, date, start_time, end_time, event_address,isManualApproval, attendees);
                 eventList.add(event);
             } while (cursor.moveToNext());
 
@@ -77,6 +90,15 @@ public class UpcomingEventsOverview extends AppCompatActivity {
 
     }
 
+    public void deleteEvent(int event_id) {
+        boolean isDeleted = dbHelper.deleteEventById(event_id);
+        if (isDeleted) {
+            Toast.makeText(this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
+            loadUpcomingEvents(); // Reload the event list to reflect changes
+        } else {
+            Toast.makeText(this, "Failed to delete the event", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 }

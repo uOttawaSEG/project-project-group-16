@@ -18,7 +18,7 @@ import  android.widget.Button;
 public class AttendeeRequestOverview extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
-    private String eventId;
+    private int eventId;
 
 
     @Override
@@ -35,9 +35,10 @@ public class AttendeeRequestOverview extends AppCompatActivity {
         //UI element
 
         dbHelper=new DatabaseHelper(this);
-        eventId=getIntent().getStringExtra("eventId");
-        if(eventId!=null){
-            loadAttendeeRequests(eventId);
+        eventId = getIntent().getIntExtra("event_id", -1);
+        if(eventId != -1){
+            String eventIdString = String.valueOf(eventId);
+            loadAttendeeRequests(eventIdString);
         }
         else{
             Toast.makeText(this,"No event Id provided",Toast.LENGTH_SHORT).show();

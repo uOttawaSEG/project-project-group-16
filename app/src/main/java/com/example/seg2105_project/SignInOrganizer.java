@@ -140,18 +140,6 @@ public class SignInOrganizer extends AppCompatActivity {
 
 
 
-
-        // If all validations pass, proceed to register
-        /* userData = new ArrayList<>(8);
-        userData.add(firstNameString);
-        userData.add(lastNameString);
-        userData.add(emailAddressString);
-        userData.add(phoneNumberString);
-        userData.add(addressString);
-        userData.add(passwordString);
-        userData.add(organizationNameString);
-        */
-
         boolean insertSuccess= dbHelper.addUser(
                 firstNameString,
                 lastNameString,
@@ -167,7 +155,7 @@ public class SignInOrganizer extends AppCompatActivity {
         // Proceed after successful validation
         if (insertSuccess) {
             Toast.makeText(SignInOrganizer.this, "Registration Successful", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SignInOrganizer.this, LogInPage.class);
+            Intent intent = new Intent(SignInOrganizer.this, MainActivity.class);
             intent.putExtra("UserType", "Organizer");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
@@ -178,14 +166,7 @@ public class SignInOrganizer extends AppCompatActivity {
             Toast.makeText(SignInOrganizer.this, "Registration Failed. Try Again.", Toast.LENGTH_LONG).show();
         }
 
-        /*
-        Toast.makeText(SignInOrganizer.this, "You are signed in as an Organizer", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(SignInOrganizer.this, LogInPage.class);
-        intent.putExtra("UserType","Organizer");
-        intent.putExtra("Email",emailAddressString);
-        intent.putExtra("passWord",passwordString);
-        startActivity(intent);
-        */
+
 
     }
 }

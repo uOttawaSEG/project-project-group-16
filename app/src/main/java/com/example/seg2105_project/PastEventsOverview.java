@@ -50,6 +50,9 @@ public class PastEventsOverview extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             noEventText.setVisibility(View.INVISIBLE);
             do {
+                int event_idIndex = cursor.getColumnIndex("event_id");
+                long event_idLong = cursor.getLong(event_idIndex);
+                int event_id = (int) event_idLong;
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -61,7 +64,7 @@ public class PastEventsOverview extends AppCompatActivity {
                 String autoApproveString = cursor.getString(cursor.getColumnIndexOrThrow("auto_approve"));
                 boolean isManualApproval = !Boolean.parseBoolean(autoApproveString); // true for manual, false for automatic
 
-                Event event = new Event(title, description, date, start_time, end_time, event_address,isManualApproval,attendees);
+                Event event = new Event(event_id, title, description, date, start_time, end_time, event_address,isManualApproval,attendees);
                 eventList.add(event);
             } while (cursor.moveToNext());
 

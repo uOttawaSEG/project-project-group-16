@@ -17,17 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class CreateEvents extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private Button submitEventButton;
+    private Button submitEventButton, deleteEventButton;
     private EditText title, description, date, start_time, end_time, event_address;
     private String organizerId;
     private String eventState;
@@ -63,21 +62,14 @@ public class CreateEvents extends AppCompatActivity {
         userTypeString = getIntent().getStringExtra("UserType");
 
         db=new DatabaseHelper(this);
-        userTypeString = getIntent().getStringExtra("UserType");
 
-
-        submitEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerEvent();
-            }
-        });
+        submitEventButton.setOnClickListener(view -> registerEvent());
     }
 
     public void registerEvent(){
 
         //input values
-        String titleString=title.getText().toString().trim();;
+        String titleString=title.getText().toString().trim();
         String descriptionString=description.getText().toString().trim();
         String dateString=date.getText().toString().trim();
         String startTimeString=start_time.getText().toString().trim();
@@ -88,9 +80,6 @@ public class CreateEvents extends AppCompatActivity {
         boolean isManualApproval = selectedMode.equals("Manual");
 
         //field validation
-    if (titleString.isEmpty()){
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-    }
 
         if (titleString.isEmpty()){
             Toast.makeText(this, "Title cannot be empty .", Toast.LENGTH_SHORT).show();
@@ -127,6 +116,7 @@ public class CreateEvents extends AppCompatActivity {
 
         if (!isFutureDate(dateString)){
             Toast.makeText(this, "Please select a valid date. ", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(!isValidDate(dateString)){
             Toast.makeText(this, "Invalid Date format", Toast.LENGTH_SHORT).show();
@@ -134,34 +124,40 @@ public class CreateEvents extends AppCompatActivity {
         }
 
         if (!isStartBeforeEnd(startTimeString,endTimeString)){
-            Toast.makeText(this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "End time must be after start time", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (!isValidTime(startTimeString)){
             Toast.makeText(this, "Invalid start time format", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Create a new Event object with approval mode
-        Event event = new Event(
-                titleString,
-                descriptionString,
-                dateString,
-                startTimeString,
-                endTimeString,
-                eventAddressString,
-                isManualApproval,
-                new ArrayList<>()
-        );
+
+        if (!is30minIncrement(startTimeString)){
+            Toast.makeText(this, "The start time must be selected in 30-minute increments", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!is30minIncrement(endTimeString)){
+            Toast.makeText(this, "The end time must be selected in 30-minute increments", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
 
-        //field validation done
 
+        // Retrieve current user email and fetch organizerId
         SharedPreferences sharedPreferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String currentEmail=sharedPreferences.getString("email", null);
-        //int organizerId= db.getUserId(currentEmail);
-        int organizerId = 0;
-        boolean insertSuccess=db.addEvent(
+        int organizerId= db.getUserId(currentEmail);
+
+        // Check for event conflicts before registering
+        if (db.checkEventConflict(organizerId, startTimeString, endTimeString, dateString)) {
+            Toast.makeText(this, "You have a conflict with another event. Please select a different time.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        long event_id=db.addEvent(
                 titleString,
                 descriptionString,
                 dateString,
@@ -169,9 +165,9 @@ public class CreateEvents extends AppCompatActivity {
                 endTimeString,
                 eventAddressString,
                 organizerId,
-                isManualApproval
+                true // Default to manual approval mode
         );
-        if(insertSuccess){
+        if(event_id != -1){
 
             Toast.makeText(CreateEvents.this, "Event Creation Successful", Toast.LENGTH_LONG).show();
             Intent intent= new Intent(CreateEvents.this, WelcomePage.class);
@@ -215,26 +211,45 @@ public class CreateEvents extends AppCompatActivity {
     }
 
     private boolean isValidTime(String time){
-    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
-    timeFormat.setLenient(false);
-    try{
-        timeFormat.parse(time);
-        return true;
-    } catch (ParseException e) {
-        return false;
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        timeFormat.setLenient(false);
+        try{
+            timeFormat.parse(time);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+
     }
 
+
+    private boolean is30minIncrement(String time) {
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        timeFormat.setLenient(false);
+
+        try{
+            Date parsedTime = timeFormat.parse(time);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parsedTime);
+
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            return (minutes == 0 || minutes == 30);
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
 
     private boolean isStartBeforeEnd(String startTime, String endTime){
-    SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
-    try{
-        Date start=timeFormat.parse(startTime);
-        Date end= timeFormat.parse(endTime);
-        return start.before(end);
-    } catch (ParseException e) {
-        return false;
-    }
+        SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm", Locale.getDefault());
+        try{
+            Date start=timeFormat.parse(startTime);
+            Date end= timeFormat.parse(endTime);
+            return start.before(end);
+        } catch (ParseException e) {
+            return false;
+        }
     }
 }

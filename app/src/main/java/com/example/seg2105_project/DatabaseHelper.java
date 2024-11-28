@@ -6,12 +6,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 10;
 
+    private static final String TABLE_EVENTS = "events";
+    private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_DATE = "date";
+    private static final String COLUMN_ORGANIZER_EMAIL = "organizer_email";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,6 +69,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         db.execSQL(createEventsTable);
+
+
+        String createEventAttendeesTable = "CREATE TABLE EventAttendees ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "event_id INTEGER NOT NULL, "
+                + "attendee_id INTEGER NOT NULL, "
+                + "registration_status TEXT DEFAULT 'pending', "
+                + "FOREIGN KEY (event_id) REFERENCES Events(event_id), "
+                + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
+                + ");";
+        db.execSQL(createEventAttendeesTable);
     }
 
 
@@ -98,6 +122,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(createEventAttendeesTable);
         }
 
+        if (oldVersion < 6) {   // added isManualApproval column
+            db.execSQL("ALTER TABLE Events ADD COLUMN isManualApproval INTEGER");
+        }
+
     }
 
 
@@ -126,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id,boolean isManualApproval){
+    public long addEvent(String title,String description, String date, String start_time, String end_time, String event_address, int organizer_id,boolean isManualApproval){
 
 
         SQLiteDatabase db=this.getWritableDatabase();
@@ -140,13 +168,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("event_address", event_address);
         values.put("eventState", "upcoming");
         values.put("organizer_id",organizer_id);
-        values.put("isManualApproval", isManualApproval);  // Store the approval mode (0 or 1)
+        values.put("isManualApproval", isManualApproval ? 1 : 0);  // Store the approval mode (0 or 1)
 
 
-        long result=db.insert("Events",null,values);
+        long eventId = db.insert("Events", null, values);
 
         //return 1 if the insertion has been done
-        return result !=-1;
+        return eventId;
     }
 
     public String checkUser(String email, String password) {
@@ -267,6 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+
     // Method to fetch all upcoming events
     public Cursor getUpcomingEvents() {
         // Get a readable version of the database
@@ -282,7 +311,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                     // HAVING clause (not needed)
                 null                     // ORDER BY clause (null means no specific order)
         );
+
     }
+
 
 
     // Method to fetch all past events
@@ -364,7 +395,200 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean checkEventConflict(int organizerId, String startTime, String endTime, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM events WHERE organizer_id = ? AND event_date = ? AND " +
+                "(start_time < ? AND end_time > ? OR start_time < ? AND end_time > ?)";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(organizerId), date, endTime, startTime, startTime, endTime});
 
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            return true; // Conflict exists
+        }
+        return false; // No conflict
+    }
+
+    public boolean deleteEventById(int event_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete("events", "event_id = ?", new String[]{String.valueOf(event_id)});
+        db.close();
+        return rowsDeleted > 0;
+    }
+
+    public Cursor getEvent(int event_id){
+        // Get a readable version of the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Perform the query to fetch upcoming events
+        return db.query(
+                "Events",                 // Table name
+                null,                         // Columns to return (null means all columns)
+                "event_id= ?",               // WHERE clause to filter by the state of the event (event_id)
+                new String[]{String.valueOf(event_id)},    // Argument for the WHERE clause (event_id)
+                null,                      // GROUP BY clause (not needed)
+                null,                     // HAVING clause (not needed)
+                null                     // ORDER BY clause (null means no specific order)
+        );
+    }
+
+    public boolean registerAttendeetoEvent(int attendeeId, int eventId){
+
+        SQLiteDatabase dbHelper= this.getWritableDatabase();
+
+        // verify if the attendee is already registered
+
+        Cursor cursor = dbHelper.rawQuery("SELECT * FROM EventAttendees WHERE attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
+
+        if (cursor.moveToFirst()){
+            cursor.close();
+            return false; // attendee already registered
+        }
+
+        cursor.close();
+
+        // attendee not registered
+        ContentValues values = new ContentValues();
+        values.put("attendee_id", attendeeId);
+        values.put("event_id", eventId);
+        values.put("registration_status", "registered"); // default value is "registered"
+
+        long result= dbHelper.insert("EventAttendees", null,values);
+        return result !=-1 ;// TRUE if successful registration
+
+
+    }
+
+    public Cursor getRegisteredEventsForAttendee(int attendeeId){
+        SQLiteDatabase dbHelper= this.getWritableDatabase();
+
+        String query =  "SELECT E.* " +
+                "FROM Events E " +
+                "JOIN EventAttendees EA ON E.event_id = EA.event_id " +
+                "WHERE EA.attendee_id = ?"+
+                "ORDER BY E.date DESC"; // Newest events at the top
+
+        return dbHelper.rawQuery(query, new String [] {String.valueOf(attendeeId)});
+    }
+
+
+    // Methods to verify if the email and the phoneNumber exist in the SQLite Database
+    public boolean emailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                "Users",
+                new String[]{"email"},
+                "email = ?",
+                new String[]{email},
+                null, null, null
+        );
+
+        boolean exists = cursor.getCount() > 0;
+        return exists;
+    }
+
+    public boolean phoneExists(String phoneNumber) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                "Users",
+                new String[]{"phone_number"},
+                "phone_number = ?",
+                new String[]{phoneNumber},
+                null, null, null
+        );
+
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+    public boolean requestEventRegistration(String attendeeId, String eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("attendeeId", attendeeId); // Add attendee ID
+        values.put("eventId", eventId);       // Add event ID
+        values.put("status", "Pending");      // Default status is Pending
+        values.put("timestamp", System.currentTimeMillis()); // Add request time
+
+        long result = db.insert("EventRegistrations", null, values);
+        db.close();
+
+        return result != -1; // Return true if insertion succeeded
+    }
+    // Convert date and time string to milliseconds
+    private long parseDateTimeToMillis(String dateTime) {
+        try {
+            // Define the format of your date and time strings
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
+            // Parse the dateTime string into a Date object
+            Date date = sdf.parse(dateTime);
+
+            // Return the time in milliseconds
+            return date != null ? date.getTime() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0; // Return 0 in case of an error
+        }
+    }
+    //Handle event registration cancellation
+    public boolean cancelRegistration(int attendeeId, int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Step 1: Check the event timing
+        Cursor eventCursor = db.query(
+                "Events",
+                new String[]{"date", "start_time"},
+                "event_id = ?",
+                new String[]{String.valueOf(eventId)},
+                null, null, null
+        );
+
+        if (eventCursor != null && eventCursor.moveToFirst()) {
+            String eventDate = eventCursor.getString(eventCursor.getColumnIndexOrThrow("date"));
+            String startTime = eventCursor.getString(eventCursor.getColumnIndexOrThrow("start_time"));
+            eventCursor.close();
+
+            // Combine date and start_time
+            String eventDateTime = eventDate + " " + startTime;
+            long eventTimeMillis = parseDateTimeToMillis(eventDateTime);
+            long currentTimeMillis = System.currentTimeMillis();
+
+            // Check if event starts in less than 24 hours
+            if (eventTimeMillis - currentTimeMillis < 24 * 60 * 60 * 1000) {
+                return false; // Event is too close to start
+            }
+        }
+
+        // Step 2: Check if the registration status is pending
+        Cursor regCursor = db.query(
+                "EventAttendees",
+                new String[]{"registration_status"},
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
+                null, null, null
+        );
+
+        if (regCursor != null && regCursor.moveToFirst()) {
+            String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
+            regCursor.close();
+
+            if (!status.equals("pending")) {
+                return false; // Registration is not pending
+            }
+        } else {
+            // No matching registration found
+            return false;
+        }
+
+        // Step 3: Cancel the registration
+        int rowsDeleted = db.delete(
+                "EventAttendees",
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)}
+        );
+
+        return rowsDeleted > 0; // Return true if a row was deleted
+    }
 
 
 

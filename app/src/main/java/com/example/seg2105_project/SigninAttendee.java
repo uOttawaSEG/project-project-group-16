@@ -134,6 +134,14 @@ public class SigninAttendee extends AppCompatActivity {
             return;
         }
 
+        if (dbHelper.emailExists(emailAddressString)){
+            Toast.makeText(this, "This email already exists ! Please choose a different email.", Toast.LENGTH_SHORT).show();
+        }
+
+        if (dbHelper.phoneExists(phoneNumberString)){
+            Toast.makeText(this, "This phone number already exists ! Please choose a different phone number.", Toast.LENGTH_SHORT).show();
+        }
+
         // If all validations pass, proceed to register
          /* userData = new ArrayList<>(7);
         userData.add(firstNameString);
@@ -157,18 +165,11 @@ public class SigninAttendee extends AppCompatActivity {
                 "Attendee"
         );
 
-        /* Toast.makeText(SigninAttendee.this,"You are signed in as an Attendee",Toast.LENGTH_LONG).show();
-        Intent intent =new Intent(SigninAttendee.this,LogInPage.class);
-        intent.putExtra("UserType","Attendee");
-        intent.putExtra("Email",emailAddressString);
-        intent.putExtra("passWord",passwordString);
-        startActivity(intent);
 
-         */
 
         if (insertSuccess) {
             Toast.makeText(SigninAttendee.this, "Registration Successful", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SigninAttendee.this, LogInPage.class);
+            Intent intent = new Intent(SigninAttendee.this, MainActivity.class);
             intent.putExtra("UserType", "Attendee");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
