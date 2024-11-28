@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventAddressField" />
-    <?xml version="1.0" encoding="utf-8"?>
+
 
 
 
