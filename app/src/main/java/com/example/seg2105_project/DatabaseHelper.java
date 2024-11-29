@@ -542,25 +542,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         // Step 2: Check if the registration status is pending
-        Cursor regCursor = db.query(
-                "EventAttendees",
-                new String[]{"registration_status"},
-                "attendee_id = ? AND event_id = ?",
-                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
-                null, null, null
-        );
+        //Cursor regCursor = db.query(
+                //"EventAttendees",
+                //new String[]{"registration_status"},
+                //"attendee_id = ? AND event_id = ?",
+                //new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
+               // null, null, null
+        //);
 
-        if (regCursor != null && regCursor.moveToFirst()) {
-            String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
-            regCursor.close();
+        //if (regCursor != null && regCursor.moveToFirst()) {
+            //String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
+            //regCursor.close();
 
-            if (!status.equals("pending")) {
-                return false; // Registration is not pending
-            }
-        } else {
+            //if (!status.equals("pending")) {
+                //return false; // Registration is not pending
+            //}
+        //} else {
             // No matching registration found
-            return false;
-        }
+           // return false;
+        //}
 
         // Step 3: Cancel the registration
         int rowsDeleted = db.delete(
