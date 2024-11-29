@@ -26,7 +26,7 @@ import java.util.Locale;
 public class CreateEvents extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private Button submitEventButton;
+    private Button submitEventButton, deleteEventButton;
     private EditText title, description, date, start_time, end_time, event_address;
     private String organizerId;
     private String eventState;
@@ -62,15 +62,8 @@ public class CreateEvents extends AppCompatActivity {
         userTypeString = getIntent().getStringExtra("UserType");
 
         db=new DatabaseHelper(this);
-        userTypeString = getIntent().getStringExtra("UserType");
 
-
-        submitEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerEvent();
-            }
-        });
+        submitEventButton.setOnClickListener(view -> registerEvent());
     }
 
     public void registerEvent(){
@@ -87,9 +80,6 @@ public class CreateEvents extends AppCompatActivity {
         boolean isManualApproval = selectedMode.equals("Manual");
 
         //field validation
-        if (titleString.isEmpty()){
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-        }
 
         if (titleString.isEmpty()){
             Toast.makeText(this, "Title cannot be empty .", Toast.LENGTH_SHORT).show();
@@ -156,12 +146,17 @@ public class CreateEvents extends AppCompatActivity {
 
 
 
-        //field validation done
-
+        // Retrieve current user email and fetch organizerId
         SharedPreferences sharedPreferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String currentEmail=sharedPreferences.getString("email", null);
-        //int organizerId= db.getUserId(currentEmail);
-        int organizerId = 0;
+//        int organizerId= db.getUserId(currentEmail);
+//
+//        // Check for event conflicts before registering
+//        if (db.checkEventConflict(organizerId, startTimeString, endTimeString, dateString)) {
+//            Toast.makeText(this, "You have a conflict with another event. Please select a different time.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+int organizerId = 1;
         long event_id=db.addEvent(
                 titleString,
                 descriptionString,
@@ -170,7 +165,7 @@ public class CreateEvents extends AppCompatActivity {
                 endTimeString,
                 eventAddressString,
                 organizerId,
-                isManualApproval
+                true // Default to manual approval mode
         );
         if(event_id != -1){
 

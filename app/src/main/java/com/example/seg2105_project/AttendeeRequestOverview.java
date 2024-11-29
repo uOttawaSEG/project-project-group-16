@@ -77,6 +77,7 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                 String lastName = cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
                 String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
+                String registrationStatus=cursor.getString(cursor.getColumnIndexOrThrow("registration_status"));
 
                 // Create a layout for each attendee
                 LinearLayout attendeeLayout = new LinearLayout(this);
@@ -90,6 +91,16 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                         "Phone: " + phoneNumber);
                 attendeeView.setTextSize(16);
                 attendeeLayout.addView(attendeeView);
+
+
+                //Add registration status indicator
+                TextView statusView=new TextView(this);
+                statusView.setText("Status : "+registrationStatus);//Display status
+                statusView.setTextSize(14);
+                statusView.setPadding(0,8,0,8);
+                attendeeLayout.addView(statusView);
+
+
 
                 // Add "View Info" button
                 Button btnViewInfo = new Button(this);
@@ -112,6 +123,7 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                     if (success) {
                         attendeeRequestsContainer.removeView(attendeeLayout); // Remove from UI
                         Toast.makeText(this, "Registration approved!", Toast.LENGTH_SHORT).show();
+                        loadAttendeeRequests(eventId);//refresh list
                     }
                 });
                 attendeeLayout.addView(btnApprove);
@@ -124,6 +136,7 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                     if (success) {
                         attendeeRequestsContainer.removeView(attendeeLayout); // Remove from UI
                         Toast.makeText(this, "Registration rejected!", Toast.LENGTH_SHORT).show();
+                        loadAttendeeRequests(eventId);//refresh list
                     }
                 });
                 attendeeLayout.addView(btnReject);

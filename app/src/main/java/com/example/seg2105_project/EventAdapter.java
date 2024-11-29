@@ -72,7 +72,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     .setMessage("Are you sure you want to delete this event?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         // Call method to delete event
-                        ((UpcomingEventsOverview) context).deleteEvent(currentEvent.getTitle());
+                        ((UpcomingEventsOverview) context).deleteEvent(currentEvent.getEvent_id());
+                        // Remove from the list and notify adapter
                         events.remove(position); // Remove event from the list
                         notifyDataSetChanged(); // Refresh the list
                         Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT).show();
