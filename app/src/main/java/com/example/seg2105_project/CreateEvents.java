@@ -149,14 +149,14 @@ public class CreateEvents extends AppCompatActivity {
         // Retrieve current user email and fetch organizerId
         SharedPreferences sharedPreferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String currentEmail=sharedPreferences.getString("email", null);
-        int organizerId= db.getUserId(currentEmail);
-
-        // Check for event conflicts before registering
-        if (db.checkEventConflict(organizerId, startTimeString, endTimeString, dateString)) {
-            Toast.makeText(this, "You have a conflict with another event. Please select a different time.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+//        int organizerId= db.getUserId(currentEmail);
+//
+//        // Check for event conflicts before registering
+//        if (db.checkEventConflict(organizerId, startTimeString, endTimeString, dateString)) {
+//            Toast.makeText(this, "You have a conflict with another event. Please select a different time.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+int organizerId = 1;
         long event_id=db.addEvent(
                 titleString,
                 descriptionString,

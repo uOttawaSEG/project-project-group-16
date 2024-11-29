@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +45,6 @@ public class SearchEventsAttendees extends AppCompatActivity {
         eventList = new ArrayList<>();
         noEventText = findViewById(R.id.noEventText);
         keyword = findViewById(R.id.keyword);
-        keywordString = keyword.getText().toString().trim();
         searchKeywordButton = findViewById(R.id.searchKeywordButton);
 
 
@@ -53,6 +53,8 @@ public class SearchEventsAttendees extends AppCompatActivity {
 
         searchKeywordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                keywordString = keyword.getText().toString().trim();
+                eventList.clear();
                 // Load corresponding events into eventList
                 loadCorrespondingEvents();
             }
@@ -74,7 +76,8 @@ public class SearchEventsAttendees extends AppCompatActivity {
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 // Vérifie si le keyword se trouve dans le titre ou la description de l'événement, si oui l'événement est ajouté à la liste
-                if (title.contains(keywordString) || description.contains(keywordString)){
+                // vérifie que le keyword n'est pas vide
+                if (keywordString != null && (title.contains(keywordString) || description.contains(keywordString))){
                     noEventText.setVisibility(View.INVISIBLE);  // attend qu'au moins un événement soit trouvé pour rendre invisible le texte indiquant qu'aucun événement ne correspond à la recherche
                     String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
                     String start_time = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
