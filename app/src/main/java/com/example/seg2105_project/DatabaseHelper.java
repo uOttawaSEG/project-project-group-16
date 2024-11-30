@@ -334,10 +334,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //method to fetch attendee for a specific event
-    public Cursor getAttendeeForEvent(String eventId){
+    public Cursor getAttendeeForEvent(String eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
-                "SELECT U.first_name, U.last_name, U.email, U.phone_number " +
+                "SELECT EA.id, U.first_name, U.last_name, U.email, U.phone_number, EA.registration_status " +
                         "FROM Users U " +
                         "JOIN EventAttendees EA ON EA.attendee_id = U.user_id " +
                         "WHERE EA.event_id = ? AND EA.registration_status = 'pending'",
@@ -446,12 +446,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        // Check the approval mode of the event
+        Cursor eventCursor = dbHelper.query(
+                "Events",
+                new String[]{"isManualApproval"},
+                "event_id = ?",
+                new String[]{String.valueOf(eventId)},
+                null, null, null
+        );
+
+        String registrationStatus = "registered"; // Default for automatic approval
+        if (eventCursor != null && eventCursor.moveToFirst()) {
+            int isManualApproval = eventCursor.getInt(eventCursor.getColumnIndexOrThrow("isManualApproval"));
+            if (isManualApproval == 1) { // Manual approval
+                registrationStatus = "pending";
+            }
+            eventCursor.close();
+        }
+
 
         // attendee not registered
         ContentValues values = new ContentValues();
         values.put("attendee_id", attendeeId);
         values.put("event_id", eventId);
-        values.put("registration_status", "registered"); // default value is "registered"
+        values.put("registration_status", registrationStatus); // default value is "registered"
 
         long result= dbHelper.insert("EventAttendees", null,values);
         return result !=-1 ;// TRUE if successful registration
@@ -560,25 +578,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         // Step 2: Check if the registration status is pending
-        //Cursor regCursor = db.query(
-                //"EventAttendees",
-                //new String[]{"registration_status"},
-                //"attendee_id = ? AND event_id = ?",
-                //new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
-               // null, null, null
-        //);
+        Cursor regCursor = db.query(
+                "EventAttendees",
+                new String[]{"registration_status"},
+                "attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)},
+                null, null, null
+        );
 
-        //if (regCursor != null && regCursor.moveToFirst()) {
-            //String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
-            //regCursor.close();
+        if (regCursor != null && regCursor.moveToFirst()) {
+            String status = regCursor.getString(regCursor.getColumnIndexOrThrow("registration_status"));
+            regCursor.close();
 
-            //if (!status.equals("pending")) {
-                //return false; // Registration is not pending
-            //}
-        //} else {
+            if (!status.equals("pending")) {
+                return false; // Registration is not pending
+            }
+        } else {
             // No matching registration found
-           // return false;
-        //}
+             return false;
+        }
 
         // Step 3: Cancel the registration
         int rowsDeleted = db.delete(
@@ -589,6 +607,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0; // Return true if a row was deleted
     }
+
 
 
 

@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.util.Log;
 import android.widget.TextView;
 import android.database.Cursor;
 import android.widget.Toast;
@@ -51,6 +53,16 @@ public class AttendeeRequestOverview extends AppCompatActivity {
         attendeeRequestsContainer.removeAllViews(); // Clear previous entries
 
         Cursor cursor = dbHelper.getAttendeeForEvent(eventId);
+        // Add debug logs to verify database results
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Log.d("Database Debug", "Attendee ID: " + cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                Log.d("Database Debug", "First Name: " + cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                Log.d("Database Debug", "Registration Status: " + cursor.getString(cursor.getColumnIndexOrThrow("registration_status")));
+            } while (cursor.moveToNext());
+        } else {
+            Log.d("Database Debug", "No attendees found for event ID: " + eventId);
+        }
         if (cursor == null) {
             Toast.makeText(this, "Error loading attendee requests.", Toast.LENGTH_SHORT).show();
             return;

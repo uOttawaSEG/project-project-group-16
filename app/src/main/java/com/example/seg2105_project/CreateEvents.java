@@ -3,7 +3,9 @@ package com.example.seg2105_project;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -77,8 +79,9 @@ public class CreateEvents extends AppCompatActivity {
         String eventAddressString=event_address.getText().toString().trim();
         // Get selected approval mode
         String selectedMode = approvalModeSpinner.getSelectedItem().toString();
-        boolean isManualApproval = selectedMode.equals("Manual");
-
+        Log.d("Spinner Debug", "Selected mode from spinner: " + selectedMode);
+        boolean isManualApproval = selectedMode.equals("Manual Approval");
+        Log.d("Spinner Debug", "isManualApproval resolved to: " + isManualApproval);
         //field validation
 
         if (titleString.isEmpty()){
@@ -157,6 +160,9 @@ public class CreateEvents extends AppCompatActivity {
 //            return;
 //        }
 int organizerId = 1;
+        Log.d("Step 1", "isManualApproval passed: " + isManualApproval);
+
+
         long event_id=db.addEvent(
                 titleString,
                 descriptionString,
@@ -165,11 +171,23 @@ int organizerId = 1;
                 endTimeString,
                 eventAddressString,
                 organizerId,
-                true // Default to manual approval mode
+                isManualApproval//true  Default to manual approval mode
         );
         if(event_id != -1){
 
             Toast.makeText(CreateEvents.this, "Event Creation Successful", Toast.LENGTH_LONG).show();
+            // Verify event details
+            Cursor cursor = db.getEvent((int) event_id); // Fetch event details
+            if (cursor != null && cursor.moveToFirst()) {
+                String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                int manualApprovalValue = cursor.getInt(cursor.getColumnIndexOrThrow("isManualApproval"));
+                Log.d("Event Verification", "Event Title: " + title + ", isManualApproval: " + isManualApproval);
+            } else {
+                Log.e("Event Verification", "Event not found in database.");
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
             Intent intent= new Intent(CreateEvents.this, WelcomePage.class);
             intent.putExtra("UserType", userTypeString);
             startActivity(intent);

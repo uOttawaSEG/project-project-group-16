@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,9 +85,16 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
         // Set up viewAttendeesRequestListButton click listener
         holder.viewAttendeesRequestListButton.setOnClickListener(v ->{
+            Log.d("Navigation Debug", "Organizer clicked request button");
             Context context = v.getContext();
             Intent intent = new Intent(context, AttendeeRequestOverview.class);
+            // Assuming you have access to the event ID
+            int eventId = currentEvent.getEvent_id(); // Replace this with your logic to retrieve the event ID
 
+            Log.d("Event Adapter Debug", "Event ID passed to AttendeeRequestOverview: " + eventId);
+
+            intent.putExtra("event_id", eventId); // Pass the event ID to the next activity
+            context.startActivity(intent);
 
             // verify event id
             if (currentEvent.getEvent_id() != 0) {
