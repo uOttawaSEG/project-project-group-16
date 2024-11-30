@@ -80,6 +80,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY (attendee_id) REFERENCES Users(user_id)"
                 + ");";
         db.execSQL(createEventAttendeesTable);
+        // Debugging code
+        Cursor cursor = db.rawQuery("SELECT * FROM EventAttendees", null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Log.d("Database Debug",
+                        "Row - Attendee ID: " + cursor.getInt(cursor.getColumnIndexOrThrow("attendee_id")) +
+                                ", Event ID: " + cursor.getInt(cursor.getColumnIndexOrThrow("event_id")) +
+                                ", Status: " + cursor.getString(cursor.getColumnIndexOrThrow("registration_status")));
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            Log.e("Database Debug", "No rows found in EventAttendees table.");
+        }
+        Log.d("Schema Debug", "Starting PRAGMA table_info query...");
+        Cursor cursor1 = db.rawQuery("PRAGMA table_info(EventAttendees);", null);
+        if (cursor1 != null && cursor1.moveToFirst()) {
+            do {
+                Log.d("Schema Debug", "Column: " + cursor1.getString(cursor1.getColumnIndexOrThrow("name")) +
+                        ", Type: " + cursor1.getString(cursor1.getColumnIndexOrThrow("type")));
+            } while (cursor1.moveToNext());
+            cursor1.close();
+        } else {
+            Log.e("Schema Debug", "No schema info found for EventAttendees table.");
+        }
+        Log.d("Schema Debug", "Finished PRAGMA table_info query...");
+
+
     }
 
 
@@ -384,14 +411,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("registration_status", status);
-
+        Log.d("Update Debug", "Attempting to update Attendee ID: " + attendeeId + ", Event ID: " + eventId + ", New Status: " + status);
         int rowsAffected = db.update(
                 "EventAttendees",
                 values,
-                "attendee_id = ? AND event_id = ?",
+                "attendee_id = ? AND event_id = ?" ,
                 new String[]{String.valueOf(attendeeId), String.valueOf(eventId)}
         );
-
+        if (rowsAffected > 0) {
+            Log.d("Update Debug", "Update successful. Rows affected: " + rowsAffected);
+        } else {
+            Log.e("Update Debug", "Update failed. No rows affected. Verify IDs and database schema.");
+        }
+        // Debug current row
+        Cursor cursor = db.rawQuery("SELECT * FROM EventAttendees WHERE attendee_id = ? AND event_id = ?",
+                new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
+        if (cursor != null && cursor.moveToFirst()) {
+            Log.d("Database Debug",
+                    "Row - Attendee ID: " + cursor.getInt(cursor.getColumnIndexOrThrow("attendee_id")) +
+                            ", Event ID: " + cursor.getInt(cursor.getColumnIndexOrThrow("event_id")) +
+                            ", Status: " + cursor.getString(cursor.getColumnIndexOrThrow("registration_status")));
+            cursor.close();
+        } else {
+            Log.e("Database Debug", "No matching row found after update attempt.");
+        }
         return rowsAffected > 0;
     }
 

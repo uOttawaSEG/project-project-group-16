@@ -141,7 +141,7 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                         loadAttendeeRequests(eventId);//refresh list
                     }
                    // else {
-                        //Log.e("Approve Debug", "Failed to update registration status. Verify attendee and event IDs.");
+                        Log.e("Approve Debug", "Failed to update registration status. Verify attendee and event IDs.");
                         //Toast.makeText(this, "Failed to approve registration.", Toast.LENGTH_SHORT).show();
                    // }
 
