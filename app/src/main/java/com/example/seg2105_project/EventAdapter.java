@@ -88,8 +88,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
             Log.d("Navigation Debug", "Organizer clicked request button");
             Context context = v.getContext();
             Intent intent = new Intent(context, AttendeeRequestOverview.class);
-            // Assuming you have access to the event ID
-            int eventId = currentEvent.getEvent_id(); // Replace this with your logic to retrieve the event ID
+            // get teh event id
+            int eventId = currentEvent.getEvent_id(); 
 
             Log.d("Event Adapter Debug", "Event ID passed to AttendeeRequestOverview: " + eventId);
 
