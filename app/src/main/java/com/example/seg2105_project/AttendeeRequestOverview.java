@@ -131,12 +131,20 @@ public class AttendeeRequestOverview extends AppCompatActivity {
                 Button btnApprove = new Button(this);
                 btnApprove.setText("Approve");
                 btnApprove.setOnClickListener(v -> {
+                    Log.d("Approve Debug", "Attempting to approve attendee with ID: " + attendeeId + ", Event ID: " + eventId);
+
                     boolean success = dbHelper.updateRegistrationStatus(attendeeId, Integer.parseInt(eventId), "approved");
                     if (success) {
+                        Log.d("Approve Debug", "Registration status successfully updated to 'approved'.");
                         attendeeRequestsContainer.removeView(attendeeLayout); // Remove from UI
                         Toast.makeText(this, "Registration approved!", Toast.LENGTH_SHORT).show();
                         loadAttendeeRequests(eventId);//refresh list
                     }
+                    else {
+                        Log.e("Approve Debug", "Failed to update registration status. Verify attendee and event IDs.");
+                        Toast.makeText(this, "Failed to approve registration.", Toast.LENGTH_SHORT).show();
+                    }
+
                 });
                 attendeeLayout.addView(btnApprove);
 
