@@ -650,9 +650,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0; // Return true if a row was deleted
     }
-
-
-
+    public boolean isEventRegistered(int eventId, int attendeeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT 1 FROM Registrations WHERE event_id = ? AND attendee_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(eventId), String.valueOf(attendeeId)});
+        boolean isRegistered = cursor.getCount() > 0;
+        cursor.close();
+        return isRegistered;
+    }
 
 }
 
