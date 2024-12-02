@@ -550,17 +550,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getRegisteredEventsForAttendee(int attendeeId){
-        SQLiteDatabase dbHelper= this.getWritableDatabase();
+//    public Cursor getRegisteredEventsForAttendee(int attendeeId){
+//        SQLiteDatabase dbHelper= this.getWritableDatabase();
+//
+//        String query =  "SELECT E.* " +
+//                "FROM Events E " +
+//                "JOIN EventAttendees EA ON E.event_id = EA.event_id " +
+//                "WHERE EA.attendee_id = ?"+
+//                "ORDER BY E.date DESC"; // Newest events at the top
+//
+//        return dbHelper.rawQuery(query, new String [] {String.valueOf(attendeeId)});
+//    }
+public Cursor getRegisteredEventsForAttendee(int attendeeId){
+    SQLiteDatabase dbHelper= this.getWritableDatabase();
 
-        String query =  "SELECT E.* " +
-                "FROM Events E " +
-                "JOIN EventAttendees EA ON E.event_id = EA.event_id " +
-                "WHERE EA.attendee_id = ?"+
-                "ORDER BY E.date DESC"; // Newest events at the top
+    String query =  "SELECT E.*, EA.registration_status " +
+            "FROM Events E " +
+            "JOIN EventAttendees EA ON E.event_id = EA.event_id " +
+            "WHERE EA.attendee_id = ?"+
+            "ORDER BY E.date DESC"; // Newest events at the top
 
-        return dbHelper.rawQuery(query, new String [] {String.valueOf(attendeeId)});
-    }
+    return dbHelper.rawQuery(query, new String [] {String.valueOf(attendeeId)});
+}
 
 
     // Methods to verify if the email and the phoneNumber exist in the SQLite Database

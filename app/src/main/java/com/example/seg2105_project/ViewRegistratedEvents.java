@@ -59,6 +59,7 @@ public class ViewRegistratedEvents extends AppCompatActivity {
                 String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
                 String endTime = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
                 String address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
+                String status = cursor.getString(cursor.getColumnIndexOrThrow("registration_status"));
 
                 // Create a container (eventLayout) for event details and the cancel button
                 LinearLayout eventLayout = new LinearLayout(this);
@@ -69,8 +70,8 @@ public class ViewRegistratedEvents extends AppCompatActivity {
                 // Create a TextView for each event and configure its display
                 TextView eventView = new TextView(this);
                 eventView.setText(String.format(
-                        "Title: %s\nDescription: %s\nDate: %s\nTime: %s - %s\nAddress: %s",
-                        title, description, date, startTime, endTime, address
+                        "Title: %s\nDescription: %s\nDate: %s\nTime: %s - %s\nAddress: %s\nStatus: %s",
+                        title, description, date, startTime, endTime, address,status
                 ));
                 eventView.setPadding(16, 16, 16, 16);
                 eventView.setTextSize(16);
