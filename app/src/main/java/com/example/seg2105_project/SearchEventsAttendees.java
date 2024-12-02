@@ -76,17 +76,18 @@ public class SearchEventsAttendees extends AppCompatActivity {
                 if (registeredEventIds.contains(event_id)) {
                     continue;
                 }
-
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String start_time = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
-                String end_time = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
-                String event_address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
-                boolean isManualApproval = cursor.getInt(cursor.getColumnIndexOrThrow("isManualApproval")) == 1;
+                if (keywordString != null && (title.contains(keywordString) || description.contains(keywordString))){
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                    String start_time = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
+                    String end_time = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
+                    String event_address = cursor.getString(cursor.getColumnIndexOrThrow("event_address"));
+                    boolean isManualApproval = cursor.getInt(cursor.getColumnIndexOrThrow("isManualApproval")) == 1;
 
-                Event event = new Event(event_id, title, description, date, start_time, end_time, event_address, isManualApproval, new ArrayList<>());
-                eventList.add(event);
+                    Event event = new Event(event_id, title, description, date, start_time, end_time, event_address, isManualApproval, new ArrayList<>());
+                    eventList.add(event);
+                }
             } while (cursor.moveToNext());
         } else {
             noEventText.setVisibility(View.VISIBLE);
