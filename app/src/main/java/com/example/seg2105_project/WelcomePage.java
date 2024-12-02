@@ -61,6 +61,10 @@ public class WelcomePage extends AppCompatActivity {
         // Retrieve user data
        // userData = getIntent().getStringArrayListExtra("userData");
         userTypeString=getIntent().getStringExtra("UserType");
+        int userId = getIntent().getIntExtra("user_id", -1);
+
+
+
 
         // Ensure userData is not null before using it
         if (userTypeString!=null) {
@@ -146,10 +150,12 @@ public class WelcomePage extends AppCompatActivity {
             startActivity(intent);
         });
 
+
         // Search for events (attendee)
         searchForEventsButton.setOnClickListener(view -> {
             Intent intent = new Intent(WelcomePage.this, SearchEventsAttendees.class);
             intent.putExtra("UserType", userTypeString);
+
             startActivity(intent);
         });
 

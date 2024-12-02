@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +20,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     private static final String TABLE_EVENTS = "events";
     private static final String COLUMN_TITLE = "title";
@@ -176,7 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addUser(String firstName, String lastName, String email, String password,
+    public long addUser(String firstName, String lastName, String email, String password,
                            String phone, String address, String registrationStatus, String organizationName, String userRole) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -193,11 +194,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("user_role", userRole);
 
         // Insert the data into the Users table
-        long result = db.insert("Users", null, values);
+        long userId = db.insert("Users", null, values);
 
+        // for logcat
+
+        if (userId == -1) {
+            Log.e("Debug", "Failed to add user: " + email);
+        } else {
+            Log.d("Debug", "User added with ID: " + userId);
+        }
 
         // Return true if the data was successfully inserted, false otherwise
-        return result != -1;
+        return userId;
     }
 
 
@@ -318,8 +326,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //get Organizer Id
-
-    @SuppressLint("Range")
+    /*
+        @SuppressLint("Range")
     public int getUserId(String email){
     SQLiteDatabase db=this.getReadableDatabase(); // access data base
     int userId=-1; // no organizer found with the given email
@@ -340,6 +348,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
         return userId;
     }
+     */
+
 
 
 
@@ -670,6 +680,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0; // Return true if a row was deleted
     }
+
     public boolean isEventRegistered(int eventId, int attendeeId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT 1 FROM Registrations WHERE event_id = ? AND attendee_id = ?";
@@ -678,6 +689,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return isRegistered;
     }
+
+
+
+// exclude events from search bar
+    public Cursor getUpcomingEventsExcludingRegistered(int attendeeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM Events WHERE eventState = 'upcoming' AND event_id NOT IN (" +
+                "SELECT event_id FROM EventAttendees WHERE attendee_id = ?)";
+        return db.rawQuery(query, new String[]{String.valueOf(attendeeId)});
+    }
+
+
+    // fetch attendee's id
+    public int getUserId(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Log l'email pour voir ce qui est passé à la méthode
+        Log.d("Debug", "Fetching User ID for email: " + email);
+
+        Cursor cursor = db.query(
+                "Users",
+                new String[]{"user_id"},
+                "email = ?",
+                new String[]{email},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("user_id"));
+            Log.d("Debug", "User ID found: " + userId); // Affiche l'ID trouvé
+            cursor.close();
+            return userId;
+        }
+
+        // Si aucun ID trouvé, log l'erreur
+        Log.e("Debug", "No User ID found for email: " + email);
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        return -1;
+    }
+
+
+    public boolean isUserRegisteredForEvent(int attendeeId, int eventId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT 1 FROM EventAttendees WHERE attendee_id = ? AND event_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
+
+        boolean isRegistered = cursor.moveToFirst(); // Si un enregistrement existe, retourne vrai
+        cursor.close();
+        return isRegistered;
+    }
+
+
+
+    public HashSet<Integer> getRegisteredEventIds(int attendeeId) {
+        HashSet<Integer> registeredEventIds = new HashSet<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT event_id FROM EventAttendees WHERE attendee_id = ?",
+                new String[]{String.valueOf(attendeeId)}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                registeredEventIds.add(cursor.getInt(0)); // Ajoute chaque ID d'événement à l'ensemble
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return registeredEventIds;
+    }
+
+
+
 
 
 

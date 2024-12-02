@@ -26,7 +26,6 @@ public class ViewRegistratedEvents extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_view_registrated_events);
 
-        // Handle insets for a seamless UI
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -43,7 +42,8 @@ public class ViewRegistratedEvents extends AppCompatActivity {
     }
 
     private void loadRegisteredEvents() {
-        int attendeeId = 1; // Replace with dynamic attendee ID retrieval logic if necessary
+        int attendeeId = getIntent().getIntExtra("user_id", -1);; // Replace with dynamic attendee ID retrieval logic if necessary
+
 
         // Query the database for registered events
         Cursor cursor = dbHelper.getRegisteredEventsForAttendee(attendeeId);

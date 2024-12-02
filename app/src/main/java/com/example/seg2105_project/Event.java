@@ -84,6 +84,11 @@ public class Event {
             }
         }
     }
+
+    public int getEventId()
+    {
+        return event_id;
+    }
 }
 
 

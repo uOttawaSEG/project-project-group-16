@@ -140,7 +140,7 @@ public class SignInOrganizer extends AppCompatActivity {
 
 
 
-        boolean insertSuccess= dbHelper.addUser(
+        long userId= dbHelper.addUser(
                 firstNameString,
                 lastNameString,
                 emailAddressString,
@@ -153,12 +153,13 @@ public class SignInOrganizer extends AppCompatActivity {
         );
 
         // Proceed after successful validation
-        if (insertSuccess) {
+        if (userId != -1) {
             Toast.makeText(SignInOrganizer.this, "Registration Successful", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(SignInOrganizer.this, MainActivity.class);
             intent.putExtra("UserType", "Organizer");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
+            intent.putExtra("userId", userId);
             intent.putExtra("registrationStatus", registrationStatus);
             startActivity(intent);
         } else {

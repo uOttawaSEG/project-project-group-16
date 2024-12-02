@@ -100,11 +100,21 @@ public class LogInPage extends AppCompatActivity {
                             } else if (registrationStatus.equals("rejected")) {
                                 Toast.makeText(LogInPage.this, "Your registration request has been rejected. Please contact the administrator: (123)456-7890", Toast.LENGTH_LONG).show();
                             } else if (registrationStatus.equals("approved")){
+
+                                int userId = dbHelper.getUserId(emailAddressString);
+
+                                if (userId == -1) {
+                                    Toast.makeText(LogInPage.this, "Failed to retrieve User ID. Please try again.", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
                                 Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                                 intent.putExtra("registration_status", "approved");
                                 intent.putExtra("UserType", userRole); // Set appropriate user type based on your login
+                                intent.putExtra("attendee_id", userId);
                                 loggedIn = true;
                                 startActivity(intent);
+                                finish();
                             } else {
                                 Toast.makeText(LogInPage.this, "Failed to log in. Please check your credentials.", Toast.LENGTH_LONG).show();
                             }

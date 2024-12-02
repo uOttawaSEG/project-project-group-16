@@ -153,7 +153,7 @@ public class SigninAttendee extends AppCompatActivity {
 
           */
 
-        boolean insertSuccess = dbHelper.addUser(
+        long userId = dbHelper.addUser(
                 firstNameString,
                 lastNameString,
                 emailAddressString,
@@ -167,13 +167,14 @@ public class SigninAttendee extends AppCompatActivity {
 
 
 
-        if (insertSuccess) {
+        if (userId!= -1) {
             Toast.makeText(SigninAttendee.this, "Registration Successful", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(SigninAttendee.this, MainActivity.class);
             intent.putExtra("UserType", "Attendee");
             intent.putExtra("Email", emailAddressString);
             intent.putExtra("passWord", passwordString);
             intent.putExtra("registrationStatus", registrationStatus);
+            intent.putExtra("userId", userId);
             startActivity(intent);
         } else {
             // Show error message if there was an issue with registration
