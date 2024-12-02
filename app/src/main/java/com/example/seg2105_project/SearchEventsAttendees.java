@@ -64,10 +64,10 @@ public class SearchEventsAttendees extends AppCompatActivity {
 
 
     private void loadCorrespondingEvents() {
-        int attendeeId = getAttendeeId();
-        Log.d("EventSearch", "Attendee ID: " + attendeeId);
-        Log.d("EventSearch", "Keyword: " + keywordString);
-        try {
+        //int attendeeId = getAttendeeId();
+        //Log.d("EventSearch", "Attendee ID: " + attendeeId);
+        //Log.d("EventSearch", "Keyword: " + keywordString);
+        //try {
             // add the corresponding future events to the eventList
             Cursor cursor = dbHelper.getUpcomingEvents();
 
@@ -79,16 +79,16 @@ public class SearchEventsAttendees extends AppCompatActivity {
                     // Log event ID
                     Log.d("EventSearch", "Checking event ID: " + event_id);
                     // Check if the event is registered
-                    boolean isRegistered = dbHelper.isEventRegistered(event_id, attendeeId);
-                    if (isRegistered) {
-                        continue; // Skip this event
-                    }
+                    //boolean isRegistered = dbHelper.isEventRegistered(event_id, attendeeId);
+                    //if (isRegistered) {
+                        //continue; // Skip this event
+                    //}
 
 
                     String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                     String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                    Log.d("EventSearch", "Event title: " + title);
-                    Log.d("EventSearch", "Event description: " + description);
+                    //Log.d("EventSearch", "Event title: " + title);
+                    //Log.d("EventSearch", "Event description: " + description);
                     // Vérifie si le keyword se trouve dans le titre ou la description de l'événement, si oui l'événement est ajouté à la liste
                     // vérifie que le keyword n'est pas vide
                     if (keywordString != null && (title.contains(keywordString) || description.contains(keywordString))) {
@@ -122,13 +122,13 @@ public class SearchEventsAttendees extends AppCompatActivity {
             // Create the adapter, and set it with the events
             SearchEventAdapter adapter = new SearchEventAdapter(this, eventList);
             eventListView.setAdapter(adapter);
-        } catch (Exception e) {
+        //} catch (Exception e) {
 
 
-            {
-                Log.e("EventSearch", "Error loading events: " + e.getMessage());
-                e.printStackTrace();
-            }
+            //{
+                //Log.e("EventSearch", "Error loading events: " + e.getMessage());
+                //e.printStackTrace();
+            //}
 
 
         }
@@ -136,11 +136,14 @@ public class SearchEventsAttendees extends AppCompatActivity {
 
     }
 
-    private int getAttendeeId() {
-        return 0;
-    }
+    //private int getAttendeeId() {
+        // Example: retrieve from Intent
+        //return getIntent().getIntExtra("attendee_id", -1);
+    //}
 
 
 
 
-}
+
+
+
