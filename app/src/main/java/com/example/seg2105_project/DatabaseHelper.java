@@ -19,7 +19,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "EAMS.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     private static final String TABLE_EVENTS = "events";
     private static final String COLUMN_TITLE = "title";
@@ -105,6 +105,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e("Schema Debug", "No schema info found for EventAttendees table.");
         }
         Log.d("Schema Debug", "Finished PRAGMA table_info query...");
+        // Table for storing registrations
+        String createRegistrationsTable = "CREATE TABLE Registrations ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "event_id INTEGER NOT NULL, "
+                + "attendee_id INTEGER NOT NULL, "
+                + "FOREIGN KEY(event_id) REFERENCES Events(event_id), "
+                + "FOREIGN KEY(attendee_id) REFERENCES Users(user_id)"
+                + ");";
+        db.execSQL(createRegistrationsTable);
+
 
 
     }
@@ -151,6 +161,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 6) {   // added isManualApproval column
             db.execSQL("ALTER TABLE Events ADD COLUMN isManualApproval INTEGER");
+        }
+        if (oldVersion < 7) {  // Increment database version for Registrations table
+            String createRegistrationsTable = "CREATE TABLE Registrations (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "event_id INTEGER NOT NULL, " +
+                    "attendee_id INTEGER NOT NULL, " +
+                    "FOREIGN KEY(event_id) REFERENCES Events(event_id), " +
+                    "FOREIGN KEY(attendee_id) REFERENCES Users(user_id)" +
+                    ");";
+            db.execSQL(createRegistrationsTable);
         }
 
     }
@@ -658,6 +678,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return isRegistered;
     }
+
+
 
 }
 
