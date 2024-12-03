@@ -468,17 +468,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-    public boolean checkEventConflict(int organizerId, String startTime, String endTime, String date) {
+    public boolean checkEventConflict(int attendeeId, String date, String startTime, String endTime) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM events WHERE organizer_id = ? AND event_date = ? AND " +
-                "(start_time < ? AND end_time > ? OR start_time < ? AND end_time > ?)";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(organizerId), date, endTime, startTime, startTime, endTime});
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.close();
-            return true; // Conflict exists
-        }
-        return false; // No conflict
+        String query = "SELECT * FROM EventAttendees EA JOIN Events E ON EA.event_id = E.event_id " +
+                "WHERE EA.attendee_id = ? AND E.date = ? AND " +
+                "(E.start_time < ? AND E.end_time > ? OR E.start_time < ? AND E.end_time > ?)";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(attendeeId), date, endTime, startTime, startTime, endTime});
+        boolean conflictExists = cursor.getCount() > 0;
+        cursor.close();
+        return conflictExists;
     }
 
     public boolean deleteEventById(int event_id) {
@@ -504,31 +502,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
-    public boolean registerAttendeetoEvent(int attendeeId, int eventId){
+    public boolean registerAttendeetoEvent(int attendeeId, int eventId, String eventDate, String startTime, String endTime) {
+        SQLiteDatabase dbHelper = this.getWritableDatabase();
 
-        SQLiteDatabase dbHelper= this.getWritableDatabase();
-
-        // verify if the attendee is already registered
+        // Check for conflicts before proceeding
+        if (checkEventConflict(attendeeId, eventDate, startTime, endTime)) {
+            Log.e("Conflict Check", "Conflict detected for Attendee ID: " + attendeeId + " with Event ID: " + eventId);
+            return false; // Prevent registration if conflict exists
+        }
 
         Cursor cursor = dbHelper.rawQuery("SELECT * FROM EventAttendees WHERE attendee_id = ? AND event_id = ?",
                 new String[]{String.valueOf(attendeeId), String.valueOf(eventId)});
-
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             cursor.close();
-            return false; // attendee already registered
+            return false;
         }
-
         cursor.close();
-        // Check the approval mode of the event
+
         Cursor eventCursor = dbHelper.query(
                 "Events",
                 new String[]{"isManualApproval"},
                 "event_id = ?",
                 new String[]{String.valueOf(eventId)},
-                null, null, null
-        );
-
-        String registrationStatus = "approved"; // Default for automatic approval
+                null, null, null);
+        String registrationStatus = "registered"; // Default for automatic approval
         if (eventCursor != null && eventCursor.moveToFirst()) {
             int isManualApproval = eventCursor.getInt(eventCursor.getColumnIndexOrThrow("isManualApproval"));
             if (isManualApproval == 1) { // Manual approval
@@ -537,17 +534,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             eventCursor.close();
         }
 
-
-        // attendee not registered
         ContentValues values = new ContentValues();
         values.put("attendee_id", attendeeId);
         values.put("event_id", eventId);
-        values.put("registration_status", registrationStatus); // default value is "registered"
-
-        long result= dbHelper.insert("EventAttendees", null,values);
-        return result !=-1 ;// TRUE if successful registration
-
-
+        values.put("registration_status", registrationStatus);
+        long result = dbHelper.insert("EventAttendees", null, values);
+        return result != -1;
     }
 
 //    public Cursor getRegisteredEventsForAttendee(int attendeeId){

@@ -51,17 +51,25 @@ public class ViewSpecificEventAsAttendees extends AppCompatActivity {
         loadEventDetails();
 
         registerButton.setOnClickListener(v -> {
-            boolean isRegistered = dbHelper.registerAttendeetoEvent(userId, event_id);
+            String eventDateValue = eventDate.getText().toString();
+            String startTimeValue = eventStartTime.getText().toString();
+            String endTimeValue = eventEndTime.getText().toString();
 
-            if (isRegistered) {
-                Toast.makeText(this, "Successfully registered for the event!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.putExtra("refresh_list", true);
-                intent.putExtra("registered_event_id", event_id); // Passe l'ID de l'événement enregistré
-                setResult(RESULT_OK, intent);
-                finish(); // Ferme l'activité actuelle
+            // Check for conflicts before registration
+            if (dbHelper.checkEventConflict(userId, eventDateValue, startTimeValue, endTimeValue)) {
+                Toast.makeText(this, "You have a conflict with another event.", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "You are already registered for this event.", Toast.LENGTH_SHORT).show();
+                boolean isRegistered = dbHelper.registerAttendeetoEvent(userId, event_id, eventDateValue, startTimeValue, endTimeValue);
+                if (isRegistered) {
+                    Toast.makeText(this, "Successfully registered for the event!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("refresh_list", true);
+                    intent.putExtra("registered_event_id", event_id);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, "You are already registered for this event.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
