@@ -155,6 +155,7 @@ public class WelcomePage extends AppCompatActivity {
         searchForEventsButton.setOnClickListener(view -> {
             Intent intent = new Intent(WelcomePage.this, SearchEventsAttendees.class);
             intent.putExtra("UserType", userTypeString);
+            intent.putExtra("user_id", userId);
 
             startActivity(intent);
         });
@@ -163,6 +164,7 @@ public class WelcomePage extends AppCompatActivity {
         viewRegistredEventsButton.setOnClickListener(view -> {
             Intent intent = new Intent(WelcomePage.this, ViewRegistratedEvents.class);
             intent.putExtra("UserType", userTypeString);
+            intent.putExtra("user_id", userId);
             startActivity(intent);
         });
 

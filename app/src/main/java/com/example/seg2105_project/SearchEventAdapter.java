@@ -20,12 +20,13 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
 
     private Context context;
     private List<Event> events;
-    private Object attendeeId;
+    private int attendeeId;
 
-    public SearchEventAdapter(Context context, List<Event> events) {
+    public SearchEventAdapter(Context context, List<Event> events, int attendeeId) {
         super(context, R.layout.list_event_search_by_attendees, events);
         this.context = context;
         this.events = events;
+        this.attendeeId = attendeeId;
     }
 
 
@@ -67,6 +68,7 @@ public class SearchEventAdapter extends ArrayAdapter<Event> {
             Context context = v.getContext();
             Intent intent = new Intent(context, ViewSpecificEventAsAttendees.class);
             intent.putExtra("event_id", currentEvent.getEvent_id());
+            intent.putExtra("user_id", attendeeId);
             context.startActivity(intent);
         });
 

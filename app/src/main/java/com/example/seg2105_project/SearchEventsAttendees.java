@@ -95,7 +95,7 @@ public class SearchEventsAttendees extends AppCompatActivity {
 
         cursor.close();
 
-        SearchEventAdapter adapter = new SearchEventAdapter(this, eventList);
+        SearchEventAdapter adapter = new SearchEventAdapter(this, eventList, attendeeID);
         eventListView.setAdapter(adapter);
     }
 

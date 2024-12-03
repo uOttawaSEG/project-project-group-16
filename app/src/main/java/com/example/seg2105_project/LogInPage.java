@@ -111,7 +111,7 @@ public class LogInPage extends AppCompatActivity {
                                 Intent intent = new Intent(LogInPage.this, WelcomePage.class);
                                 intent.putExtra("registration_status", "approved");
                                 intent.putExtra("UserType", userRole); // Set appropriate user type based on your login
-                                intent.putExtra("attendee_id", userId);
+                                intent.putExtra("user_id", userId);
                                 loggedIn = true;
                                 startActivity(intent);
                                 finish();

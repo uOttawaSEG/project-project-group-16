@@ -2,6 +2,7 @@ package com.example.seg2105_project;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ public class ViewRegistratedEvents extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private LinearLayout eventContainer;
     private ScrollView scrollView;
+    private int attendeeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +38,12 @@ public class ViewRegistratedEvents extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         scrollView = findViewById(R.id.scroll_view); // Reference ScrollView
         eventContainer = findViewById(R.id.event_container); // Reference LinearLayout inside ScrollView
-
+        attendeeId = getIntent().getIntExtra("user_id", -1);; // Replace with dynamic attendee ID retrieval logic if necessary
         // Load and display registered events
         loadRegisteredEvents();
     }
 
     private void loadRegisteredEvents() {
-        int attendeeId = getIntent().getIntExtra("user_id", -1);; // Replace with dynamic attendee ID retrieval logic if necessary
 
 
         // Query the database for registered events
