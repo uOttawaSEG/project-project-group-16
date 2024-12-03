@@ -770,6 +770,18 @@ public Cursor getRegisteredEventsForAttendee(int attendeeId){
 
 
 
+    public boolean hasApprovedAttendeeRegistrations(int eventId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM EventAttendees WHERE event_id = ? AND registration_status = 'approved'", new String[]{String.valueOf(eventId)});
+        if (cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count > 0;
+        }
+        cursor.close();
+        return false;
+    }
+
 
 
 

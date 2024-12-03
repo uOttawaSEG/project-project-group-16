@@ -72,12 +72,17 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     .setTitle("Confirm Deletion")
                     .setMessage("Are you sure you want to delete this event?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        // Call method to delete event
-                        ((UpcomingEventsOverview) context).deleteEvent(currentEvent.getEvent_id());
-                        // Remove from the list and notify adapter
-                        events.remove(position); // Remove event from the list
-                        notifyDataSetChanged(); // Refresh the list
-                        Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT).show();
+                        DatabaseHelper dbHelper = new DatabaseHelper(context);
+                        if (dbHelper.hasApprovedAttendeeRegistrations(currentEvent.getEvent_id())) {
+                            Toast.makeText(context, "Cannot delete this event. It has approved Attendee registrations.", Toast.LENGTH_LONG).show();
+                        } else {
+                            // Call method to delete event
+                            ((UpcomingEventsOverview) context).deleteEvent(currentEvent.getEvent_id());
+                            // Remove from the list and notify adapter
+                            events.remove(position); // Remove event from the list
+                            notifyDataSetChanged(); // Refresh the list
+                            Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT).show();
+                        }
                     })
                     .setNegativeButton("No", null)
                     .show();
