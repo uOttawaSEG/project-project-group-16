@@ -525,7 +525,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "event_id = ?",
                 new String[]{String.valueOf(eventId)},
                 null, null, null);
-        String registrationStatus = "registered"; // Default for automatic approval
+        String registrationStatus = "approved"; // Default for automatic approval
         if (eventCursor != null && eventCursor.moveToFirst()) {
             int isManualApproval = eventCursor.getInt(eventCursor.getColumnIndexOrThrow("isManualApproval"));
             if (isManualApproval == 1) { // Manual approval
